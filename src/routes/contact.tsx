@@ -9,9 +9,9 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/contact")({
   head: () => ({
     meta: [
-      { title: "Contact — All Tree BD Shop" },
-      { name: "description", content: "Reach our Bangla-speaking care team by phone, WhatsApp or email." },
-      { property: "og:title", content: "Contact — All Tree BD Shop" },
+      { title: "যোগাযোগ — অল ট্রি বিডি শপ" },
+      { name: "description", content: "ফোন, হোয়াটসঅ্যাপ বা ইমেইলে আমাদের বাংলাভাষী কেয়ার টিমের সাথে যোগাযোগ করুন।" },
+      { property: "og:title", content: "যোগাযোগ — অল ট্রি বিডি শপ" },
       { property: "og:url", content: "/contact" },
     ],
     links: [{ rel: "canonical", href: "/contact" }],
@@ -21,18 +21,18 @@ export const Route = createFileRoute("/contact")({
 
 function ContactPage() {
   const items = [
-    { Icon: Phone, label: "Call us", value: site.phone, href: `tel:${site.phone}` },
-    { Icon: MessageCircle, label: "WhatsApp", value: site.whatsapp, href: `https://wa.me/${site.whatsapp.replace(/\D/g, "")}` },
-    { Icon: Mail, label: "Email", value: site.email, href: `mailto:${site.email}` },
-    { Icon: MapPin, label: "Visit", value: site.address },
-    { Icon: Clock, label: "Hours", value: "Sat–Thu · 9am – 8pm" },
+    { Icon: Phone, label: "ফোন করুন", value: site.phone, href: `tel:${site.phone}` },
+    { Icon: MessageCircle, label: "হোয়াটসঅ্যাপ", value: site.whatsapp, href: `https://wa.me/${site.whatsapp.replace(/\D/g, "")}` },
+    { Icon: Mail, label: "ইমেইল", value: site.email, href: `mailto:${site.email}` },
+    { Icon: MapPin, label: "ঠিকানা", value: site.address },
+    { Icon: Clock, label: "খোলার সময়", value: "শনি – বৃহস্পতি · সকাল ৯টা – রাত ৮টা" },
   ];
   return (
     <PageLayout>
       <PageHeader
-        crumbs={[{ label: "Home", to: "/" }, { label: "Contact" }]}
-        title="Let's talk plants."
-        subtitle="Pre-purchase advice, after-care help or wholesale inquiries — we reply in minutes."
+        crumbs={[{ label: "হোম", to: "/" }, { label: "যোগাযোগ" }]}
+        title="চলুন গাছ নিয়ে কথা বলি"
+        subtitle="ক্রয়-পূর্ব পরামর্শ, পরিচর্যার সাহায্য বা পাইকারি অর্ডার — আমরা মিনিটেই উত্তর দেই।"
       />
       <Container className="py-12">
         <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr]">
@@ -45,39 +45,39 @@ function ContactPage() {
               >
                 <span className="grid size-12 place-items-center rounded-2xl gradient-primary text-primary-foreground"><Icon className="size-5" /></span>
                 <div className="min-w-0">
-                  <div className="text-xs uppercase tracking-wide text-muted-foreground">{label}</div>
-                  <div className="truncate font-semibold">{value}</div>
+                  <div className="font-bn text-xs tracking-wide text-muted-foreground">{label}</div>
+                  <div className="font-bn truncate font-semibold">{value}</div>
                 </div>
               </a>
             ))}
           </div>
 
           <form
-            onSubmit={(e) => { e.preventDefault(); toast.success("Message sent — we'll get back to you shortly."); (e.target as HTMLFormElement).reset(); }}
+            onSubmit={(e) => { e.preventDefault(); toast.success("বার্তা পাঠানো হয়েছে — শীঘ্রই উত্তর পাবেন।"); (e.target as HTMLFormElement).reset(); }}
             className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8"
           >
-            <h3 className="font-display text-2xl font-bold">Send us a message</h3>
-            <p className="mt-1 text-sm text-muted-foreground">Or write to us — we usually reply within an hour.</p>
+            <h3 className="font-bn font-display text-2xl font-bold">আমাদের বার্তা পাঠান</h3>
+            <p className="font-bn mt-1 text-sm text-muted-foreground">সাধারণত এক ঘণ্টার মধ্যেই উত্তর দেই।</p>
             <div className="mt-6 grid gap-4 sm:grid-cols-2">
               <label className="block">
-                <span className="mb-1.5 block text-xs uppercase tracking-wide text-muted-foreground">Name</span>
+                <span className="font-bn mb-1.5 block text-xs tracking-wide text-muted-foreground">নাম</span>
                 <input required className={input} />
               </label>
               <label className="block">
-                <span className="mb-1.5 block text-xs uppercase tracking-wide text-muted-foreground">Phone</span>
+                <span className="font-bn mb-1.5 block text-xs tracking-wide text-muted-foreground">ফোন</span>
                 <input required type="tel" className={input} />
               </label>
               <label className="block sm:col-span-2">
-                <span className="mb-1.5 block text-xs uppercase tracking-wide text-muted-foreground">Email</span>
+                <span className="font-bn mb-1.5 block text-xs tracking-wide text-muted-foreground">ইমেইল</span>
                 <input type="email" className={input} />
               </label>
               <label className="block sm:col-span-2">
-                <span className="mb-1.5 block text-xs uppercase tracking-wide text-muted-foreground">Message</span>
+                <span className="font-bn mb-1.5 block text-xs tracking-wide text-muted-foreground">বার্তা</span>
                 <textarea required rows={5} className={input} />
               </label>
             </div>
-            <button type="submit" className="mt-6 inline-flex rounded-full gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant">
-              Send message
+            <button type="submit" className="font-bn mt-6 inline-flex rounded-full gradient-primary px-7 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant">
+              বার্তা পাঠান
             </button>
           </form>
         </div>
@@ -86,4 +86,4 @@ function ContactPage() {
   );
 }
 
-const input = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+const input = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-bn";

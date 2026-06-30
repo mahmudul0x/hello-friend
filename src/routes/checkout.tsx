@@ -6,13 +6,13 @@ import { PageHeader } from "@/components/layout/PageHeader";
 import { Container } from "@/components/common/Container";
 import { SmartImage } from "@/components/common/SmartImage";
 import { useCart } from "@/context/CartContext";
-import { formatBDT } from "@/lib/format";
+import { formatBDT, toBnDigits } from "@/lib/format";
 import { site } from "@/data/site";
 import { toast } from "sonner";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
-    meta: [{ title: "Checkout — All Tree BD Shop" }, { name: "robots", content: "noindex" }],
+    meta: [{ title: "চেকআউট — অল ট্রি বিডি শপ" }, { name: "robots", content: "noindex" }],
   }),
   component: CheckoutPage,
 });
@@ -28,7 +28,7 @@ function CheckoutPage() {
     e.preventDefault();
     setDone(true);
     clear();
-    toast.success("Order placed! We'll call you within 30 minutes to confirm.");
+    toast.success("অর্ডার সফল হয়েছে! ৩০ মিনিটের মধ্যে আমরা কল দিয়ে নিশ্চিত করব।");
   };
 
   if (done) {
@@ -36,10 +36,9 @@ function CheckoutPage() {
       <PageLayout>
         <Container className="py-24 text-center">
           <CheckCircle2 className="mx-auto size-16 text-primary" />
-          <h1 className="mt-6 font-display text-3xl font-bold">Order placed!</h1>
-          <p className="mt-2 text-muted-foreground">A confirmation will reach you on WhatsApp shortly.</p>
-          <p className="font-bn mt-1 text-sm text-muted-foreground">আপনার অর্ডার সফলভাবে গ্রহণ করা হয়েছে।</p>
-          <button onClick={() => navigate({ to: "/" })} className="mt-8 rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Back to home</button>
+          <h1 className="font-bn mt-6 text-3xl font-bold">অর্ডার সফল হয়েছে!</h1>
+          <p className="font-bn mt-2 text-muted-foreground">শীঘ্রই হোয়াটসঅ্যাপে নিশ্চিতকরণ পাবেন।</p>
+          <button onClick={() => navigate({ to: "/" })} className="font-bn mt-8 rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground">হোমে ফিরে যান</button>
         </Container>
       </PageLayout>
     );
@@ -47,63 +46,63 @@ function CheckoutPage() {
 
   return (
     <PageLayout>
-      <PageHeader crumbs={[{ label: "Home", to: "/" }, { label: "Cart", to: "/cart" }, { label: "Checkout" }]} title="Checkout" subtitle="Cash on delivery available across 64 districts." />
+      <PageHeader crumbs={[{ label: "হোম", to: "/" }, { label: "কার্ট", to: "/cart" }, { label: "চেকআউট" }]} title="চেকআউট" subtitle="৬৪ জেলায় ক্যাশ অন ডেলিভারি সুবিধা।" />
       <Container className="py-12">
         <form onSubmit={submit} className="grid gap-8 lg:grid-cols-[1.2fr_1fr]">
           <div className="space-y-6">
-            <Card title="Contact details">
-              <Field label="Full name" required><input required className={fieldCls} placeholder="Md. Imran Hossain" /></Field>
-              <Field label="Phone (WhatsApp)" required><input required type="tel" className={fieldCls} placeholder="+880 1XXX-XXXXXX" /></Field>
-              <Field label="Email (optional)"><input type="email" className={fieldCls} placeholder="you@email.com" /></Field>
+            <Card title="যোগাযোগের তথ্য">
+              <Field label="পুরো নাম" required><input required className={fieldCls} placeholder="মো. ইমরান হোসেন" /></Field>
+              <Field label="ফোন (হোয়াটসঅ্যাপ)" required><input required type="tel" className={fieldCls} placeholder="+৮৮০ ১XXX-XXXXXX" /></Field>
+              <Field label="ইমেইল (ঐচ্ছিক)"><input type="email" className={fieldCls} placeholder="you@email.com" /></Field>
             </Card>
 
-            <Card title="Delivery address">
-              <Field label="Street address" required><input required className={fieldCls} placeholder="House 12, Road 4, Dhanmondi" /></Field>
+            <Card title="ডেলিভারি ঠিকানা">
+              <Field label="বিস্তারিত ঠিকানা" required><input required className={fieldCls} placeholder="বাড়ি ১২, রোড ৪, ধানমন্ডি" /></Field>
               <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="City" required><input required className={fieldCls} placeholder="Dhaka" /></Field>
-                <Field label="District" required>
+                <Field label="শহর/উপজেলা" required><input required className={fieldCls} placeholder="ঢাকা" /></Field>
+                <Field label="জেলা" required>
                   <select required className={fieldCls} defaultValue="">
-                    <option value="" disabled>Select district</option>
-                    {["Dhaka", "Chattogram", "Rajshahi", "Khulna", "Sylhet", "Barishal", "Rangpur", "Mymensingh"].map((d) => <option key={d}>{d}</option>)}
+                    <option value="" disabled>জেলা নির্বাচন করুন</option>
+                    {["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা", "সিলেট", "বরিশাল", "রংপুর", "ময়মনসিংহ"].map((d) => <option key={d}>{d}</option>)}
                   </select>
                 </Field>
               </div>
-              <Field label="Notes (optional)"><textarea rows={3} className={fieldCls} placeholder="Landmarks, preferred delivery time…" /></Field>
+              <Field label="অতিরিক্ত নোট (ঐচ্ছিক)"><textarea rows={3} className={fieldCls} placeholder="ল্যান্ডমার্ক, পছন্দের সময়…" /></Field>
             </Card>
 
-            <Card title="Payment method">
+            <Card title="পেমেন্ট পদ্ধতি">
               <label className="flex cursor-pointer items-start gap-3 rounded-2xl border-2 border-primary bg-primary/5 p-4">
                 <input type="radio" name="pay" defaultChecked className="mt-1 accent-primary" />
                 <div className="flex-1">
-                  <div className="flex items-center gap-2 font-semibold"><Truck className="size-4 text-primary" /> Cash on Delivery</div>
-                  <p className="mt-1 text-sm text-muted-foreground">Pay when your plants arrive. Available across all 64 districts.</p>
+                  <div className="font-bn flex items-center gap-2 font-semibold"><Truck className="size-4 text-primary" /> ক্যাশ অন ডেলিভারি</div>
+                  <p className="font-bn mt-1 text-sm text-muted-foreground">গাছ হাতে পেয়ে পেমেন্ট করুন। সারা বাংলাদেশের ৬৪ জেলায় উপলব্ধ।</p>
                 </div>
               </label>
             </Card>
           </div>
 
           <aside className="h-fit rounded-3xl border border-border bg-card p-6 shadow-soft lg:sticky lg:top-28">
-            <h3 className="font-display text-lg font-semibold">Your order</h3>
+            <h3 className="font-bn font-display text-lg font-semibold">আপনার অর্ডার</h3>
             <ul className="mt-4 space-y-3">
-              {items.length === 0 && <p className="text-sm text-muted-foreground">Your cart is empty.</p>}
+              {items.length === 0 && <p className="font-bn text-sm text-muted-foreground">আপনার কার্ট খালি।</p>}
               {items.map(({ product, qty }) => (
                 <li key={product.slug} className="flex items-center gap-3">
                   <SmartImage src={product.image} alt={product.name} aspect="square" className="size-14 shrink-0 rounded-xl" />
                   <div className="flex-1 min-w-0">
-                    <p className="truncate text-sm font-medium">{product.name}</p>
-                    <p className="text-xs text-muted-foreground">× {qty}</p>
+                    <p className="font-bn truncate text-sm font-medium">{product.name}</p>
+                    <p className="font-bn text-xs text-muted-foreground">× {toBnDigits(qty)}</p>
                   </div>
-                  <span className="text-sm font-semibold">{formatBDT(product.price * qty)}</span>
+                  <span className="font-bn text-sm font-semibold">{formatBDT(product.price * qty)}</span>
                 </li>
               ))}
             </ul>
-            <dl className="mt-5 space-y-2 border-t pt-4 text-sm">
-              <div className="flex justify-between"><dt className="text-muted-foreground">Subtotal</dt><dd>{formatBDT(subtotal)}</dd></div>
-              <div className="flex justify-between"><dt className="text-muted-foreground">Shipping</dt><dd>{shipping === 0 ? <span className="text-primary">Free</span> : formatBDT(shipping)}</dd></div>
-              <div className="flex justify-between border-t pt-2 text-base"><dt className="font-semibold">Total</dt><dd className="font-display text-xl font-bold text-primary">{formatBDT(total)}</dd></div>
+            <dl className="font-bn mt-5 space-y-2 border-t pt-4 text-sm">
+              <div className="flex justify-between"><dt className="text-muted-foreground">সাবটোটাল</dt><dd>{formatBDT(subtotal)}</dd></div>
+              <div className="flex justify-between"><dt className="text-muted-foreground">ডেলিভারি</dt><dd>{shipping === 0 ? <span className="text-primary">ফ্রি</span> : formatBDT(shipping)}</dd></div>
+              <div className="flex justify-between border-t pt-2 text-base"><dt className="font-semibold">মোট</dt><dd className="font-display text-xl font-bold text-primary">{formatBDT(total)}</dd></div>
             </dl>
-            <button type="submit" disabled={items.length === 0} className="mt-6 w-full rounded-full gradient-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant disabled:opacity-50">
-              Place order
+            <button type="submit" disabled={items.length === 0} className="font-bn mt-6 w-full rounded-full gradient-primary px-6 py-3.5 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant disabled:opacity-50">
+              অর্ডার নিশ্চিত করুন
             </button>
           </aside>
         </form>
@@ -112,12 +111,12 @@ function CheckoutPage() {
   );
 }
 
-const fieldCls = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+const fieldCls = "w-full rounded-2xl border border-border bg-background px-4 py-3 text-sm focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 font-bn";
 
 function Card({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
-      <h3 className="font-display text-lg font-semibold">{title}</h3>
+      <h3 className="font-bn font-display text-lg font-semibold">{title}</h3>
       <div className="mt-4 space-y-4">{children}</div>
     </div>
   );
@@ -126,7 +125,7 @@ function Card({ title, children }: { title: string; children: React.ReactNode })
 function Field({ label, required, children }: { label: string; required?: boolean; children: React.ReactNode }) {
   return (
     <label className="block">
-      <span className="mb-1.5 block text-xs font-medium uppercase tracking-wide text-muted-foreground">
+      <span className="font-bn mb-1.5 block text-xs font-medium tracking-wide text-muted-foreground">
         {label} {required && <span className="text-destructive">*</span>}
       </span>
       {children}

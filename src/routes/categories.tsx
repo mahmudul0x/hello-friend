@@ -8,9 +8,9 @@ import { categories } from "@/data/categories";
 export const Route = createFileRoute("/categories")({
   head: () => ({
     meta: [
-      { title: "All Categories — All Tree BD Shop" },
-      { name: "description", content: "Explore all plant categories — fruit trees, indoor plants, herbs, flowering plants and rare exotics." },
-      { property: "og:title", content: "All Categories — All Tree BD Shop" },
+      { title: "সব বিভাগ — অল ট্রি বিডি শপ" },
+      { name: "description", content: "ফল গাছ, ইনডোর গাছ, ভেষজ, ফুলের গাছ ও বিদেশি দুর্লভ চারা — সব বিভাগ একসাথে।" },
+      { property: "og:title", content: "সব বিভাগ — অল ট্রি বিডি শপ" },
       { property: "og:url", content: "/categories" },
     ],
     links: [{ rel: "canonical", href: "/categories" }],
@@ -18,9 +18,9 @@ export const Route = createFileRoute("/categories")({
   component: () => (
     <PageLayout>
       <PageHeader
-        crumbs={[{ label: "Home", to: "/" }, { label: "Categories" }]}
-        title="Browse by category"
-        subtitle="From dwarf grafted mangoes to rare tropicals, find the right green companion for every space."
+        crumbs={[{ label: "হোম", to: "/" }, { label: "বিভাগ" }]}
+        title="বিভাগ অনুযায়ী দেখুন"
+        subtitle="বামন গ্রাফটিং আম থেকে দুর্লভ বিদেশি ফল — প্রতিটি জায়গার জন্য সঠিক সবুজ সঙ্গী।"
       />
       <Container className="py-12">
         <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 lg:grid-cols-4">

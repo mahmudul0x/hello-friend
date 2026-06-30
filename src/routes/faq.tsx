@@ -8,9 +8,9 @@ import { faqs } from "@/data/site";
 export const Route = createFileRoute("/faq")({
   head: () => ({
     meta: [
-      { title: "FAQ — All Tree BD Shop" },
-      { name: "description", content: "Answers about delivery, guarantees, plant care and payments." },
-      { property: "og:title", content: "FAQ — All Tree BD Shop" },
+      { title: "সাধারণ প্রশ্নোত্তর — অল ট্রি বিডি শপ" },
+      { name: "description", content: "ডেলিভারি, গ্যারান্টি, পরিচর্যা ও পেমেন্ট সম্পর্কে সাধারণ প্রশ্নের উত্তর।" },
+      { property: "og:title", content: "প্রশ্নোত্তর — অল ট্রি বিডি শপ" },
       { property: "og:url", content: "/faq" },
     ],
     links: [{ rel: "canonical", href: "/faq" }],
@@ -33,13 +33,13 @@ export const Route = createFileRoute("/faq")({
 function FAQPage() {
   return (
     <PageLayout>
-      <PageHeader crumbs={[{ label: "Home", to: "/" }, { label: "FAQ" }]} title="Frequently asked questions" subtitle="Quick answers to the things we hear most." align="center" />
+      <PageHeader crumbs={[{ label: "হোম", to: "/" }, { label: "প্রশ্নোত্তর" }]} title="সাধারণ প্রশ্নোত্তর" subtitle="সবচেয়ে বেশি জিজ্ঞাসিত প্রশ্নের সহজ উত্তর।" align="center" />
       <Container className="py-12">
         <Accordion type="single" collapsible className="mx-auto max-w-3xl space-y-3">
           {faqs.map((f, i) => (
             <AccordionItem key={i} value={String(i)} className="overflow-hidden rounded-2xl border border-border bg-card px-5 shadow-soft">
-              <AccordionTrigger className="text-left font-semibold hover:no-underline">{f.q}</AccordionTrigger>
-              <AccordionContent className="text-muted-foreground">{f.a}</AccordionContent>
+              <AccordionTrigger className="font-bn text-left font-semibold hover:no-underline">{f.q}</AccordionTrigger>
+              <AccordionContent className="font-bn text-muted-foreground">{f.a}</AccordionContent>
             </AccordionItem>
           ))}
         </Accordion>

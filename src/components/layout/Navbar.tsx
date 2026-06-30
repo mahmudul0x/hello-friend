@@ -10,15 +10,16 @@ import { cn } from "@/lib/utils";
 import { site } from "@/data/site";
 import { categories } from "@/data/categories";
 import { SmartImage } from "@/components/common/SmartImage";
+import { toBnDigits } from "@/lib/format";
 
 const nav = [
-  { to: "/", label: "Home", labelBn: "হোম" },
-  { to: "/shop", label: "Shop", labelBn: "শপ" },
-  { to: "/categories", label: "Categories", labelBn: "বিভাগ", mega: true },
-  { to: "/blog", label: "Blog", labelBn: "ব্লগ" },
-  { to: "/care-guide", label: "Care Guide", labelBn: "গাইড" },
-  { to: "/about", label: "About", labelBn: "আমরা" },
-  { to: "/contact", label: "Contact", labelBn: "যোগাযোগ" },
+  { to: "/", label: "হোম" },
+  { to: "/shop", label: "শপ" },
+  { to: "/categories", label: "বিভাগ", mega: true },
+  { to: "/blog", label: "ব্লগ" },
+  { to: "/care-guide", label: "পরিচর্যা গাইড" },
+  { to: "/about", label: "আমাদের সম্পর্কে" },
+  { to: "/contact", label: "যোগাযোগ" },
 ] as const;
 
 export function Navbar() {
@@ -44,11 +45,11 @@ export function Navbar() {
       {/* Top promo bar */}
       <div className="hidden bg-primary-dark text-primary-foreground sm:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-xs sm:px-6 lg:px-8">
-          <p className="font-bn opacity-90">৳{site.shipping.freeAbove}+ অর্ডারে ফ্রি ডেলিভারি · ৬৪ জেলায় ক্যাশ অন ডেলিভারি</p>
-          <div className="flex items-center gap-4 opacity-90">
+          <p className="font-bn opacity-90">৳{toBnDigits(site.shipping.freeAbove)}+ অর্ডারে ফ্রি ডেলিভারি · ৬৪ জেলায় ক্যাশ অন ডেলিভারি</p>
+          <div className="font-bn flex items-center gap-4 opacity-90">
             <a href={`tel:${site.phone}`} className="hover:text-gold">{site.phone}</a>
             <span className="opacity-40">|</span>
-            <Link to="/account" className="hover:text-gold">Track order</Link>
+            <Link to="/track-order" className="hover:text-gold">অর্ডার ট্র্যাক করুন</Link>
           </div>
         </div>
       </div>
@@ -72,7 +73,7 @@ export function Navbar() {
           </Link>
 
           {/* Desktop nav */}
-          <nav className="hidden items-center justify-center gap-1 lg:flex">
+          <nav className="hidden items-center justify-center gap-1 lg:flex" aria-label="মূল নেভিগেশন">
             {nav.map((n) => {
               const active = n.to === "/" ? pathname === "/" : pathname.startsWith(n.to);
               const isMega = "mega" in n && n.mega;
@@ -86,7 +87,7 @@ export function Navbar() {
                   <Link
                     to={n.to}
                     className={cn(
-                      "relative inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition",
+                      "font-bn relative inline-flex items-center gap-1 rounded-full px-4 py-2 text-sm font-medium transition",
                       active ? "text-primary" : "text-foreground/80 hover:text-primary",
                     )}
                   >
@@ -122,16 +123,16 @@ export function Navbar() {
                                 >
                                   <SmartImage src={c.image} alt={c.name} aspect="square" className="size-14 shrink-0 rounded-xl" />
                                   <div className="min-w-0">
-                                    <div className="truncate text-sm font-semibold text-foreground group-hover:text-primary">{c.name}</div>
+                                    <div className="font-bn truncate text-sm font-semibold text-foreground group-hover:text-primary">{c.name}</div>
                                     <div className="font-bn truncate text-[11px] text-muted-foreground">{c.nameBn}</div>
-                                    <div className="text-[11px] text-primary/80">{c.count} varieties</div>
+                                    <div className="font-bn text-[11px] text-primary/80">{toBnDigits(c.count)}টি জাত</div>
                                   </div>
                                 </Link>
                               ))}
                             </div>
-                            <div className="mt-4 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
-                              <span>Premium grafted saplings · 7-day guarantee</span>
-                              <Link to="/categories" className="font-semibold text-primary hover:underline">View all categories →</Link>
+                            <div className="font-bn mt-4 flex items-center justify-between border-t border-border pt-4 text-xs text-muted-foreground">
+                              <span>প্রিমিয়াম গ্রাফটিং চারা · ৭ দিনের গ্যারান্টি</span>
+                              <Link to="/categories" className="font-semibold text-primary hover:underline">সব বিভাগ দেখুন →</Link>
                             </div>
                           </div>
                         </motion.div>
@@ -148,36 +149,36 @@ export function Navbar() {
             <button
               type="button"
               onClick={() => setSearchOpen(true)}
-              aria-label="Search"
+              aria-label="খুঁজুন"
               className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent sm:grid"
             >
               <Search className="size-4" />
             </button>
             <ThemeToggle className="hidden sm:grid" />
-            <Link to="/account/wishlist" aria-label="Wishlist" className="relative grid size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent">
+            <Link to="/account/wishlist" aria-label="ইচ্ছার তালিকা" className="relative grid size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent">
               <Heart className="size-4" />
               {wish.slugs.length > 0 && (
                 <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
-                  {wish.slugs.length}
+                  {toBnDigits(wish.slugs.length)}
                 </span>
               )}
             </Link>
-            <Link to="/cart" aria-label="Cart" className="relative grid size-10 place-items-center rounded-full gradient-primary text-primary-foreground shadow-soft transition hover:shadow-elegant">
+            <Link to="/cart" aria-label="কার্ট" className="relative grid size-10 place-items-center rounded-full gradient-primary text-primary-foreground shadow-soft transition hover:shadow-elegant">
               <ShoppingBag className="size-4" />
               {cart.totalQty > 0 && (
                 <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-gold text-[10px] font-bold text-gold-foreground">
-                  {cart.totalQty}
+                  {toBnDigits(cart.totalQty)}
                 </span>
               )}
             </Link>
-            <Link to="/login" aria-label="Account" className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent md:grid">
+            <Link to="/login" aria-label="একাউন্ট" className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent md:grid">
               <User className="size-4" />
             </Link>
             <button
               type="button"
               onClick={() => setOpen((v) => !v)}
               className="grid size-10 place-items-center rounded-full border border-border bg-card text-foreground lg:hidden"
-              aria-label="Toggle menu"
+              aria-label="মেনু খুলুন"
               aria-expanded={open}
             >
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
@@ -203,12 +204,11 @@ export function Navbar() {
                       key={n.to}
                       to={n.to}
                       className={cn(
-                        "flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition",
+                        "font-bn flex items-center justify-between rounded-2xl px-4 py-3 text-sm font-medium transition",
                         active ? "bg-primary/10 text-primary" : "text-foreground hover:bg-accent",
                       )}
                     >
                       <span>{n.label}</span>
-                      <span className="font-bn text-xs text-muted-foreground">{n.labelBn}</span>
                     </Link>
                   );
                 })}
@@ -216,9 +216,9 @@ export function Navbar() {
                   <button
                     type="button"
                     onClick={() => { setOpen(false); setSearchOpen(true); }}
-                    className="flex flex-1 items-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm"
+                    className="font-bn flex flex-1 items-center gap-2 rounded-2xl border border-border px-4 py-3 text-sm"
                   >
-                    <Search className="size-4" /> Search plants
+                    <Search className="size-4" /> গাছ খুঁজুন
                   </button>
                   <ThemeToggle />
                 </div>

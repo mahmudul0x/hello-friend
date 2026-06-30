@@ -8,6 +8,7 @@ import { ProductCard } from "@/components/common/ProductCard";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
 import { cn } from "@/lib/utils";
+import { toBnDigits } from "@/lib/format";
 import { z } from "zod";
 
 const search = z.object({
@@ -20,9 +21,9 @@ export const Route = createFileRoute("/shop")({
   validateSearch: search,
   head: () => ({
     meta: [
-      { title: "Shop All Plants — All Tree BD Shop" },
-      { name: "description", content: "Browse our full collection of grafted fruit plants, indoor greens, herbs and rare tropicals." },
-      { property: "og:title", content: "Shop All Plants — All Tree BD Shop" },
+      { title: "সব গাছ — অল ট্রি বিডি শপ" },
+      { name: "description", content: "গ্রাফটিং ফল গাছ, ইনডোর গাছ, ভেষজ ও বিদেশি দুর্লভ চারার সম্পূর্ণ কালেকশন।" },
+      { property: "og:title", content: "সব গাছ — অল ট্রি বিডি শপ" },
       { property: "og:url", content: "/shop" },
     ],
     links: [{ rel: "canonical", href: "/shop" }],
@@ -46,8 +47,8 @@ function Shop() {
       case "price-asc": list.sort((a, b) => a.price - b.price); break;
       case "price-desc": list.sort((a, b) => b.price - a.price); break;
       case "rating": list.sort((a, b) => b.rating - a.rating); break;
-      case "new": list = list.filter((p) => p.badges?.includes("New")).concat(list.filter((p) => !p.badges?.includes("New"))); break;
-      case "bestseller": list = list.filter((p) => p.badges?.includes("Bestseller")).concat(list.filter((p) => !p.badges?.includes("Bestseller"))); break;
+      case "new": list = list.filter((p) => p.badges?.includes("নতুন")).concat(list.filter((p) => !p.badges?.includes("নতুন"))); break;
+      case "bestseller": list = list.filter((p) => p.badges?.includes("বেস্ট সেলার")).concat(list.filter((p) => !p.badges?.includes("বেস্ট সেলার"))); break;
     }
     return list;
   }, [sp]);
@@ -55,54 +56,54 @@ function Shop() {
   return (
     <PageLayout>
       <PageHeader
-        crumbs={[{ label: "Home", to: "/" }, { label: "Shop" }]}
-        title="All plants"
-        subtitle={`${filtered.length} hand-picked varieties ready to ship across Bangladesh.`}
+        crumbs={[{ label: "হোম", to: "/" }, { label: "সব গাছ" }]}
+        title="সব গাছ"
+        subtitle={`${toBnDigits(filtered.length)}টি হাতে বাছাই করা জাত — সারা বাংলাদেশে ডেলিভারির জন্য প্রস্তুত।`}
         actions={
           <>
             <select
               value={sp.sort ?? ""}
               onChange={(e) => navigate({ search: { ...sp, sort: (e.target.value || undefined) as typeof sp.sort } })}
-              className="rounded-full border border-border bg-card px-4 py-2.5 text-sm focus:border-primary focus:outline-none"
+              className="font-bn rounded-full border border-border bg-card px-4 py-2.5 text-sm focus:border-primary focus:outline-none"
+              aria-label="সাজান"
             >
-              <option value="">Featured</option>
-              <option value="new">Newest</option>
-              <option value="bestseller">Bestsellers</option>
-              <option value="rating">Top rated</option>
-              <option value="price-asc">Price: Low to High</option>
-              <option value="price-desc">Price: High to Low</option>
+              <option value="">ফিচার্ড</option>
+              <option value="new">নতুন</option>
+              <option value="bestseller">বেস্ট সেলার</option>
+              <option value="rating">সর্বোচ্চ রেটিং</option>
+              <option value="price-asc">মূল্য: কম থেকে বেশি</option>
+              <option value="price-desc">মূল্য: বেশি থেকে কম</option>
             </select>
-            <button onClick={() => setOpen(true)} className="inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-medium lg:hidden">
-              <SlidersHorizontal className="size-4" /> Filters
+            <button onClick={() => setOpen(true)} className="font-bn inline-flex items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5 text-sm font-medium lg:hidden">
+              <SlidersHorizontal className="size-4" /> ফিল্টার
             </button>
           </>
         }
       />
       <Container className="grid gap-8 py-12 lg:grid-cols-[260px_1fr]">
-        {/* Sidebar */}
         <aside className={cn("fixed inset-0 z-50 bg-background/95 p-4 backdrop-blur lg:static lg:bg-transparent lg:p-0", !open && "hidden lg:block")}>
           <div className="mb-4 flex items-center justify-between lg:hidden">
-            <h3 className="font-semibold">Filters</h3>
-            <button aria-label="Close filters" onClick={() => setOpen(false)} className="grid size-9 place-items-center rounded-full border"><X className="size-4" /></button>
+            <h3 className="font-bn font-semibold">ফিল্টার</h3>
+            <button aria-label="বন্ধ করুন" onClick={() => setOpen(false)} className="grid size-9 place-items-center rounded-full border"><X className="size-4" /></button>
           </div>
           <div className="space-y-6 rounded-3xl border border-border bg-card p-5">
             <div>
-              <h4 className="mb-3 flex items-center gap-2 text-sm font-semibold text-foreground"><Filter className="size-4" /> Categories</h4>
+              <h4 className="font-bn mb-3 flex items-center gap-2 text-sm font-semibold text-foreground"><Filter className="size-4" /> বিভাগ</h4>
               <div className="space-y-1">
                 <button
                   onClick={() => navigate({ search: { ...sp, category: undefined } })}
-                  className={cn("w-full rounded-full px-3 py-2 text-left text-sm transition", !sp.category ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent")}
+                  className={cn("font-bn w-full rounded-full px-3 py-2 text-left text-sm transition", !sp.category ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent")}
                 >
-                  All categories
+                  সব বিভাগ
                 </button>
                 {categories.map((c) => (
                   <button
                     key={c.slug}
                     onClick={() => navigate({ search: { ...sp, category: c.slug } })}
-                    className={cn("flex w-full items-center justify-between rounded-full px-3 py-2 text-left text-sm transition", sp.category === c.slug ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent")}
+                    className={cn("font-bn flex w-full items-center justify-between rounded-full px-3 py-2 text-left text-sm transition", sp.category === c.slug ? "bg-primary/10 text-primary font-medium" : "hover:bg-accent")}
                   >
                     <span>{c.name}</span>
-                    <span className="text-xs text-muted-foreground">{c.count}</span>
+                    <span className="text-xs text-muted-foreground">{toBnDigits(c.count)}</span>
                   </button>
                 ))}
               </div>
@@ -110,11 +111,10 @@ function Shop() {
           </div>
         </aside>
 
-        {/* Grid */}
         {filtered.length === 0 ? (
           <div className="grid place-items-center rounded-3xl border border-dashed py-24 text-center">
-            <p className="text-muted-foreground">No plants match your filters.</p>
-            <button onClick={() => navigate({ search: {} })} className="mt-4 rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">Clear filters</button>
+            <p className="font-bn text-muted-foreground">এই ফিল্টারে কোনো গাছ পাওয়া যায়নি।</p>
+            <button onClick={() => navigate({ search: {} })} className="font-bn mt-4 rounded-full bg-primary px-5 py-2 text-sm text-primary-foreground">ফিল্টার মুছুন</button>
           </div>
         ) : (
           <div className="grid grid-cols-2 gap-4 sm:gap-5 md:grid-cols-3 xl:grid-cols-4">

@@ -1,15 +1,15 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Package } from "lucide-react";
-import { formatBDT } from "@/lib/format";
+import { formatBDT, toBnDigits } from "@/lib/format";
 
 export const Route = createFileRoute("/account/orders")({
   component: Orders,
 });
 
 const sample = [
-  { id: "ATB-10298", date: "Jun 22, 2026", items: 3, total: 2340, status: "Delivered" },
-  { id: "ATB-10241", date: "May 11, 2026", items: 1, total: 650, status: "Delivered" },
-  { id: "ATB-10187", date: "Apr 03, 2026", items: 5, total: 4120, status: "Cancelled" },
+  { id: "ATB-10298", date: "২২ জুন, ২০২৬", items: 3, total: 2340, status: "ডেলিভারি সম্পন্ন" },
+  { id: "ATB-10241", date: "১১ মে, ২০২৬", items: 1, total: 650, status: "ডেলিভারি সম্পন্ন" },
+  { id: "ATB-10187", date: "০৩ এপ্রিল, ২০২৬", items: 5, total: 4120, status: "বাতিল" },
 ];
 
 function Orders() {
@@ -20,15 +20,15 @@ function Orders() {
           <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-primary/10 text-primary"><Package className="size-5" /></span>
           <div className="flex-1 min-w-0">
             <div className="font-semibold">{o.id}</div>
-            <div className="text-xs text-muted-foreground">{o.date} · {o.items} items</div>
+            <div className="font-bn text-xs text-muted-foreground">{o.date} · {toBnDigits(o.items)}টি পণ্য</div>
           </div>
           <div className="text-right">
-            <div className="font-semibold text-primary">{formatBDT(o.total)}</div>
-            <div className={`text-xs ${o.status === "Delivered" ? "text-primary" : "text-destructive"}`}>{o.status}</div>
+            <div className="font-bn font-semibold text-primary">{formatBDT(o.total)}</div>
+            <div className={`font-bn text-xs ${o.status === "ডেলিভারি সম্পন্ন" ? "text-primary" : "text-destructive"}`}>{o.status}</div>
           </div>
         </div>
       ))}
-      <Link to="/shop" className="block text-center text-sm text-primary hover:underline">Continue shopping</Link>
+      <Link to="/shop" className="font-bn block text-center text-sm text-primary hover:underline">আরও কেনাকাটা করুন</Link>
     </div>
   );
 }

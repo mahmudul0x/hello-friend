@@ -13,30 +13,30 @@ const socialLinks = [
 
 const cols = [
   {
-    title: "Shop",
+    title: "শপ",
     links: [
-      { label: "All Plants", to: "/shop" },
-      { label: "Categories", to: "/categories" },
-      { label: "New Arrivals", to: "/shop?sort=new" },
-      { label: "Bestsellers", to: "/shop?sort=bestseller" },
+      { label: "সব গাছ", to: "/shop" },
+      { label: "সব বিভাগ", to: "/categories" },
+      { label: "নতুন এসেছে", to: "/shop" },
+      { label: "বেস্ট সেলার", to: "/shop" },
     ],
   },
   {
-    title: "Company",
+    title: "প্রতিষ্ঠান",
     links: [
-      { label: "About Us", to: "/about" },
-      { label: "Blog", to: "/blog" },
-      { label: "Care Guide", to: "/care-guide" },
-      { label: "FAQ", to: "/faq" },
+      { label: "আমাদের সম্পর্কে", to: "/about" },
+      { label: "ব্লগ", to: "/blog" },
+      { label: "পরিচর্যা গাইড", to: "/care-guide" },
+      { label: "প্রশ্নোত্তর", to: "/faq" },
     ],
   },
   {
-    title: "Account",
+    title: "একাউন্ট",
     links: [
-      { label: "My Account", to: "/account" },
-      { label: "My Orders", to: "/account/orders" },
-      { label: "Wishlist", to: "/account/wishlist" },
-      { label: "Addresses", to: "/account/addresses" },
+      { label: "আমার একাউন্ট", to: "/account" },
+      { label: "আমার অর্ডার", to: "/account/orders" },
+      { label: "ইচ্ছার তালিকা", to: "/account/wishlist" },
+      { label: "ঠিকানা", to: "/account/addresses" },
     ],
   },
 ];
@@ -60,8 +60,8 @@ export function Footer() {
                 <div className="font-bn text-xs opacity-80">অনলাইনে গাছের চারা বিক্রয়</div>
               </div>
             </Link>
-            <p className="mt-5 text-sm opacity-80">
-              Bangladesh's premium online nursery — grafted fruit plants, indoor greens & rare exotics, hand-delivered to all 64 districts.
+            <p className="font-bn mt-5 text-sm opacity-80">
+              বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি — গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ বিদেশি চারা, ৬৪ জেলায় নিরাপদে ডেলিভারি।
             </p>
             <div className="mt-5 flex items-center gap-2">
               {socialLinks.map(({ Icon, href, label }) => (
@@ -76,22 +76,22 @@ export function Footer() {
           <div className="grid gap-8 sm:grid-cols-4">
             {cols.map((col) => (
               <div key={col.title}>
-                <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] opacity-90">{col.title}</h4>
+                <h4 className="font-bn mb-4 text-sm font-semibold tracking-wide opacity-90">{col.title}</h4>
                 <ul className="space-y-2.5">
                   {col.links.map((l) => (
                     <li key={l.label}>
-                      <Link to={l.to} className="text-sm opacity-75 transition hover:opacity-100 hover:text-gold">{l.label}</Link>
+                      <Link to={l.to} className="font-bn text-sm opacity-75 transition hover:opacity-100 hover:text-gold">{l.label}</Link>
                     </li>
                   ))}
                 </ul>
               </div>
             ))}
             <div>
-              <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] opacity-90">Top Categories</h4>
+              <h4 className="font-bn mb-4 text-sm font-semibold tracking-wide opacity-90">জনপ্রিয় বিভাগ</h4>
               <ul className="space-y-2.5">
                 {categories.slice(0, 5).map((c) => (
                   <li key={c.slug}>
-                    <Link to="/categories/$slug" params={{ slug: c.slug }} className="text-sm opacity-75 transition hover:opacity-100 hover:text-gold">{c.name}</Link>
+                    <Link to="/categories/$slug" params={{ slug: c.slug }} className="font-bn text-sm opacity-75 transition hover:opacity-100 hover:text-gold">{c.name}</Link>
                   </li>
                 ))}
               </ul>
@@ -100,11 +100,11 @@ export function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="mb-4 text-sm font-semibold uppercase tracking-[0.18em] opacity-90">Get in touch</h4>
+            <h4 className="font-bn mb-4 text-sm font-semibold tracking-wide opacity-90">যোগাযোগ</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin className="mt-0.5 size-4 shrink-0 text-gold" />
-                <span className="opacity-85">{site.address}</span>
+                <span className="font-bn opacity-85">{site.address}</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone className="size-4 shrink-0 text-gold" />
@@ -120,16 +120,16 @@ export function Footer() {
               onSubmit={(e) => {
                 e.preventDefault();
                 const form = e.currentTarget;
-                toast.success("Subscribed — check your inbox for tips 🌱");
+                toast.success("সাবস্ক্রাইব হয়েছে — ইনবক্সে গাছ পরিচর্যার টিপস পাবেন 🌱");
                 form.reset();
               }}
               className="mt-6"
             >
-              <label htmlFor="footer-newsletter" className="text-xs uppercase tracking-[0.18em] opacity-80">Plant tips · weekly</label>
+              <label htmlFor="footer-newsletter" className="font-bn text-xs tracking-wide opacity-80">সাপ্তাহিক গাছ পরিচর্যার টিপস</label>
               <div className="mt-2 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5 backdrop-blur">
-                <input id="footer-newsletter" name="email" type="email" required placeholder="your@email.com" className="flex-1 bg-transparent px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none" />
-                <button type="submit" className="rounded-full bg-gold px-4 py-2 text-xs font-semibold text-gold-foreground transition hover:brightness-110">
-                  Subscribe
+                <input id="footer-newsletter" name="email" type="email" required placeholder="আপনার ইমেইল" className="font-bn flex-1 bg-transparent px-3 py-2 text-sm placeholder:text-white/50 focus:outline-none" />
+                <button type="submit" className="font-bn rounded-full bg-gold px-4 py-2 text-xs font-semibold text-gold-foreground transition hover:brightness-110">
+                  সাবস্ক্রাইব
                 </button>
               </div>
             </form>
@@ -137,8 +137,8 @@ export function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/10 pt-6 text-xs opacity-75 sm:flex-row">
-          <p>© {new Date().getFullYear()} All Tree BD Shop. All rights reserved.</p>
-          <p className="font-bn">তৈরি করা হয়েছে ভালোবাসা দিয়ে, বাংলাদেশে 🇧🇩</p>
+          <p className="font-bn">© {new Date().getFullYear()} অল ট্রি বিডি শপ। সর্বস্বত্ব সংরক্ষিত।</p>
+          <p className="font-bn">বাংলাদেশে ভালোবাসা দিয়ে তৈরি 🇧🇩</p>
         </div>
       </Container>
     </footer>

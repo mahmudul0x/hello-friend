@@ -4,13 +4,14 @@ import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { cn } from "@/lib/utils";
+import { toBnDigits } from "@/lib/format";
 
 const items = [
-  { to: "/", label: "Home", labelBn: "হোম", icon: Home, match: (p: string) => p === "/" },
-  { to: "/categories", label: "Categories", labelBn: "বিভাগ", icon: LayoutGrid, match: (p: string) => p.startsWith("/categories") },
-  { to: "/cart", label: "Cart", labelBn: "কার্ট", icon: ShoppingBag, match: (p: string) => p.startsWith("/cart"), badge: "cart" as const },
-  { to: "/account/wishlist", label: "Wishlist", labelBn: "পছন্দ", icon: Heart, match: (p: string) => p.startsWith("/account/wishlist"), badge: "wish" as const },
-  { to: "/account", label: "Account", labelBn: "একাউন্ট", icon: User, match: (p: string) => p === "/account" || p.startsWith("/login") },
+  { to: "/", label: "হোম", icon: Home, match: (p: string) => p === "/" },
+  { to: "/categories", label: "বিভাগ", icon: LayoutGrid, match: (p: string) => p.startsWith("/categories") },
+  { to: "/cart", label: "কার্ট", icon: ShoppingBag, match: (p: string) => p.startsWith("/cart"), badge: "cart" as const },
+  { to: "/account/wishlist", label: "পছন্দ", icon: Heart, match: (p: string) => p.startsWith("/account/wishlist"), badge: "wish" as const },
+  { to: "/account", label: "একাউন্ট", icon: User, match: (p: string) => p === "/account" || p.startsWith("/login") },
 ];
 
 export function MobileBottomNav() {
@@ -20,7 +21,7 @@ export function MobileBottomNav() {
 
   return (
     <nav
-      aria-label="Primary mobile"
+      aria-label="মূল মেনু"
       className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
       style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
     >
@@ -56,13 +57,13 @@ export function MobileBottomNav() {
                     />
                     {count > 0 && (
                       <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-gold text-[10px] font-bold text-gold-foreground">
-                        {count > 9 ? "9+" : count}
+                        {count > 9 ? "৯+" : toBnDigits(count)}
                       </span>
                     )}
                   </span>
                   <span
                     className={cn(
-                      "text-[10px] font-medium leading-none transition",
+                      "font-bn text-[10px] font-medium leading-none transition",
                       active ? "text-primary" : "text-foreground/70",
                     )}
                   >
