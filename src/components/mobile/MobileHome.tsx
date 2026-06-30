@@ -160,7 +160,7 @@ function MobileCategoryCards() {
       <CategoryCard
         title="ফল গাছ"
         sub="দেশি-বিদেশি বিভিন্ন প্রজাতির ফল গাছের চারা"
-        to="/categories/mango"
+        to="/categories/fruits"
         bg="bg-[#1F7A3A]"
         text="text-white"
         sub2="text-white/85"
@@ -170,7 +170,7 @@ function MobileCategoryCards() {
       <CategoryCard
         title="ফুল গাছ"
         sub="বিভিন্ন রঙের ফুলের গাছ আপনার বাগানের জন্য"
-        to="/categories/flowering"
+        to="/categories/flowers"
         bg="bg-[#FCE4EC]"
         text="text-[#7A1A3C]"
         sub2="text-[#7A1A3C]/80"
