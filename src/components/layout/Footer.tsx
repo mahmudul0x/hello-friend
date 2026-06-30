@@ -208,28 +208,13 @@ export function Footer() {
           </div>
         </div>
 
-        {/* Payment & legal bar */}
+        {/* Legal bar */}
         <div className="mt-14 rounded-2xl bg-white/5 px-5 py-4 ring-1 ring-white/10">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex items-center gap-3">
-              <p className="font-bn text-xs font-semibold uppercase tracking-wider text-white/70">পেমেন্ট মাধ্যম</p>
-              <div className="flex flex-wrap items-center gap-1.5">
-                {["bKash", "Nagad", "Rocket", "Visa", "Master", "COD"].map((m) => (
-                  <span
-                    key={m}
-                    className="rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-[#0E2A14] shadow-sm"
-                  >
-                    {m}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <Link to="/privacy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">প্রাইভেসি পলিসি</Link>
-              <Link to="/terms" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শর্তাবলি</Link>
-              <Link to="/return-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">রিটার্ন</Link>
-              <Link to="/shipping-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শিপিং</Link>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:justify-end">
+            <Link to="/privacy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">প্রাইভেসি পলিসি</Link>
+            <Link to="/terms" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শর্তাবলি</Link>
+            <Link to="/return-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">রিটার্ন</Link>
+            <Link to="/shipping-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শিপিং</Link>
           </div>
         </div>
 
