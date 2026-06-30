@@ -42,7 +42,7 @@ export function FloatingActions() {
   ];
 
   return (
-    <div className="pointer-events-none fixed bottom-20 right-3 z-40 flex flex-col items-end gap-4 sm:bottom-24 sm:right-5 lg:bottom-6 lg:right-6">
+    <div className="pointer-events-none fixed bottom-28 right-3 z-50 flex flex-col items-end gap-3 sm:bottom-32 sm:right-5 sm:gap-4 lg:bottom-6 lg:right-6" style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}>
       <AnimatePresence>
         {show && (
           <motion.button
