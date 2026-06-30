@@ -60,7 +60,7 @@ export function FloatingActions() {
 
   return (
     <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40">
-      <div className="mx-auto flex max-w-7xl items-end justify-between px-4 pb-5 sm:px-6 lg:px-8">
+      <div className="mx-auto flex max-w-7xl items-end justify-between px-4 pb-24 sm:px-6 lg:px-8 lg:pb-5">
         {/* Left: chat stack */}
         <div className="pointer-events-auto flex flex-col items-start gap-3">
           {buttons.map((b, i) => (

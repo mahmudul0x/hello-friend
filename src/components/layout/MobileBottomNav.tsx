@@ -1,0 +1,79 @@
+import { Link, useRouterState } from "@tanstack/react-router";
+import { Heart, Home, LayoutGrid, ShoppingBag, User } from "lucide-react";
+import { motion } from "framer-motion";
+import { useCart } from "@/context/CartContext";
+import { useWishlist } from "@/context/WishlistContext";
+import { cn } from "@/lib/utils";
+
+const items = [
+  { to: "/", label: "Home", labelBn: "হোম", icon: Home, match: (p: string) => p === "/" },
+  { to: "/categories", label: "Categories", labelBn: "বিভাগ", icon: LayoutGrid, match: (p: string) => p.startsWith("/categories") },
+  { to: "/cart", label: "Cart", labelBn: "কার্ট", icon: ShoppingBag, match: (p: string) => p.startsWith("/cart"), badge: "cart" as const },
+  { to: "/account/wishlist", label: "Wishlist", labelBn: "পছন্দ", icon: Heart, match: (p: string) => p.startsWith("/account/wishlist"), badge: "wish" as const },
+  { to: "/account", label: "Account", labelBn: "একাউন্ট", icon: User, match: (p: string) => p === "/account" || p.startsWith("/login") },
+];
+
+export function MobileBottomNav() {
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const cart = useCart();
+  const wish = useWishlist();
+
+  return (
+    <nav
+      aria-label="Primary mobile"
+      className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
+      style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
+    >
+      <div className="mx-3 mb-3 overflow-hidden rounded-3xl border border-border/60 bg-background/85 shadow-elegant backdrop-blur-xl">
+        <ul className="grid grid-cols-5">
+          {items.map((it) => {
+            const active = it.match(pathname);
+            const Icon = it.icon;
+            const count =
+              it.badge === "cart" ? cart.totalQty :
+              it.badge === "wish" ? wish.slugs.length : 0;
+            return (
+              <li key={it.to} className="relative">
+                <Link
+                  to={it.to}
+                  aria-label={it.label}
+                  aria-current={active ? "page" : undefined}
+                  className="group flex flex-col items-center justify-center gap-1 px-1 py-2.5"
+                >
+                  <span className="relative grid size-10 place-items-center">
+                    {active && (
+                      <motion.span
+                        layoutId="mob-nav-active"
+                        className="absolute inset-0 rounded-2xl gradient-primary shadow-soft"
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    )}
+                    <Icon
+                      className={cn(
+                        "relative size-5 transition",
+                        active ? "text-primary-foreground" : "text-foreground/70 group-hover:text-primary",
+                      )}
+                    />
+                    {count > 0 && (
+                      <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-gold text-[10px] font-bold text-gold-foreground">
+                        {count > 9 ? "9+" : count}
+                      </span>
+                    )}
+                  </span>
+                  <span
+                    className={cn(
+                      "text-[10px] font-medium leading-none transition",
+                      active ? "text-primary" : "text-foreground/70",
+                    )}
+                  >
+                    {it.label}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </nav>
+  );
+}
