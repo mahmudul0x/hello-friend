@@ -20,15 +20,13 @@ const HERO_SLIDES = [
     image: "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?w=1200&q=85&auto=format&fit=crop",
     eyebrow: "প্রিমিয়াম নার্সারি",
     title: "গড়ুন নিজের সবুজ জগৎ",
-    titleEn: "Grow your green world",
-    cta: "এখনই অর্ডার",
+    cta: "এখনই অর্ডার করুন",
     to: "/shop",
   },
   {
     image: "https://images.unsplash.com/photo-1591735026282-bb24fd6c0451?w=1200&q=85&auto=format&fit=crop",
     eyebrow: "আমের মৌসুম",
     title: "গ্রাফটিং আম গাছ",
-    titleEn: "Grafted mango saplings",
     cta: "কালেকশন দেখুন",
     to: "/categories/mango",
   },
@@ -36,33 +34,30 @@ const HERO_SLIDES = [
     image: "https://images.unsplash.com/photo-1485955900006-10f4d324d411?w=1200&q=85&auto=format&fit=crop",
     eyebrow: "ইনডোর গ্রিনস",
     title: "ঘর সাজান সবুজে",
-    titleEn: "Style your home green",
-    cta: "ইনডোর প্ল্যান্টস",
+    cta: "ইনডোর গাছ",
     to: "/categories/indoor",
   },
   {
     image: "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&q=85&auto=format&fit=crop",
     eyebrow: "ফুলের বাগান",
     title: "সারা বছর ফুটুক",
-    titleEn: "Bloom all year long",
     cta: "ফুলের চারা",
-    to: "/categories/flower",
+    to: "/categories/flowering",
   },
   {
     image: "https://images.unsplash.com/photo-1610917040803-1fccf9623064?w=1200&q=85&auto=format&fit=crop",
-    eyebrow: "রেয়ার ট্রপিক্যাল",
-    title: "বিরল বিদেশি চারা",
-    titleEn: "Rare tropical finds",
-    cta: "এক্সপ্লোর করুন",
+    eyebrow: "বিরল বিদেশি গাছ",
+    title: "দুর্লভ বিদেশি চারা",
+    cta: "দেখুন",
     to: "/categories/tropical",
   },
 ];
 
 const TRUST_TILES = [
-  { icon: Wallet, label: "ক্যাশ অন ডেলিভারি", sub: "Pay on delivery", color: "from-emerald-500/15 to-emerald-500/5", iconColor: "text-emerald-600" },
-  { icon: Truck, label: "৬৪ জেলায় ডেলিভারি", sub: "Nationwide", color: "from-sky-500/15 to-sky-500/5", iconColor: "text-sky-600" },
-  { icon: ShieldCheck, label: "৩০ দিনের গ্যারান্টি", sub: "Living guarantee", color: "from-amber-500/15 to-amber-500/5", iconColor: "text-amber-600" },
-  { icon: Headphones, label: "এক্সপার্ট সাপোর্ট", sub: "Plant care help", color: "from-rose-500/15 to-rose-500/5", iconColor: "text-rose-600" },
+  { icon: Wallet, label: "ক্যাশ অন ডেলিভারি", sub: "পণ্য বুঝে পেমেন্ট", color: "from-emerald-500/15 to-emerald-500/5", iconColor: "text-emerald-600" },
+  { icon: Truck, label: "৬৪ জেলায় ডেলিভারি", sub: "সারা বাংলাদেশে", color: "from-sky-500/15 to-sky-500/5", iconColor: "text-sky-600" },
+  { icon: ShieldCheck, label: "৩০ দিনের গ্যারান্টি", sub: "লিভিং গ্যারান্টি", color: "from-amber-500/15 to-amber-500/5", iconColor: "text-amber-600" },
+  { icon: Headphones, label: "এক্সপার্ট সাপোর্ট", sub: "যেকোনো সাহায্য", color: "from-rose-500/15 to-rose-500/5", iconColor: "text-rose-600" },
 ];
 
 const CAT_COLORS = [
@@ -105,13 +100,13 @@ function MobileGreetingBar() {
             <MapPin className="size-4" />
           </span>
           <div className="min-w-0">
-            <p className="text-[10px] uppercase tracking-wider text-muted-foreground">Deliver to</p>
+            <p className="font-bn text-[10px] tracking-wider text-muted-foreground">ডেলিভারি ঠিকানা</p>
             <p className="font-bn truncate text-sm font-semibold text-foreground">পুরান বগুড়া · বাংলাদেশ</p>
           </div>
         </div>
         <Link
           to="/account"
-          aria-label="Notifications"
+          aria-label="নোটিফিকেশন"
           className="relative grid size-10 shrink-0 place-items-center rounded-full border border-border bg-card text-foreground"
         >
           <Bell className="size-4" />
@@ -131,7 +126,7 @@ function MobileSearchBar() {
       >
         <Search className="size-4 text-muted-foreground" />
         <span className="font-bn flex-1 truncate text-sm text-muted-foreground">আম, লিচু, গোলাপ খুঁজুন...</span>
-        <span className="rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold uppercase text-primary">New</span>
+        <span className="font-bn rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-bold text-primary">নতুন</span>
       </Link>
     </div>
   );
@@ -161,18 +156,18 @@ function MobileHero() {
             transition={{ duration: 1.2, ease: "easeOut" }}
             className="absolute inset-0"
           >
-            <img src={slide.image} alt={slide.titleEn} className="h-full w-full object-cover" loading="eager" />
+            <img src={slide.image} alt={slide.title} className="h-full w-full object-cover" loading="eager" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/30 to-black/20" />
           </motion.div>
         </AnimatePresence>
 
         <div className="absolute inset-x-0 top-4 flex items-center justify-between px-5">
-          <span className="rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white backdrop-blur">
+          <span className="font-bn rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold tracking-wider text-white backdrop-blur">
             {site.nameBn.slice(0, 18)}
           </span>
-          <span className="flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold text-white backdrop-blur">
+          <span className="font-bn flex items-center gap-1 rounded-full bg-white/15 px-3 py-1 text-[10px] font-semibold text-white backdrop-blur">
             <Star className="size-3 fill-gold text-gold" />
-            4.9 · 12k+
+            ৪.৯ · ১২হাজার+
           </span>
         </div>
 
@@ -181,7 +176,7 @@ function MobileHero() {
             key={`eb-${i}`}
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            className="font-bn text-xs font-medium uppercase tracking-wider text-gold"
+            className="font-bn text-xs font-medium tracking-wider text-gold"
           >
             {slide.eyebrow}
           </motion.p>
@@ -194,13 +189,12 @@ function MobileHero() {
           >
             {slide.title}
           </motion.h1>
-          <p className="mt-1 text-xs opacity-80">{slide.titleEn}</p>
 
           <Link
             to={slide.to}
-            className="mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-foreground shadow-elegant"
+            className="font-bn mt-4 inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold text-foreground shadow-elegant"
           >
-            <span className="font-bn">{slide.cta}</span>
+            <span>{slide.cta}</span>
             <ArrowRight className="size-4" />
           </Link>
         </div>
@@ -212,7 +206,7 @@ function MobileHero() {
               key={idx}
               type="button"
               onClick={() => setI(idx)}
-              aria-label={`Slide ${idx + 1}`}
+              aria-label={`স্লাইড ${idx + 1}`}
               className={cn(
                 "h-1.5 rounded-full transition-all",
                 idx === i ? "w-6 bg-white" : "w-1.5 bg-white/40",
@@ -249,7 +243,7 @@ function MobileTrustGrid() {
               </span>
               <div className="min-w-0">
                 <p className="font-bn truncate text-xs font-bold text-foreground">{t.label}</p>
-                <p className="truncate text-[10px] text-muted-foreground">{t.sub}</p>
+                <p className="font-bn truncate text-[10px] text-muted-foreground">{t.sub}</p>
               </div>
             </motion.div>
           );
@@ -263,7 +257,7 @@ function MobileTrustGrid() {
 function MobileCategoryStrip() {
   return (
     <section className="mt-7">
-      <SectionHeader title="বিভাগ অনুযায়ী" titleEn="Shop by category" to="/categories" />
+      <SectionHeader title="বিভাগ অনুযায়ী" to="/categories" />
       <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-4 pb-2">
         {categories.slice(0, 10).map((c, idx) => (
           <Link
