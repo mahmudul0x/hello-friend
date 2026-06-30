@@ -1,7 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  ArrowRight, BadgeCheck, Headphones, Package, Truck, Wallet,
+  ArrowRight, BadgeCheck, Camera, Headphones, Package, Truck,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { SmartImage } from "@/components/common/SmartImage";
@@ -11,16 +11,15 @@ import { useCart } from "@/context/CartContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { onImgError, unsplash, unsplashSrcSet } from "@/lib/img";
+import heroNursery from "@/assets/mobile-hero-nursery.jpg";
+import heroFlowers from "@/assets/mobile-hero-flowers.jpg";
+import heroMango from "@/assets/mobile-hero-mango.jpg";
 
-const HERO_SLIDES = [
-  "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=85&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1200&q=85&auto=format&fit=crop",
-  "https://images.unsplash.com/photo-1591735026282-bb24fd6c0451?w=1200&q=85&auto=format&fit=crop",
-];
+const HERO_SLIDES = [heroNursery, heroMango, heroFlowers];
 
 const TRUST = [
   { Icon: Truck, t: "সারা বাংলাদেশে ডেলিভারি", s: "দ্রুত ও নিরাপদ ডেলিভারি" },
-  { Icon: Wallet, t: "ক্যাশ অন ডেলিভারি", s: "পণ্য বুঝে পেমেন্ট করুন" },
+  { Icon: Camera, t: "ক্যাশ অন ডেলিভারি", s: "পণ্য বুঝে নেবেন!" },
   { Icon: BadgeCheck, t: "উন্নত মানের গাছ", s: "সুস্থ ও পরিচর্যা করা গাছ" },
   { Icon: Headphones, t: "২৪/৭ কাস্টমার সাপোর্ট", s: "আমরা আছি আপনার পাশে" },
 ];
