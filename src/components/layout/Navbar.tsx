@@ -75,7 +75,7 @@ export function Navbar() {
         )}
       >
         {/* Mobile header: hamburger | centered logo | actions */}
-        <div className="grid grid-cols-[auto_1fr_auto] items-center gap-2 px-3 py-2.5 lg:hidden">
+        <div className="grid grid-cols-[80px_1fr_80px] items-center gap-2 px-3 py-2.5 lg:hidden">
           <button
             type="button"
             onClick={() => setOpen((v) => !v)}
