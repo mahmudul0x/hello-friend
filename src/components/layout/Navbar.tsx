@@ -104,9 +104,6 @@ export function Navbar() {
             >
               <Search className="size-5" />
             </button>
-            <Link to="/login" aria-label="একাউন্ট" className="grid size-10 place-items-center rounded-xl text-foreground">
-              <User className="size-5" />
-            </Link>
             <Link to="/cart" aria-label="কার্ট" className="relative grid size-10 place-items-center rounded-xl text-foreground">
               <ShoppingBag className="size-5" />
               {cart.totalQty > 0 && (
