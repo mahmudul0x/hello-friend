@@ -42,23 +42,6 @@ export function MobileHome() {
   );
 }
 
-/* ── Top promo strip ───────────────────────────── */
-function MobilePromoBar() {
-  return (
-    <div className="bg-[#0E3A18] text-white">
-      <div className="flex items-center justify-center gap-2 px-3 py-1.5">
-        <span className="font-bn inline-flex items-center gap-1.5 rounded-full border border-gold/60 bg-[#0E3A18] px-3 py-1 text-[11px] font-medium text-white shadow-[inset_0_0_0_1px_rgba(200,164,21,0.25)]">
-          <Truck className="size-3 text-gold" />
-          সারা বাংলাদেশে হোম ডেলিভারি
-        </span>
-        <span className="font-bn inline-flex items-center gap-1.5 rounded-full border border-gold/60 bg-[#0E3A18] px-3 py-1 text-[11px] font-medium text-white shadow-[inset_0_0_0_1px_rgba(200,164,21,0.25)]">
-          <Wallet className="size-3 text-gold" />
-          ক্যাশ অন ডেলিভারির সুবিধা
-        </span>
-      </div>
-    </div>
-  );
-}
 
 /* ── Hero ──────────────────────────────────────── */
 function MobileHero() {
