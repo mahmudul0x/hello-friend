@@ -151,12 +151,12 @@ export function Navbar() {
               type="button"
               onClick={() => setSearchOpen(true)}
               aria-label="খুঁজুন"
-              className="hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent sm:grid"
+              className="grid size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent"
             >
               <Search className="size-4" />
             </button>
             <ThemeToggle className="hidden sm:grid" />
-            <Link to="/account/wishlist" aria-label="ইচ্ছার তালিকা" className="relative grid size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent">
+            <Link to="/account/wishlist" aria-label="ইচ্ছার তালিকা" className="relative hidden size-10 place-items-center rounded-full border border-border bg-card text-foreground transition hover:bg-accent sm:grid">
               <Heart className="size-4" />
               {wish.slugs.length > 0 && (
                 <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-destructive text-[10px] font-bold text-destructive-foreground">
@@ -164,7 +164,7 @@ export function Navbar() {
                 </span>
               )}
             </Link>
-            <Link to="/cart" aria-label="কার্ট" className="relative grid size-10 place-items-center rounded-full gradient-primary text-primary-foreground shadow-soft transition hover:shadow-elegant">
+            <Link to="/cart" aria-label="কার্ট" className="relative hidden size-10 place-items-center rounded-full gradient-primary text-primary-foreground shadow-soft transition hover:shadow-elegant sm:grid">
               <ShoppingBag className="size-4" />
               {cart.totalQty > 0 && (
                 <span className="absolute -right-1 -top-1 grid size-5 place-items-center rounded-full bg-gold text-[10px] font-bold text-gold-foreground">
@@ -185,6 +185,7 @@ export function Navbar() {
               {open ? <X className="size-4" /> : <Menu className="size-4" />}
             </button>
           </div>
+
         </div>
 
         {/* Mobile menu */}
