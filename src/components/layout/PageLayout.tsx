@@ -9,11 +9,11 @@ import { MobileBottomNav } from "./MobileBottomNav";
 
 export function PageLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex min-h-screen flex-col pb-24 lg:pb-0">
       <FloatingLeaves />
       <RouteLoader />
       <Navbar />
-      <main className="flex-1 pb-24 lg:pb-0">
+      <main className="flex-1">
         <PageTransition>{children}</PageTransition>
       </main>
       <Footer />
