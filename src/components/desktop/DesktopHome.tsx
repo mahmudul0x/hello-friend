@@ -101,12 +101,36 @@ function Hero() {
           onBlur={() => setPaused(false)}
           className="relative h-[560px] overflow-hidden rounded-[40px] border border-white/60 bg-gradient-to-br from-white/60 via-white/30 to-[#E2F2DA]/60 shadow-elegant backdrop-blur-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E7D32] focus-visible:ring-offset-2 lg:h-[680px] xl:h-[740px]"
         >
-          {/* Soft background wash */}
-          <div aria-hidden="true" className="absolute inset-0 bg-gradient-to-br from-[#EAF8E7] via-[#F5FBEF] to-[#DDEFD3]" />
+          {/* Full bleed background image (all viewports) */}
+          <AnimatePresence mode="sync">
+            <motion.div
+              key={`bg-${i}`}
+              initial={{ opacity: 0, scale: 1.06 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1.2, ease: "easeOut" }}
+              className="absolute inset-0"
+              aria-hidden="true"
+            >
+              <img
+                src={s.image}
+                alt=""
+                width={2000}
+                height={1400}
+                fetchPriority={i === 0 ? "high" : "auto"}
+                loading={i === 0 ? "eager" : "lazy"}
+                decoding="async"
+                sizes="100vw"
+                className="h-full w-full object-cover animate-ken-burns"
+              />
+              {/* Readability overlays */}
+              <div className="absolute inset-0 bg-gradient-to-r from-black/65 via-black/35 to-black/10" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0F3D17]/55 via-transparent to-transparent" />
+            </motion.div>
+          </AnimatePresence>
 
-          <div className="relative z-10 grid h-full grid-cols-1 items-center lg:grid-cols-2">
-            {/* LEFT: Copy */}
-            <div className="px-8 py-10 md:px-12 lg:pl-16 xl:pl-24">
+          <div className="relative z-10 flex h-full items-center">
+            <div className="w-full px-8 py-10 md:px-12 lg:max-w-2xl lg:pl-16 xl:pl-24">
               <AnimatePresence mode="wait">
                 <motion.div
                   key={i}
@@ -119,25 +143,25 @@ function Hero() {
                   aria-roledescription="slide"
                   aria-label={`Slide ${i + 1} of ${SLIDES.length}`}
                 >
-                  <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#1B5E20] shadow-soft ring-1 ring-[#2E7D32]/15 backdrop-blur">
+                  <div className="inline-flex items-center gap-2 rounded-full bg-white/90 px-4 py-1.5 text-xs font-semibold uppercase tracking-[0.18em] text-[#1B5E20] shadow-soft ring-1 ring-white/40 backdrop-blur">
                     <Sparkles className="size-3.5 text-gold" aria-hidden="true" /> {s.eyebrowBn}
                   </div>
-                  <h1 className="font-bn mt-6 text-5xl font-extrabold leading-[1.05] text-[#0F3D17] sm:text-6xl xl:text-7xl">
+                  <h1 className="font-bn mt-6 text-5xl font-extrabold leading-[1.05] text-white drop-shadow-lg sm:text-6xl xl:text-7xl">
                     {s.titleBn}
                   </h1>
-                  <p className="font-bn mt-4 text-2xl font-semibold text-[#2E7D32] xl:text-3xl">{s.subBn}</p>
-                  <p className="font-bn mt-5 max-w-md text-base text-foreground/80 xl:text-lg">{s.metaBn}</p>
+                  <p className="font-bn mt-4 text-2xl font-semibold text-gold drop-shadow xl:text-3xl">{s.subBn}</p>
+                  <p className="font-bn mt-5 max-w-md text-base text-white/90 drop-shadow xl:text-lg">{s.metaBn}</p>
                   <div className="mt-9 flex flex-wrap gap-3">
                     <Link
                       to="/shop"
-                      className="group inline-flex items-center gap-2 rounded-full bg-[#2E7D32] px-8 py-4 text-sm font-bn font-semibold text-white shadow-elegant transition hover:-translate-y-0.5 hover:bg-[#1B5E20] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E7D32] focus-visible:ring-offset-2"
+                      className="group inline-flex items-center gap-2 rounded-full bg-[#2E7D32] px-8 py-4 text-sm font-bn font-semibold text-white shadow-elegant transition hover:-translate-y-0.5 hover:bg-[#1B5E20] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                     >
                       এখনই অর্ডার করুন
                       <ArrowRight className="size-4 transition group-hover:translate-x-1" aria-hidden="true" />
                     </Link>
                     <Link
                       to="/shop"
-                      className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/30 bg-white/85 px-7 py-4 text-sm font-bn font-semibold text-[#1B5E20] backdrop-blur transition hover:bg-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E7D32] focus-visible:ring-offset-2"
+                      className="inline-flex items-center gap-2 rounded-full border border-white/50 bg-white/15 px-7 py-4 text-sm font-bn font-semibold text-white backdrop-blur transition hover:bg-white/25 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2"
                     >
                       সব গাছ দেখুন
                     </Link>
@@ -145,55 +169,8 @@ function Hero() {
                 </motion.div>
               </AnimatePresence>
             </div>
-
-            {/* RIGHT: Image showcase */}
-            <div className="relative hidden h-full items-center justify-center p-8 lg:flex xl:p-12">
-              <AnimatePresence mode="sync">
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, scale: 1.05 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.98 }}
-                  transition={{ duration: 1.1, ease: "easeOut" }}
-                  className="absolute inset-6 overflow-hidden rounded-[32px] shadow-elegant ring-1 ring-white/60 xl:inset-10"
-                  aria-hidden="true"
-                >
-                  <img
-                    src={s.image}
-                    alt=""
-                    width={2000}
-                    height={1400}
-                    fetchPriority={i === 0 ? "high" : "auto"}
-                    loading={i === 0 ? "eager" : "lazy"}
-                    decoding="async"
-                    sizes="(min-width:1024px) 50vw, 100vw"
-                    className="h-full w-full object-cover animate-ken-burns"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-tr from-[#0d2b14]/30 via-transparent to-transparent" />
-                  <div className="absolute inset-x-5 bottom-5 flex items-center justify-between rounded-2xl bg-white/85 px-4 py-3 text-xs font-semibold text-[#1B5E20] shadow-soft backdrop-blur">
-                    <span className="font-bn flex items-center gap-1.5"><Star className="size-3.5 fill-gold text-gold" /> প্রিমিয়াম মান</span>
-                    <span className="font-bn">৩০ দিনের লিভিং গ্যারান্টি</span>
-                  </div>
-                </motion.div>
-              </AnimatePresence>
-            </div>
           </div>
 
-          {/* Mobile fallback bg image inside box */}
-          <div className="absolute inset-0 lg:hidden" aria-hidden="true">
-            <AnimatePresence mode="sync">
-              <motion.img
-                key={`m-${i}`}
-                src={s.image}
-                alt=""
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.35 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1 }}
-                className="absolute inset-0 h-full w-full object-cover mix-blend-multiply"
-              />
-            </AnimatePresence>
-          </div>
 
           <button
             type="button"
