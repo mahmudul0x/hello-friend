@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ArrowDownRight, ArrowUpRight, DollarSign, Leaf, ShoppingBag, Users } from "lucide-react";
-import { formatBDT } from "@/lib/format";
+import { formatBDT, toBnDigits } from "@/lib/format";
 import { products } from "@/data/products";
 
 export const Route = createFileRoute("/admin/")({
@@ -9,10 +9,10 @@ export const Route = createFileRoute("/admin/")({
 
 function Dashboard() {
   const stats = [
-    { Icon: DollarSign, l: "Revenue (30d)", v: formatBDT(284500), change: "+18.4%", up: true },
-    { Icon: ShoppingBag, l: "Orders (30d)", v: "342", change: "+12.1%", up: true },
-    { Icon: Leaf, l: "Products live", v: String(products.length), change: "+3", up: true },
-    { Icon: Users, l: "Customers", v: "1,284", change: "-1.2%", up: false },
+    { Icon: DollarSign, l: "আয় (৩০ দিন)", v: formatBDT(284500), change: "+১৮.৪%", up: true },
+    { Icon: ShoppingBag, l: "অর্ডার (৩০ দিন)", v: "৩৪২", change: "+১২.১%", up: true },
+    { Icon: Leaf, l: "চলমান পণ্য", v: toBnDigits(products.length), change: "+৩", up: true },
+    { Icon: Users, l: "গ্রাহক", v: "১,২৮৪", change: "-১.২%", up: false },
   ];
   return (
     <div className="space-y-6">
@@ -21,28 +21,28 @@ function Dashboard() {
           <div key={l} className="rounded-3xl border border-border bg-card p-5 shadow-soft">
             <div className="flex items-center justify-between">
               <Icon className="size-5 text-primary" />
-              <span className={`inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[11px] font-semibold ${up ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
+              <span className={`font-bn inline-flex items-center gap-0.5 rounded-full px-2 py-0.5 text-[11px] font-semibold ${up ? "bg-primary/10 text-primary" : "bg-destructive/10 text-destructive"}`}>
                 {up ? <ArrowUpRight className="size-3" /> : <ArrowDownRight className="size-3" />} {change}
               </span>
             </div>
-            <div className="mt-4 font-display text-2xl font-bold">{v}</div>
-            <div className="text-xs text-muted-foreground">{l}</div>
+            <div className="font-bn mt-4 font-display text-2xl font-bold">{v}</div>
+            <div className="font-bn text-xs text-muted-foreground">{l}</div>
           </div>
         ))}
       </div>
 
       <div className="rounded-3xl border border-border bg-card p-6 shadow-soft">
-        <h3 className="font-display text-lg font-semibold">Top performers (30 days)</h3>
+        <h3 className="font-bn font-display text-lg font-semibold">শীর্ষ পারফর্মার (৩০ দিন)</h3>
         <div className="mt-4 divide-y">
           {products.slice(0, 5).map((p, i) => (
             <div key={p.slug} className="flex items-center gap-4 py-3">
-              <span className="grid size-7 place-items-center rounded-full bg-muted text-xs font-semibold">{i + 1}</span>
+              <span className="font-bn grid size-7 place-items-center rounded-full bg-muted text-xs font-semibold">{toBnDigits(i + 1)}</span>
               <img src={p.image} alt="" className="size-10 shrink-0 rounded-xl object-cover" />
               <div className="flex-1 min-w-0">
-                <div className="truncate font-medium">{p.name}</div>
-                <div className="text-xs text-muted-foreground">{p.reviews} reviews</div>
+                <div className="font-bn truncate font-medium">{p.name}</div>
+                <div className="font-bn text-xs text-muted-foreground">{toBnDigits(p.reviews)}টি রিভিউ</div>
               </div>
-              <div className="font-semibold text-primary">{formatBDT(p.price)}</div>
+              <div className="font-bn font-semibold text-primary">{formatBDT(p.price)}</div>
             </div>
           ))}
         </div>
