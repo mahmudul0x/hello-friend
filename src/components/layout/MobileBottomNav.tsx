@@ -1,5 +1,5 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Heart, Home, LayoutGrid, ShoppingBag, User } from "lucide-react";
+import { Apple, Flower2, Home, Phone, Tag } from "lucide-react";
 import { motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
@@ -8,11 +8,12 @@ import { toBnDigits } from "@/lib/format";
 
 const items = [
   { to: "/", label: "হোম", icon: Home, match: (p: string) => p === "/" },
-  { to: "/categories", label: "বিভাগ", icon: LayoutGrid, match: (p: string) => p.startsWith("/categories") },
-  { to: "/cart", label: "কার্ট", icon: ShoppingBag, match: (p: string) => p.startsWith("/cart"), badge: "cart" as const },
-  { to: "/account/wishlist", label: "পছন্দ", icon: Heart, match: (p: string) => p.startsWith("/account/wishlist"), badge: "wish" as const },
-  { to: "/account", label: "একাউন্ট", icon: User, match: (p: string) => p === "/account" || p.startsWith("/login") },
+  { to: "/categories/mango", label: "ফল গাছ", icon: Apple, match: (p: string) => p.startsWith("/categories/mango") || p.startsWith("/categories/citrus") || p.startsWith("/categories/litchi") || p.startsWith("/categories/guava") || p.startsWith("/categories/tropical") },
+  { to: "/categories/flowering", label: "ফুল গাছ", icon: Flower2, match: (p: string) => p.startsWith("/categories/flowering") },
+  { to: "/shop", label: "অফার", icon: Tag, match: (p: string) => p.startsWith("/shop") },
+  { to: "/contact", label: "যোগাযোগ", icon: Phone, match: (p: string) => p.startsWith("/contact") },
 ];
+
 
 export function MobileBottomNav() {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
@@ -30,10 +31,10 @@ export function MobileBottomNav() {
           {items.map((it) => {
             const active = it.match(pathname);
             const Icon = it.icon;
-            const count =
-              it.badge === "cart" ? cart.totalQty :
-              it.badge === "wish" ? wish.slugs.length : 0;
+            const count = 0;
+            void cart; void wish;
             return (
+
               <li key={it.to} className="relative">
                 <Link
                   to={it.to}
