@@ -60,17 +60,18 @@ export function Navbar() {
           scrolled ? "glass-strong shadow-soft" : "bg-background/0",
         )}
       >
-        <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-3 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:px-8">
           {/* Logo */}
           <Link to="/" className="flex min-w-0 items-center gap-2.5">
             <span className="grid size-10 shrink-0 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-soft">
               <Leaf className="size-5" />
             </span>
-            <span className="hidden flex-col leading-tight sm:flex">
-              <span className="font-display text-base font-bold text-foreground">All Tree BD</span>
-              <span className="font-bn -mt-0.5 text-[11px] text-muted-foreground">গাছের চারা বিক্রয়</span>
+            <span className="flex min-w-0 flex-col leading-tight">
+              <span className="font-display truncate text-base font-bold text-foreground">All Tree BD</span>
+              <span className="font-bn -mt-0.5 truncate text-[11px] text-muted-foreground">গাছের চারা বিক্রয়</span>
             </span>
           </Link>
+
 
           {/* Desktop nav */}
           <nav className="hidden items-center justify-center gap-1 lg:flex" aria-label="মূল নেভিগেশন">
