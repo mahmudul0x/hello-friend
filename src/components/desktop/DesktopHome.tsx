@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/common/ProductCard";
 import { bestsellers, getProductsByCategory, newArrivals } from "@/data/products";
 import { testimonials, posts, site } from "@/data/site";
 import { cn } from "@/lib/utils";
+import { onImgError, unsplash, unsplashSrcSet, lqip } from "@/lib/img";
 
 
 /* ───────────── HERO SLIDER ───────────── */
@@ -113,14 +114,17 @@ function Hero() {
               aria-hidden="true"
             >
               <img
-                src={s.image}
+                src={unsplash(s.image, 1600, 75)}
+                srcSet={unsplashSrcSet(s.image, [640, 1024, 1280, 1600])}
                 alt=""
-                width={2000}
-                height={1400}
+                width={1600}
+                height={1100}
                 fetchPriority={i === 0 ? "high" : "auto"}
                 loading={i === 0 ? "eager" : "lazy"}
                 decoding="async"
                 sizes="100vw"
+                onError={onImgError}
+                style={{ backgroundImage: `url(${lqip(s.image)})`, backgroundSize: "cover", backgroundPosition: "center" }}
                 className="h-full w-full object-cover animate-ken-burns"
               />
               {/* Readability overlays */}
@@ -309,7 +313,7 @@ function CatBanner({ to, bg, title, titleColor, sub, img, cta, ctaColor }: {
         </div>
       </div>
       <div className="absolute inset-y-0 right-0 w-[55%]">
-        <img src={img} alt="" width={1400} height={900} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
+        <img src={unsplash(img, 1024, 75)} srcSet={unsplashSrcSet(img, [480, 800, 1024, 1280])} alt="" width={1024} height={720} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" onError={onImgError} />
         <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent" />
       </div>
     </motion.div>
@@ -383,14 +387,16 @@ function CodBanner() {
             </div>
             <div className="relative h-[260px]">
               <img
-                src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=1200&q=85&auto=format&fit=crop"
+                src={unsplash("https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da", 1024, 75)}
+                srcSet={unsplashSrcSet("https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da", [480, 800, 1024])}
                 alt="ক্যাশ অন ডেলিভারি কুরিয়ার"
-                width={1200}
-                height={800}
+                width={1024}
+                height={680}
                 sizes="(min-width: 768px) 40vw, 100vw"
                 className="absolute inset-0 h-full w-full rounded-2xl object-cover shadow-elegant"
                 loading="lazy"
                 decoding="async"
+                onError={onImgError}
               />
             </div>
           </div>
