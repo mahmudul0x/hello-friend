@@ -279,7 +279,7 @@ function CatBanner({ to, bg, title, titleColor, sub, img, cta, ctaColor }: {
         </div>
       </div>
       <div className="absolute inset-y-0 right-0 w-[55%]">
-        <img src={img} alt="" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+        <img src={img} alt="" width={1400} height={900} sizes="(min-width: 1024px) 50vw, 100vw" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" decoding="async" />
         <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent" />
       </div>
     </motion.div>
