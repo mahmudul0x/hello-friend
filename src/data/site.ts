@@ -1,14 +1,20 @@
 export const site = {
   name: "All Tree BD Shop",
   nameBn: "অনলাইনে গাছের চারা বিক্রয়",
-  tagline: "Bangladesh's premium online nursery",
-  taglineBn: "বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি",
-  phone: "+880 1700-000000",
-  whatsapp: "+880 1700-000000",
-  email: "hello@alltreebd.shop",
-  address: "Savar Nursery Hub, Dhaka, Bangladesh",
+  tagline: "Your trusted partner for hobby & rooftop gardens in Bangladesh",
+  taglineBn: "আপনার শখের ছাদ বাগানের বিশ্বস্ত সঙ্গী",
+  descriptionBn:
+    "🌿 আপনার শখের ছাদ বাগানের বিশ্বস্ত সঙ্গী।\n✅ জিও ব্যাগ সেটআপ করা রেডি মাতৃ গাছ।\n🍎 উন্নত জাতের ফলের চারা।\n🚚 সারা বাংলাদেশে কুরিয়ারে ডেলিভারি।",
+  description:
+    "Your trusted partner for hobby & rooftop gardens. Ready geo-bag setup mother plants, premium grafted fruit saplings, and nationwide courier delivery across Bangladesh.",
+  phone: "01839-208687",
+  phoneAlt: "01838-208687",
+  whatsapp: "01839-208687",
+  email: "ibrahimhossain362840@gmail.com",
+  address: "Puran Bogra, Rajshahi, Bangladesh",
+  addressBn: "পুরান বগুড়া, রাজশাহী, বাংলাদেশ",
   socials: {
-    facebook: "https://facebook.com",
+    facebook: "https://facebook.com/Alltreebd1Shop",
     instagram: "https://instagram.com",
     youtube: "https://youtube.com",
   },
@@ -16,6 +22,23 @@ export const site = {
   shipping: {
     freeAbove: 1500,
     flatFee: 120,
+  },
+  trustBadges: [
+    { label: "Cash on Delivery", labelBn: "ক্যাশ অন ডেলিভারি", icon: "wallet" },
+    { label: "Healthy Plants", labelBn: "স্বাস্থ্যকর গাছ", icon: "leaf" },
+    { label: "Premium Quality", labelBn: "প্রিমিয়াম মান", icon: "award" },
+    { label: "Nationwide Delivery", labelBn: "সারা দেশে ডেলিভারি", icon: "truck" },
+    { label: "Expert Support", labelBn: "এক্সপার্ট সাপোর্ট", icon: "headphones" },
+  ],
+  ctas: {
+    primary: "অর্ডার করুন এখনই",
+    primaryEn: "Order Now",
+    secondary: "চারা দেখুন",
+    secondaryEn: "Explore Plants",
+    call: "এখনই কল করুন",
+    callEn: "Call Now",
+    whatsapp: "হোয়াটসঅ্যাপে অর্ডার",
+    whatsappEn: "Order on WhatsApp",
   },
 };
 
@@ -30,35 +53,35 @@ export type Testimonial = {
 
 export const testimonials: Testimonial[] = [
   {
-    name: "Rashed Khan",
-    role: "Rooftop Gardener",
-    city: "Dhaka",
+    name: "Rashedul Islam",
+    role: "Rooftop Gardener · ছাদ বাগানি",
+    city: "Bogra",
     rating: 5,
-    text: "The Amrapali mango sapling fruited in 18 months on my rooftop. Packaging was museum-grade — every leaf intact.",
+    text: "জিও ব্যাগ সেটআপ করা মাতৃ আম গাছটি অসাধারণ অবস্থায় পেয়েছি। ১৪ মাসের মধ্যেই ফল ধরেছে। প্যাকেজিং একদম পারফেক্ট।",
     avatar: "https://i.pravatar.cc/120?img=12",
   },
   {
     name: "Sumaiya Akter",
-    role: "Plant Collector",
-    city: "Chattogram",
+    role: "Plant Collector · গাছপ্রেমী",
+    city: "Rajshahi",
     rating: 5,
-    text: "Finally a Bangladeshi nursery that respects rare varieties. My Bedana litchi arrived stronger than I imagined.",
+    text: "Finally a Bangladeshi nursery I can trust. Bedana লিচু চারা সম্পূর্ণ সুস্থ অবস্থায় কুরিয়ারে পৌঁছেছে — বিক্রেতা ভাইয়ের সাপোর্টও দারুণ।",
     avatar: "https://i.pravatar.cc/120?img=45",
   },
   {
     name: "Tanvir Hossain",
-    role: "Farm Owner",
+    role: "Farm Owner · খামার মালিক",
     city: "Rangpur",
     rating: 5,
-    text: "Ordered 40 grafted guava saplings for my farm. Zero loss. Customer support replied in Bangla within minutes.",
+    text: "৪০টি গ্রাফটিং পেয়ারা চারা অর্ডার করেছিলাম খামারের জন্য — একটিও নষ্ট হয়নি। ক্যাশ অন ডেলিভারিতে নিশ্চিন্তে অর্ডার করতে পারি।",
     avatar: "https://i.pravatar.cc/120?img=33",
   },
   {
     name: "Nusrat Jahan",
-    role: "Home Decorator",
+    role: "Home Gardener · ছাদ মালী",
     city: "Sylhet",
     rating: 5,
-    text: "Monstera looks like the catalog photo. The ceramic pot upgrade was worth every taka.",
+    text: "মাল্টা ও সিডলেস লেবুর চারা ছবির মতোই এসেছে। উন্নত জাতের ফলের চারার জন্য এর চেয়ে ভালো জায়গা নেই।",
     avatar: "https://i.pravatar.cc/120?img=47",
   },
 ];

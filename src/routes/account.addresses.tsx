@@ -6,8 +6,8 @@ export const Route = createFileRoute("/account/addresses")({
 });
 
 const sample = [
-  { label: "Home", line: "House 12, Road 4, Dhanmondi, Dhaka", phone: "+880 1700-000000", default: true },
-  { label: "Office", line: "Plot 7, Gulshan-2, Dhaka", phone: "+880 1700-000000" },
+  { label: "Home", line: "Puran Bogra, Rajshahi", phone: "01839-208687", default: true },
+  { label: "Office", line: "Shaheb Bazar, Rajshahi", phone: "01838-208687" },
 ];
 
 function Addresses() {
