@@ -71,7 +71,7 @@ function Returns() {
             <Phone className="size-6 text-primary" />
             <div>
               <div className="font-semibold">Need help?</div>
-              <div className="text-sm text-muted-foreground">+880 1700-000000 · hello@alltreebd.shop</div>
+              <div className="text-sm text-muted-foreground">01839-208687 · ibrahimhossain362840@gmail.com</div>
             </div>
           </div>
           <a href="/contact" className="rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground">Contact support</a>

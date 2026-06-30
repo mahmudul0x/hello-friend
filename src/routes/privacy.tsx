@@ -16,7 +16,7 @@ const SECTIONS = [
   { t: "How we use your data", d: "Your information is used solely to fulfill orders, provide customer support and (with your consent) send occasional offers. We never sell or rent your data." },
   { t: "Cookies & analytics", d: "We use essential cookies for cart and checkout, plus privacy-friendly analytics to understand site usage. You can disable non-essential cookies from your browser." },
   { t: "Data sharing", d: "We share minimum required data with delivery partners (courier services), and SMS/email gateways. All partners are bound by confidentiality." },
-  { t: "Your rights", d: "You can request a copy, correction or deletion of your data at any time by emailing hello@alltreebd.shop." },
+  { t: "Your rights", d: "You can request a copy, correction or deletion of your data at any time by emailing ibrahimhossain362840@gmail.com." },
   { t: "Children's privacy", d: "Our services are not directed to children under 13. We do not knowingly collect data from minors." },
   { t: "Updates to this policy", d: "We may revise this policy occasionally. The 'last updated' date at the top reflects the latest change." },
 ];
