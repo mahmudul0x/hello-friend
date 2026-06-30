@@ -10,6 +10,8 @@ import { SmartImage } from "@/components/common/SmartImage";
 import { ProductCard } from "@/components/common/ProductCard";
 import { bestsellers, getProductsByCategory, newArrivals } from "@/data/products";
 import { testimonials, posts, site } from "@/data/site";
+import { cn } from "@/lib/utils";
+import { onImgError, unsplash, unsplashSrcSet } from "@/lib/img";
 import hero1 from "@/assets/hero-plants-1.jpg";
 import hero2 from "@/assets/hero-plants-2.jpg";
 import hero3 from "@/assets/hero-plants-3.jpg";
