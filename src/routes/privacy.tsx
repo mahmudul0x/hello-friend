@@ -5,33 +5,33 @@ import { Container } from "@/components/common/Container";
 
 export const Route = createFileRoute("/privacy")({
   head: () => ({
-    meta: [{ title: "Privacy Policy — All Tree BD Shop" }, { name: "description", content: "How we collect, use, and protect your data." }],
+    meta: [{ title: "গোপনীয়তা নীতি — অল ট্রি বিডি শপ" }, { name: "description", content: "আমরা কীভাবে আপনার তথ্য সংগ্রহ, ব্যবহার ও সুরক্ষা করি।" }],
     links: [{ rel: "canonical", href: "/privacy" }],
   }),
   component: Privacy,
 });
 
 const SECTIONS = [
-  { t: "Information we collect", d: "We collect your name, phone, email, shipping address and order details to process and deliver your orders. We do not store payment card details on our servers." },
-  { t: "How we use your data", d: "Your information is used solely to fulfill orders, provide customer support and (with your consent) send occasional offers. We never sell or rent your data." },
-  { t: "Cookies & analytics", d: "We use essential cookies for cart and checkout, plus privacy-friendly analytics to understand site usage. You can disable non-essential cookies from your browser." },
-  { t: "Data sharing", d: "We share minimum required data with delivery partners (courier services), and SMS/email gateways. All partners are bound by confidentiality." },
-  { t: "Your rights", d: "You can request a copy, correction or deletion of your data at any time by emailing ibrahimhossain362840@gmail.com." },
-  { t: "Children's privacy", d: "Our services are not directed to children under 13. We do not knowingly collect data from minors." },
-  { t: "Updates to this policy", d: "We may revise this policy occasionally. The 'last updated' date at the top reflects the latest change." },
+  { t: "যে তথ্য সংগ্রহ করি", d: "অর্ডার প্রসেস ও ডেলিভারির জন্য আমরা আপনার নাম, ফোন, ইমেইল, ঠিকানা ও অর্ডারের বিস্তারিত সংগ্রহ করি। আমরা পেমেন্ট কার্ডের তথ্য সংরক্ষণ করি না।" },
+  { t: "তথ্য ব্যবহারের উপায়", d: "আপনার তথ্য শুধু অর্ডার পূরণ, গ্রাহক সাপোর্ট ও আপনার অনুমতিতে অফার পাঠানোর জন্য ব্যবহৃত হয়। আমরা তথ্য বিক্রি বা ভাড়া দিই না।" },
+  { t: "কুকিজ ও অ্যানালিটিকস", d: "কার্ট ও চেকআউটের জন্য প্রয়োজনীয় কুকিজ এবং ব্যবহার বুঝতে গোপনীয়তা-বান্ধব অ্যানালিটিকস ব্যবহার করি। ব্রাউজার থেকে অপ্রয়োজনীয় কুকিজ বন্ধ করতে পারেন।" },
+  { t: "তথ্য শেয়ারিং", d: "ডেলিভারি পার্টনার ও SMS/ইমেইল গেটওয়ের সাথে শুধু প্রয়োজনীয় তথ্য শেয়ার করি। সব পার্টনার গোপনীয়তা চুক্তিতে আবদ্ধ।" },
+  { t: "আপনার অধিকার", d: "আপনি যেকোনো সময় তথ্যের কপি, সংশোধন বা মুছে ফেলার অনুরোধ করতে পারেন — ibrahimhossain362840@gmail.com এ ইমেইল করুন।" },
+  { t: "শিশুদের গোপনীয়তা", d: "আমাদের সেবা ১৩ বছরের নিচের শিশুদের জন্য নয়। অপ্রাপ্তবয়স্কদের তথ্য আমরা সচেতনভাবে সংগ্রহ করি না।" },
+  { t: "নীতি আপডেট", d: "এই নীতি মাঝে মাঝে পরিবর্তিত হতে পারে। সর্বশেষ পরিবর্তনের তারিখ উপরে দেওয়া আছে।" },
 ];
 
 function Privacy() {
   return (
     <PageLayout>
-      <PageHeader crumbs={[{ label: "Home", to: "/" }, { label: "Privacy Policy" }]} title="Privacy Policy" subtitle="Last updated: June 1, 2026" />
+      <PageHeader crumbs={[{ label: "হোম", to: "/" }, { label: "গোপনীয়তা নীতি" }]} title="গোপনীয়তা নীতি" subtitle="সর্বশেষ আপডেট: ১ জুন, ২০২৬" />
       <Container className="py-14">
         <article className="mx-auto max-w-3xl space-y-10">
-          <p className="text-lg text-muted-foreground">Your privacy is fundamental to our relationship. This policy explains what we collect, why, and the controls you have.</p>
+          <p className="font-bn text-lg text-muted-foreground">আপনার গোপনীয়তা আমাদের কাছে অত্যন্ত গুরুত্বপূর্ণ। এই নীতি ব্যাখ্যা করে আমরা কী সংগ্রহ করি, কেন করি এবং আপনার নিয়ন্ত্রণ কতটুকু।</p>
           {SECTIONS.map((s, i) => (
             <section key={i} className="rounded-3xl border bg-card p-7 shadow-soft">
-              <h2 className="font-display text-2xl font-bold">{i + 1}. {s.t}</h2>
-              <p className="mt-3 leading-relaxed text-muted-foreground">{s.d}</p>
+              <h2 className="font-bn font-display text-2xl font-bold">{i + 1}. {s.t}</h2>
+              <p className="font-bn mt-3 leading-relaxed text-muted-foreground">{s.d}</p>
             </section>
           ))}
         </article>

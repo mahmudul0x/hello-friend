@@ -15,9 +15,9 @@ function WishlistPage() {
     return (
       <div className="grid place-items-center rounded-3xl border border-dashed py-20 text-center">
         <Heart className="mb-3 size-10 text-muted-foreground" />
-        <h3 className="font-display text-lg font-semibold">Your wishlist is empty</h3>
-        <p className="mt-1 text-sm text-muted-foreground">Tap the heart on any plant to save it here.</p>
-        <Link to="/shop" className="mt-4 inline-flex rounded-full gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">Explore plants</Link>
+        <h3 className="font-bn font-display text-lg font-semibold">আপনার ইচ্ছার তালিকা খালি</h3>
+        <p className="font-bn mt-1 text-sm text-muted-foreground">যেকোনো গাছের হৃদয় আইকনে চাপ দিয়ে এখানে সংরক্ষণ করুন।</p>
+        <Link to="/shop" className="font-bn mt-4 inline-flex rounded-full gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground">গাছ দেখুন</Link>
       </div>
     );
   }
