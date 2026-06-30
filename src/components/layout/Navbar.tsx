@@ -1,17 +1,20 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { Heart, Leaf, Menu, Search, ShoppingBag, User, X } from "lucide-react";
+import { ChevronDown, Heart, Leaf, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { ThemeToggle } from "./ThemeToggle";
+import { SearchOverlay } from "./SearchOverlay";
 import { cn } from "@/lib/utils";
 import { site } from "@/data/site";
+import { categories } from "@/data/categories";
+import { SmartImage } from "@/components/common/SmartImage";
 
 const nav = [
   { to: "/", label: "Home", labelBn: "হোম" },
   { to: "/shop", label: "Shop", labelBn: "শপ" },
-  { to: "/categories", label: "Categories", labelBn: "বিভাগ" },
+  { to: "/categories", label: "Categories", labelBn: "বিভাগ", mega: true },
   { to: "/blog", label: "Blog", labelBn: "ব্লগ" },
   { to: "/care-guide", label: "Care Guide", labelBn: "গাইড" },
   { to: "/about", label: "About", labelBn: "আমরা" },
