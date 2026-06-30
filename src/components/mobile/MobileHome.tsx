@@ -134,13 +134,19 @@ function MobileTrust() {
   );
 }
 
-/* ── Section title with decorative arrows ──────── */
+/* ── Section title with decorative dashed arrows ── */
 function MobileSectionTitle({ title }: { title: string }) {
   return (
-    <div className="mt-8 flex items-center justify-center gap-3 px-4">
-      <span aria-hidden className="font-display text-lg tracking-tight text-[#1B5E20]">»»</span>
-      <h2 className="font-bn text-lg font-bold tracking-tight text-foreground">{title}</h2>
-      <span aria-hidden className="font-display text-lg tracking-tight text-[#1B5E20]">««</span>
+    <div className="mt-8 flex items-center justify-center gap-2 px-4">
+      <span aria-hidden className="font-bn flex items-center gap-1 text-[13px] font-bold tracking-tight text-[#1B5E20]">
+        <span className="inline-block h-px w-5 bg-[#1B5E20]/60" />
+        »»
+      </span>
+      <h2 className="font-bn text-[15px] font-extrabold tracking-tight text-foreground">{title}</h2>
+      <span aria-hidden className="font-bn flex items-center gap-1 text-[13px] font-bold tracking-tight text-[#1B5E20]">
+        ««
+        <span className="inline-block h-px w-5 bg-[#1B5E20]/60" />
+      </span>
     </div>
   );
 }
@@ -153,92 +159,146 @@ function MobileCategoryCards() {
         title="ফল গাছ"
         sub="দেশি-বিদেশি বিভিন্ন প্রজাতির ফল গাছের চারা"
         to="/categories/mango"
-        bg="bg-[#E5F3D8]"
-        btn="bg-[#1B5E20] text-white"
-        img="https://images.unsplash.com/photo-1553279768-865429fa0078?w=600&q=80&auto=format&fit=crop"
+        bg="bg-[#1F7A3A]"
+        text="text-white"
+        sub2="text-white/85"
+        btn="bg-white text-[#1B5E20]"
+        img={catFruit}
       />
       <CategoryCard
         title="ফুল গাছ"
         sub="বিভিন্ন রঙের ফুলের গাছ আপনার বাগানের জন্য"
         to="/categories/flowering"
-        bg="bg-[#FBE0EA]"
+        bg="bg-[#FCE4EC]"
+        text="text-[#7A1A3C]"
+        sub2="text-[#7A1A3C]/80"
         btn="bg-[#9D174D] text-white"
-        img="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80&auto=format&fit=crop"
+        img={catFlower}
       />
     </section>
   );
 }
 
 function CategoryCard({
-  title, sub, to, bg, btn, img,
-}: { title: string; sub: string; to: string; bg: string; btn: string; img: string }) {
+  title, sub, to, bg, text, sub2, btn, img,
+}: {
+  title: string; sub: string; to: string;
+  bg: string; text: string; sub2: string; btn: string; img: string;
+}) {
   return (
-    <Link to={to} className={cn("relative flex h-52 flex-col justify-between overflow-hidden rounded-3xl p-4 shadow-soft active:scale-[0.98]", bg)}>
-      <div className="relative z-10 max-w-[60%]">
-        <h3 className="font-bn text-lg font-extrabold leading-tight text-foreground">{title}</h3>
-        <p className="font-bn mt-1.5 text-[11px] leading-snug text-foreground/70">{sub}</p>
+    <Link
+      to={to}
+      className={cn(
+        "relative flex h-44 flex-col justify-between overflow-hidden rounded-3xl p-3.5 shadow-soft active:scale-[0.98]",
+        bg,
+      )}
+    >
+      <div className="relative z-10 max-w-[58%]">
+        <h3 className={cn("font-bn text-[17px] font-extrabold leading-tight", text)}>{title}</h3>
+        <p className={cn("font-bn mt-1.5 text-[10.5px] leading-snug", sub2)}>{sub}</p>
       </div>
-      <span className={cn("relative z-10 inline-flex w-fit items-center gap-1.5 rounded-full px-4 py-1.5 text-xs font-bold", btn)}>
-        দেখুন <ArrowRight className="size-3.5" />
+      <span
+        className={cn(
+          "relative z-10 inline-flex w-fit items-center gap-1 rounded-full px-3.5 py-1.5 text-[11px] font-bold shadow-sm",
+          btn,
+        )}
+      >
+        দেখুন <ArrowRight className="size-3" />
       </span>
       <img
-        src={unsplash(img, 400, 80)}
-        srcSet={unsplashSrcSet(img, [240, 360, 480])}
-        sizes="200px"
+        src={img}
         alt={title}
-        className="pointer-events-none absolute -bottom-2 -right-3 h-36 w-36 object-cover [mask-image:radial-gradient(circle_at_70%_60%,#000_60%,transparent_75%)]"
+        className="pointer-events-none absolute -bottom-1 -right-2 h-36 w-28 object-contain"
         loading="lazy"
         decoding="async"
-        onError={onImgError}
       />
     </Link>
   );
 }
 
-/* ── Popular products grid ─────────────────────── */
-function MobilePopular() {
-  const list = POPULAR_SLUGS
-    .map((s) => products.find((p) => p.slug === s))
-    .filter((p): p is typeof products[number] => Boolean(p));
+/* ── Popular products: 4 horizontal-scroll cards ── */
+type PopItem = { slug: string; name: string; price: number; image: string };
+const POPULAR: PopItem[] = [
+  { slug: "amrapali-mango-grafted", name: "আম গাছ", price: 350, image: pMango },
+  { slug: "kathal-jackfruit",       name: "কাঁঠাল গাছ", price: 450, image: pJackfruit },
+  { slug: "bedana-litchi",          name: "লিচু গাছ", price: 400, image: pLitchi },
+  { slug: "desi-rose",              name: "গোলাপ গাছ", price: 250, image: pRose },
+];
 
+function MobilePopular() {
   return (
-    <section className="mt-4 grid grid-cols-2 gap-3 px-3">
-      {list.map((p, idx) => (
-        <PopularCard key={p.slug} product={p} index={idx} />
-      ))}
+    <section className="mt-4 px-3">
+      <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {POPULAR.map((p, idx) => (
+          <PopularCard key={p.slug} item={p} index={idx} />
+        ))}
+      </div>
     </section>
   );
 }
 
-function PopularCard({ product, index }: { product: typeof products[number]; index: number }) {
+function PopularCard({ item, index }: { item: PopItem; index: number }) {
   const cart = useCart();
+  const fallback = products.find((x) => x.slug === item.slug);
+
+  const handleAdd = () => {
+    const product: typeof products[number] = fallback ?? {
+      slug: item.slug,
+      name: item.name,
+      nameBn: item.name,
+      category: "fruit",
+      price: item.price,
+      rating: 4.8,
+      reviews: 0,
+      image: item.image,
+      gallery: [item.image],
+      shortDescription: item.name,
+      description: item.name,
+      height: "১.৫-২ ফুট",
+      age: "১ বছর",
+      potIncluded: true,
+      inStock: true,
+      careLevel: "সহজ",
+      sunlight: "পূর্ণ রোদ",
+      water: "মাঝারি",
+    };
+    cart.add({ ...product, price: item.price, name: item.name });
+    toast.success(`${item.name} কার্টে যোগ হয়েছে`);
+  };
+
   return (
     <motion.article
       initial={{ opacity: 0, y: 14 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-30px" }}
       transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.2) }}
-      className="flex flex-col overflow-hidden rounded-3xl border border-border/60 bg-card p-3 text-center shadow-soft"
+      className="flex w-[44%] shrink-0 snap-start flex-col items-center rounded-2xl border border-border/60 bg-card p-3 text-center shadow-soft"
     >
-      <Link to="/products/$slug" params={{ slug: product.slug }} className="block overflow-hidden rounded-2xl bg-muted">
-        <SmartImage src={product.image} alt={product.name} aspect="square" />
+      <Link
+        to={fallback ? "/products/$slug" : "/shop"}
+        {...(fallback ? { params: { slug: item.slug } } : {})}
+        className="grid h-24 w-full place-items-center"
+      >
+        <img
+          src={item.image}
+          alt={item.name}
+          className="h-24 w-full object-contain"
+          loading="lazy"
+          decoding="async"
+        />
       </Link>
-      <Link to="/products/$slug" params={{ slug: product.slug }} className="font-bn mt-3 line-clamp-1 text-sm font-bold text-foreground">
-        {product.name}
-      </Link>
-      <p className="font-bn mt-1 text-lg font-extrabold text-[#1B5E20]">{formatBDT(product.price)}</p>
+      <p className="font-bn mt-2 line-clamp-1 text-[13px] font-bold text-foreground">{item.name}</p>
+      <p className="font-bn mt-0.5 text-[15px] font-extrabold text-[#1B5E20]">{formatBDT(item.price)}</p>
       <button
         type="button"
-        onClick={() => { cart.add(product); toast.success(`${product.name} কার্টে যোগ হয়েছে`); }}
-        className="font-bn mt-3 w-full rounded-full bg-[#1B5E20] py-2 text-xs font-bold text-white shadow-soft active:scale-95"
+        onClick={handleAdd}
+        className="font-bn mt-2 w-full rounded-full border border-[#1B5E20]/30 bg-white py-1.5 text-[11px] font-bold text-[#1B5E20] active:scale-95"
       >
         অর্ডার করুন
       </button>
     </motion.article>
   );
 }
-
-/* ── COD CTA banner ────────────────────────────── */
 function MobileCodBanner() {
   return (
     <section className="mt-6 px-3">
