@@ -4,8 +4,9 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
 import { products } from "@/data/products";
 import { SmartImage } from "@/components/common/SmartImage";
+import { toBnDigits } from "@/lib/format";
 
-const trending = ["Amrapali Mango", "Thai Guava", "Seedless Lemon", "Dragon Fruit", "Litchi", "Malta Orange"];
+const trending = ["আম্রপালি আম", "থাই পেয়ারা", "বীজহীন লেবু", "ড্রাগন ফল", "লিচু", "মাল্টা কমলা"];
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
   const [q, setQ] = useState("");
@@ -23,7 +24,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   }, [open, onClose]);
 
   const results = q.trim()
-    ? products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase())).slice(0, 6)
+    ? products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()) || p.nameBn.includes(q)).slice(0, 6)
     : [];
 
   return (
@@ -62,13 +63,13 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                   autoFocus
                   value={q}
                   onChange={(e) => setQ(e.target.value)}
-                  placeholder="Search mango, lemon, guava, indoor plants…"
-                  className="flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
+                  placeholder="আম, লেবু, পেয়ারা, ইনডোর গাছ খুঁজুন…"
+                  className="font-bn flex-1 bg-transparent text-base outline-none placeholder:text-muted-foreground"
                 />
                 <button
                   type="button"
                   onClick={onClose}
-                  aria-label="Close search"
+                  aria-label="বন্ধ করুন"
                   className="grid size-9 place-items-center rounded-full border border-border text-muted-foreground transition hover:bg-accent"
                 >
                   <X className="size-4" />
@@ -78,15 +79,15 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
               <div className="max-h-[60vh] overflow-y-auto p-5">
                 {!q && (
                   <div>
-                    <div className="mb-3 flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
-                      <TrendingUp className="size-3.5" /> Trending searches
+                    <div className="font-bn mb-3 flex items-center gap-2 text-xs font-semibold tracking-wide text-muted-foreground">
+                      <TrendingUp className="size-3.5" /> জনপ্রিয় খোঁজ
                     </div>
                     <div className="flex flex-wrap gap-2">
                       {trending.map((t) => (
                         <button
                           key={t}
                           onClick={() => setQ(t)}
-                          className="rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm transition hover:border-primary hover:text-primary"
+                          className="font-bn rounded-full border border-border bg-secondary/60 px-4 py-2 text-sm transition hover:border-primary hover:text-primary"
                         >
                           {t}
                         </button>
@@ -96,8 +97,8 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                 )}
 
                 {q && results.length === 0 && (
-                  <p className="py-10 text-center text-sm text-muted-foreground">
-                    No matches. Try another search.
+                  <p className="font-bn py-10 text-center text-sm text-muted-foreground">
+                    কোনো গাছ পাওয়া যায়নি। অন্য কিছু খুঁজে দেখুন।
                   </p>
                 )}
 
@@ -114,10 +115,10 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                         >
                           <SmartImage src={p.image} alt={p.name} aspect="square" className="size-14 shrink-0 rounded-xl" />
                           <div className="min-w-0 flex-1">
-                            <div className="truncate text-sm font-semibold">{p.name}</div>
+                            <div className="font-bn truncate text-sm font-semibold">{p.name}</div>
                             <div className="font-bn truncate text-xs text-muted-foreground">{p.nameBn}</div>
                           </div>
-                          <div className="text-sm font-bold text-primary">৳{p.price}</div>
+                          <div className="font-bn text-sm font-bold text-primary">৳{toBnDigits(p.price)}</div>
                         </button>
                       </li>
                     ))}

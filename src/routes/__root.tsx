@@ -23,25 +23,24 @@ function NotFoundComponent() {
       <div className="gradient-radial-leaf flex min-h-[70vh] items-center justify-center px-4 py-20">
         <div className="max-w-md text-center">
           <div className="mx-auto mb-6 grid size-24 place-items-center rounded-3xl gradient-primary text-primary-foreground shadow-elegant">
-            <span className="font-display text-4xl font-bold">404</span>
+            <span className="font-display text-4xl font-bold">৪০৪</span>
           </div>
-          <h1 className="font-display text-3xl font-bold text-foreground sm:text-4xl">Page not found</h1>
-          <p className="mt-3 text-muted-foreground">
-            This corner of our garden is empty. Let's get you back to greener pastures.
+          <h1 className="font-bn text-3xl font-bold text-foreground sm:text-4xl">পেইজটি খুঁজে পাওয়া যায়নি</h1>
+          <p className="font-bn mt-3 text-muted-foreground">
+            এই পথটি আমাদের বাগানে নেই। চলুন সবুজে ফিরে যাই।
           </p>
-          <p className="font-bn mt-1 text-sm text-muted-foreground">এই পেইজটি খুঁজে পাওয়া যায়নি।</p>
           <div className="mt-8 flex flex-wrap justify-center gap-3">
             <Link
               to="/"
-              className="inline-flex items-center justify-center rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant"
+              className="font-bn inline-flex items-center justify-center rounded-full gradient-primary px-6 py-3 text-sm font-semibold text-primary-foreground shadow-soft transition hover:shadow-elegant"
             >
-              Back to home
+              হোমে ফিরে যান
             </Link>
             <Link
               to="/shop"
-              className="inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-accent"
+              className="font-bn inline-flex items-center justify-center rounded-full border border-border bg-card px-6 py-3 text-sm font-semibold text-foreground transition hover:bg-accent"
             >
-              Browse plants
+              গাছ দেখুন
             </Link>
           </div>
         </div>
@@ -60,19 +59,19 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="max-w-md text-center">
-        <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
-        <p className="mt-2 text-sm text-muted-foreground">
-          Something went wrong on our end. You can try refreshing or head back home.
+        <h1 className="font-bn text-xl font-semibold tracking-tight text-foreground">পেইজটি লোড হয়নি</h1>
+        <p className="font-bn mt-2 text-sm text-muted-foreground">
+          সাময়িক সমস্যা হয়েছে। আবার চেষ্টা করুন বা হোমে ফিরে যান।
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           <button
             onClick={() => { router.invalidate(); reset(); }}
-            className="inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+            className="font-bn inline-flex items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
           >
-            Try again
+            আবার চেষ্টা করুন
           </button>
-          <a href="/" className="inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">
-            Go home
+          <a href="/" className="font-bn inline-flex items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium text-foreground transition-colors hover:bg-accent">
+            হোমে যান
           </a>
         </div>
       </div>
@@ -85,17 +84,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "All Tree BD Shop — Premium Online Nursery in Bangladesh" },
-      { name: "description", content: "Bangladesh's premium online nursery. Buy grafted fruit plants, indoor greens & rare exotics with 64-district cash-on-delivery." },
+      { title: "অল ট্রি বিডি শপ — বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি" },
+      { name: "description", content: "বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি। গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ চারা — ৬৪ জেলায় ক্যাশ অন ডেলিভারি।" },
       { name: "author", content: "All Tree BD Shop" },
       { name: "theme-color", content: "#2E7D32" },
       { property: "og:site_name", content: "All Tree BD Shop" },
-      { property: "og:title", content: "All Tree BD Shop — Premium Online Nursery in Bangladesh" },
-      { property: "og:description", content: "Grafted fruit plants, indoor greens & rare exotics — delivered across Bangladesh." },
+      { property: "og:title", content: "অল ট্রি বিডি শপ — প্রিমিয়াম অনলাইন নার্সারি" },
+      { property: "og:description", content: "গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ চারা — সারা বাংলাদেশে ডেলিভারি।" },
       { property: "og:type", content: "website" },
+      { property: "og:locale", content: "bn_BD" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:title", content: "All Tree BD Shop — Premium Online Nursery in Bangladesh" },
-      { name: "twitter:description", content: "Grafted fruit plants, indoor greens & rare exotics — delivered across Bangladesh." },
+      { name: "twitter:title", content: "অল ট্রি বিডি শপ — প্রিমিয়াম অনলাইন নার্সারি" },
+      { name: "twitter:description", content: "গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ চারা — সারা বাংলাদেশে ডেলিভারি।" },
       { name: "robots", content: "index, follow, max-image-preview:large" },
       { name: "format-detection", content: "telephone=yes" },
     ],
@@ -111,8 +111,8 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "@context": "https://schema.org",
           "@type": "Organization",
           name: "All Tree BD Shop",
-          alternateName: "অনলাইনে গাছের চারা বিক্রয়",
-          description: "Premium online nursery in Bangladesh — grafted fruit plants, indoor greens & rare exotics with 64-district cash-on-delivery.",
+          alternateName: "অল ট্রি বিডি শপ",
+          description: "বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি — গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ চারা, ৬৪ জেলায় ক্যাশ অন ডেলিভারি।",
           email: "ibrahimhossain362840@gmail.com",
           telephone: "+8801839208687",
           address: {
@@ -134,7 +134,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
 
 function RootShell({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="bn">
       <head>
         <HeadContent />
       </head>
