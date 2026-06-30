@@ -14,6 +14,12 @@ import { onImgError, unsplash, unsplashSrcSet } from "@/lib/img";
 import heroNursery from "@/assets/mobile-hero-nursery.jpg";
 import heroFlowers from "@/assets/mobile-hero-flowers.jpg";
 import heroMango from "@/assets/mobile-hero-mango.jpg";
+import catFruit from "@/assets/cat-fruit-tree.png";
+import catFlower from "@/assets/cat-flower-tree.png";
+import pMango from "@/assets/p-mango.png";
+import pJackfruit from "@/assets/p-jackfruit.png";
+import pLitchi from "@/assets/p-litchi.png";
+import pRose from "@/assets/p-rose.png";
 
 const HERO_SLIDES = [heroNursery, heroMango, heroFlowers];
 
