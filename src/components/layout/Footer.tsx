@@ -1,9 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import {
   ArrowRight, Award, Clock, Facebook, Headphones, Instagram, Leaf, Mail,
-  MapPin, MessageCircle, Phone, Send, ShieldCheck, Truck, Wallet, Youtube,
+  MapPin, MessageCircle, Phone, ShieldCheck, Truck, Wallet, Youtube,
 } from "lucide-react";
-import { toast } from "sonner";
 import { site } from "@/data/site";
 import { categories } from "@/data/categories";
 import { Container } from "@/components/common/Container";
@@ -205,60 +204,16 @@ export function Footer() {
               </li>
             </ul>
 
-            <form
-              onSubmit={(e) => {
-                e.preventDefault();
-                const form = e.currentTarget;
-                toast.success("সাবস্ক্রাইব হয়েছে — ইনবক্সে গাছ পরিচর্যার টিপস পাবেন 🌱");
-                form.reset();
-              }}
-              className="mt-7 rounded-2xl bg-white/5 p-4 ring-1 ring-white/10 backdrop-blur"
-            >
-              <p className="font-bn text-sm font-semibold">নিউজলেটার</p>
-              <p className="font-bn mt-1 text-xs text-white/65">নতুন চারা ও পরিচর্যার টিপস ইনবক্সে পান।</p>
-              <div className="mt-3 flex items-center gap-2 rounded-full border border-white/15 bg-white/5 p-1.5">
-                <input
-                  id="footer-newsletter"
-                  name="email"
-                  type="email"
-                  required
-                  placeholder="আপনার ইমেইল"
-                  className="font-bn flex-1 bg-transparent px-3 py-2 text-sm placeholder:text-white/45 focus:outline-none"
-                />
-                <button
-                  type="submit"
-                  aria-label="সাবস্ক্রাইব"
-                  className="font-bn inline-flex items-center gap-1.5 rounded-full bg-[#2E7D32] px-4 py-2 text-xs font-semibold transition hover:bg-[#1B5E20]"
-                >
-                  <Send className="size-3.5" /> সাবস্ক্রাইব
-                </button>
-              </div>
-            </form>
           </div>
         </div>
 
-        {/* Payment & legal bar */}
+        {/* Legal bar */}
         <div className="mt-14 rounded-2xl bg-white/5 px-5 py-4 ring-1 ring-white/10">
-          <div className="flex flex-col items-center justify-between gap-4 md:flex-row">
-            <div className="flex items-center gap-3">
-              <p className="font-bn text-xs font-semibold uppercase tracking-wider text-white/70">পেমেন্ট মাধ্যম</p>
-              <div className="flex flex-wrap items-center gap-1.5">
-                {["bKash", "Nagad", "Rocket", "Visa", "Master", "COD"].map((m) => (
-                  <span
-                    key={m}
-                    className="rounded-md bg-white px-2.5 py-1 text-[11px] font-bold text-[#0E2A14] shadow-sm"
-                  >
-                    {m}
-                  </span>
-                ))}
-              </div>
-            </div>
-            <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
-              <Link to="/privacy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">প্রাইভেসি পলিসি</Link>
-              <Link to="/terms" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শর্তাবলি</Link>
-              <Link to="/return-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">রিটার্ন</Link>
-              <Link to="/shipping-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শিপিং</Link>
-            </div>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 md:justify-end">
+            <Link to="/privacy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">প্রাইভেসি পলিসি</Link>
+            <Link to="/terms" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শর্তাবলি</Link>
+            <Link to="/return-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">রিটার্ন</Link>
+            <Link to="/shipping-policy" className="font-bn text-xs text-white/70 hover:text-[#E8C547]">শিপিং</Link>
           </div>
         </div>
 
