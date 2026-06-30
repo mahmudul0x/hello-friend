@@ -368,6 +368,8 @@ function CodBanner() {
 
 /* ───────────── MORE PRODUCT SECTIONS ───────────── */
 function MoreProducts() {
+  const fresh = newArrivals().slice(0, 8);
+  const featured = bestsellers().slice(0, 8);
   const fruit = [
     ...getProductsByCategory("guava"),
     ...getProductsByCategory("litchi"),
@@ -379,24 +381,32 @@ function MoreProducts() {
     ...getProductsByCategory("indoor"),
     ...getProductsByCategory("herbs"),
   ].slice(0, 8);
+
+  const Rail = ({ title, items, href, ctaBn }: { title: string; items: typeof fruit; href: string; ctaBn: string }) => (
+    <section className="py-10" aria-label={title}>
+      <Container>
+        <SectionTitle title={title} />
+        <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
+          {items.map((p, i) => <ProductCard key={p.slug} product={p} index={i} />)}
+        </div>
+        <div className="mt-10 text-center">
+          <Link
+            to={href as any}
+            className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/30 bg-white px-7 py-3.5 text-sm font-bn font-semibold text-[#1B5E20] shadow-soft transition hover:-translate-y-0.5 hover:bg-[#EAF8E7] hover:shadow-elegant focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2E7D32] focus-visible:ring-offset-2"
+          >
+            {ctaBn} <ArrowRight className="size-4" aria-hidden="true" />
+          </Link>
+        </div>
+      </Container>
+    </section>
+  );
+
   return (
     <>
-      <section className="py-10">
-        <Container>
-          <SectionTitle title="ফল গাছের সংগ্রহ" />
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {fruit.map((p, i) => <ProductCard key={p.slug} product={p} index={i} />)}
-          </div>
-        </Container>
-      </section>
-      <section className="py-10">
-        <Container>
-          <SectionTitle title="ফুল ও ইনডোর গাছ" />
-          <div className="grid grid-cols-2 gap-5 md:grid-cols-3 lg:grid-cols-4">
-            {flowers.map((p, i) => <ProductCard key={p.slug} product={p} index={i} />)}
-          </div>
-        </Container>
-      </section>
+      {fresh.length > 0 && <Rail title="নতুন এসেছে" items={fresh} href="/shop?sort=new" ctaBn="সব নতুন গাছ" />}
+      {featured.length > 0 && <Rail title="বেস্ট সেলার" items={featured} href="/shop?sort=bestsellers" ctaBn="সব বেস্ট সেলার" />}
+      <Rail title="ফল গাছের সংগ্রহ" items={fruit} href="/categories/mango" ctaBn="সব ফল গাছ" />
+      <Rail title="ফুল ও ইনডোর গাছ" items={flowers} href="/categories/flowering" ctaBn="সব ফুল গাছ" />
     </>
   );
 }
