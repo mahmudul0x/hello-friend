@@ -24,6 +24,16 @@ export type Product = {
 const img = (id: string) =>
   `https://images.unsplash.com/${id}?w=1200&q=80&auto=format&fit=crop`;
 
+// Locally generated AI product photos, keyed by slug.
+const PRODUCT_IMAGES = import.meta.glob(
+  "../assets/products/*.jpg",
+  { eager: true, query: "?url", import: "default" },
+) as Record<string, string>;
+const productImg = (slug: string): string | null => {
+  const entry = Object.entries(PRODUCT_IMAGES).find(([k]) => k.endsWith(`/${slug}.jpg`));
+  return entry ? entry[1] : null;
+};
+
 export const products: Product[] = [
   {
     slug: "amrapali-mango-grafted",
@@ -416,6 +426,16 @@ function mk(
     water: "মাঝারি",
   }));
 }
+
+// Override image + gallery with locally generated AI photo when available.
+for (const p of products) {
+  const local = productImg(p.slug);
+  if (local) {
+    p.image = local;
+    p.gallery = [local];
+  }
+}
+
 
 
 export const getProductBySlug = (slug: string) =>
