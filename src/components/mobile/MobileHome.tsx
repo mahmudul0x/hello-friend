@@ -14,6 +14,7 @@ import { useCart } from "@/context/CartContext";
 import { useWishlist } from "@/context/WishlistContext";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { onImgError, unsplash, unsplashSrcSet, lqip } from "@/lib/img";
 
 const HERO_SLIDES = [
   {
@@ -157,12 +158,16 @@ function MobileHero() {
             className="absolute inset-0"
           >
             <img
-              src={slide.image}
+              src={unsplash(slide.image, 800, 75)}
+              srcSet={unsplashSrcSet(slide.image, [400, 640, 800, 1024])}
+              sizes="100vw"
               alt={slide.title}
               className="h-full w-full object-cover animate-ken-burns"
               loading={i === 0 ? "eager" : "lazy"}
               decoding="async"
               fetchPriority={i === 0 ? "high" : "auto"}
+              onError={onImgError}
+              style={{ backgroundImage: `url(${lqip(slide.image)})`, backgroundSize: "cover", backgroundPosition: "center" }}
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/10" />
             <div className="absolute inset-0 bg-gradient-to-br from-[#0F3D17]/40 via-transparent to-transparent" />
@@ -277,7 +282,7 @@ function MobileCategoryStrip() {
               "relative grid size-24 place-items-center overflow-hidden rounded-3xl bg-gradient-to-br shadow-soft transition group-active:scale-95",
               CAT_COLORS[idx % CAT_COLORS.length],
             )}>
-              <img src={c.image} alt={c.name} className="size-20 rounded-2xl object-cover" loading="lazy" />
+              <img src={unsplash(c.image, 240, 70)} srcSet={unsplashSrcSet(c.image, [160, 240, 320])} sizes="80px" alt={c.name} className="size-20 rounded-2xl object-cover" loading="lazy" decoding="async" onError={onImgError} />
             </div>
             <p className="font-bn line-clamp-1 w-full text-center text-xs font-semibold text-foreground">{c.nameBn}</p>
             <p className="-mt-1 text-[10px] text-muted-foreground">{toBnDigits(c.count)}+</p>
@@ -376,10 +381,14 @@ function MobilePromoBanner() {
         className="relative block overflow-hidden rounded-3xl shadow-elegant"
       >
         <img
-          src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80&auto=format&fit=crop"
+          src={unsplash("https://images.unsplash.com/photo-1416879595882-3373a0480b5b", 800, 75)}
+          srcSet={unsplashSrcSet("https://images.unsplash.com/photo-1416879595882-3373a0480b5b", [400, 640, 800])}
+          sizes="100vw"
           alt="বর্ষায় রোপণ অফার"
           className="h-44 w-full object-cover"
           loading="lazy"
+          decoding="async"
+          onError={onImgError}
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/85 via-emerald-900/60 to-transparent" />
         <div className="absolute inset-y-0 left-0 flex max-w-[70%] flex-col justify-center gap-2 p-5 text-white">
@@ -482,7 +491,7 @@ function MobileTipsStrip() {
               to="/care-guide"
               className="relative h-40 w-56 shrink-0 overflow-hidden rounded-3xl shadow-soft"
             >
-              <img src={t.image} alt={t.title} className="h-full w-full object-cover" loading="lazy" />
+              <img src={unsplash(t.image, 480, 70)} srcSet={unsplashSrcSet(t.image, [320, 480, 640])} sizes="224px" alt={t.title} className="h-full w-full object-cover" loading="lazy" decoding="async" onError={onImgError} />
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 text-white">
                 <div className="min-w-0">
@@ -513,7 +522,7 @@ function MobileBlogPreview() {
             params={{ slug: p.slug }}
             className="flex gap-3 rounded-3xl border border-border/60 bg-card p-2.5 shadow-soft"
           >
-            <img src={p.cover} alt={p.title} className="size-24 shrink-0 rounded-2xl object-cover" loading="lazy" />
+            <img src={unsplash(p.cover, 240, 70)} srcSet={unsplashSrcSet(p.cover, [160, 240, 320])} sizes="96px" alt={p.title} className="size-24 shrink-0 rounded-2xl object-cover" loading="lazy" decoding="async" onError={onImgError} />
             <div className="flex min-w-0 flex-1 flex-col justify-between py-1">
               <div>
                 <p className="font-bn text-[10px] font-semibold tracking-wider text-primary">{p.category}</p>
