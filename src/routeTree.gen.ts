@@ -36,6 +36,8 @@ import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as AccountIndexRouteImport } from './routes/account.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as CategoriesFruitsRouteImport } from './routes/categories.fruits'
+import { Route as CategoriesFlowersRouteImport } from './routes/categories.flowers'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
@@ -181,6 +183,16 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CategoriesFruitsRoute = CategoriesFruitsRouteImport.update({
+  id: '/categories/fruits',
+  path: '/categories/fruits',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CategoriesFlowersRoute = CategoriesFlowersRouteImport.update({
+  id: '/categories/flowers',
+  path: '/categories/flowers',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoriesSlugRoute = CategoriesSlugRouteImport.update({
   id: '/categories/$slug',
   path: '/categories/$slug',
@@ -259,6 +271,8 @@ export interface FileRoutesByFullPath {
   '/admin/products': typeof AdminProductsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/categories/flowers': typeof CategoriesFlowersRoute
+  '/categories/fruits': typeof CategoriesFruitsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
@@ -295,6 +309,8 @@ export interface FileRoutesByTo {
   '/admin/products': typeof AdminProductsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/categories/flowers': typeof CategoriesFlowersRoute
+  '/categories/fruits': typeof CategoriesFruitsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/account': typeof AccountIndexRoute
   '/admin': typeof AdminIndexRoute
@@ -334,6 +350,8 @@ export interface FileRoutesById {
   '/admin/products': typeof AdminProductsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
+  '/categories/flowers': typeof CategoriesFlowersRoute
+  '/categories/fruits': typeof CategoriesFruitsRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/account/': typeof AccountIndexRoute
   '/admin/': typeof AdminIndexRoute
@@ -374,6 +392,8 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/categories/flowers'
+    | '/categories/fruits'
     | '/products/$slug'
     | '/account/'
     | '/admin/'
@@ -410,6 +430,8 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/categories/flowers'
+    | '/categories/fruits'
     | '/products/$slug'
     | '/account'
     | '/admin'
@@ -448,6 +470,8 @@ export interface FileRouteTypes {
     | '/admin/products'
     | '/blog/$slug'
     | '/categories/$slug'
+    | '/categories/flowers'
+    | '/categories/fruits'
     | '/products/$slug'
     | '/account/'
     | '/admin/'
@@ -480,6 +504,8 @@ export interface RootRouteChildren {
   VideoGalleryRoute: typeof VideoGalleryRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
+  CategoriesFlowersRoute: typeof CategoriesFlowersRoute
+  CategoriesFruitsRoute: typeof CategoriesFruitsRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoriesIndexRoute: typeof CategoriesIndexRoute
@@ -676,6 +702,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/categories/fruits': {
+      id: '/categories/fruits'
+      path: '/categories/fruits'
+      fullPath: '/categories/fruits'
+      preLoaderRoute: typeof CategoriesFruitsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/categories/flowers': {
+      id: '/categories/flowers'
+      path: '/categories/flowers'
+      fullPath: '/categories/flowers'
+      preLoaderRoute: typeof CategoriesFlowersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories/$slug': {
       id: '/categories/$slug'
       path: '/categories/$slug'
@@ -802,6 +842,8 @@ const rootRouteChildren: RootRouteChildren = {
   VideoGalleryRoute: VideoGalleryRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
+  CategoriesFlowersRoute: CategoriesFlowersRoute,
+  CategoriesFruitsRoute: CategoriesFruitsRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoriesIndexRoute: CategoriesIndexRoute,
@@ -809,13 +851,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
