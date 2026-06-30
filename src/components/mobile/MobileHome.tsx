@@ -370,19 +370,19 @@ function MobilePromoBanner() {
       >
         <img
           src="https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200&q=80&auto=format&fit=crop"
-          alt="Monsoon planting season"
+          alt="বর্ষায় রোপণ অফার"
           className="h-44 w-full object-cover"
           loading="lazy"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-emerald-900/85 via-emerald-900/60 to-transparent" />
         <div className="absolute inset-y-0 left-0 flex max-w-[70%] flex-col justify-center gap-2 p-5 text-white">
-          <span className="w-fit rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold uppercase text-gold-foreground">
-            Up to 25% off
+          <span className="font-bn w-fit rounded-full bg-gold px-2 py-0.5 text-[10px] font-bold text-gold-foreground">
+            ২৫% পর্যন্ত ছাড়
           </span>
           <h3 className="font-bn text-xl font-bold leading-tight">বর্ষায় রোপণ অফার</h3>
-          <p className="text-[11px] opacity-90">Monsoon planting season — limited stock.</p>
-          <span className="mt-1 inline-flex w-fit items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold backdrop-blur">
-            Shop now <ArrowRight className="size-3.5" />
+          <p className="font-bn text-[11px] opacity-90">বর্ষাকালীন রোপণ — সীমিত স্টক।</p>
+          <span className="font-bn mt-1 inline-flex w-fit items-center gap-1 rounded-full bg-white/15 px-3 py-1.5 text-xs font-bold backdrop-blur">
+            এখনই কিনুন <ArrowRight className="size-3.5" />
           </span>
         </div>
       </Link>
@@ -406,14 +406,14 @@ function MobileNewArrivals() {
           >
             <div className="relative">
               <SmartImage src={p.image} alt={p.name} aspect="square" rounded={false} />
-              <span className="absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold uppercase text-primary-foreground">
-                <Sparkles className="mr-0.5 inline size-2.5" /> New
+              <span className="font-bn absolute left-2 top-2 rounded-full bg-primary px-2 py-0.5 text-[10px] font-bold text-primary-foreground">
+                <Sparkles className="mr-0.5 inline size-2.5" /> নতুন
               </span>
             </div>
             <div className="p-3">
-              <p className="line-clamp-1 text-sm font-semibold text-foreground">{p.name}</p>
+              <p className="font-bn line-clamp-1 text-sm font-semibold text-foreground">{p.name}</p>
               <p className="font-bn line-clamp-1 text-[11px] text-muted-foreground">{p.nameBn}</p>
-              <div className="mt-1 text-sm font-bold text-primary">{formatBDT(p.price)}</div>
+              <div className="font-bn mt-1 text-sm font-bold text-primary">{formatBDT(p.price)}</div>
             </div>
           </Link>
         ))}
