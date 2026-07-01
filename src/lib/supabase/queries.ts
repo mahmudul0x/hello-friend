@@ -211,6 +211,24 @@ export async function fetchOrders(): Promise<OrderRow[]> {
   return data as OrderRow[];
 }
 
+export type OrderItemRow = {
+  id: string;
+  product_slug: string | null;
+  product_name: string | null;
+  product_image: string | null;
+  unit_price: number;
+  qty: number;
+};
+
+export async function fetchOrderItems(orderId: string): Promise<OrderItemRow[]> {
+  const { data, error } = await getSupabaseBrowserClient()
+    .from("order_items")
+    .select("id, product_slug, product_name, product_image, unit_price, qty")
+    .eq("order_id", orderId);
+  if (error) throw error;
+  return data as OrderItemRow[];
+}
+
 export async function fetchMyOrders(userId: string): Promise<OrderRow[]> {
   const { data, error } = await getSupabaseBrowserClient()
     .from("orders")

@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchOrders, fetchMyOrders, fetchCustomers, fetchAddresses } from "@/lib/supabase/queries";
+import { fetchOrders, fetchMyOrders, fetchOrderItems, fetchCustomers, fetchAddresses } from "@/lib/supabase/queries";
 import { catalogKeys } from "./useCatalog";
 import {
   upsertProduct,
@@ -19,6 +19,7 @@ import {
 export const adminKeys = {
   orders: () => ["orders"] as const,
   myOrders: (userId: string) => ["orders", "mine", userId] as const,
+  orderItems: (orderId: string) => ["orders", orderId, "items"] as const,
   customers: () => ["customers"] as const,
   addresses: (userId: string) => ["addresses", userId] as const,
 };
@@ -27,6 +28,13 @@ export const useOrders = () => useQuery({ queryKey: adminKeys.orders(), queryFn:
 
 export const useMyOrders = (userId: string) =>
   useQuery({ queryKey: adminKeys.myOrders(userId), queryFn: () => fetchMyOrders(userId), enabled: !!userId });
+
+export const useOrderItems = (orderId: string | null) =>
+  useQuery({
+    queryKey: adminKeys.orderItems(orderId ?? ""),
+    queryFn: () => fetchOrderItems(orderId!),
+    enabled: !!orderId,
+  });
 
 export const useCustomers = () => useQuery({ queryKey: adminKeys.customers(), queryFn: fetchCustomers });
 

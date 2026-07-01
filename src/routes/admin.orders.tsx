@@ -1,13 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { PackageX, Search } from "lucide-react";
+import { Eye, PackageX, Search } from "lucide-react";
 import { toast } from "sonner";
 import { formatBDT, toBnDigits } from "@/lib/format";
 import { useOrders, useUpdateOrderStatus } from "@/hooks/useAdmin";
 import type { OrderStatus } from "@/lib/supabase/mutations";
+import type { OrderRow } from "@/lib/supabase/queries";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
+import { OrderDetailDialog } from "@/components/admin/OrderDetailDialog";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
@@ -34,6 +37,7 @@ function AdminOrders() {
   const updateStatus = useUpdateOrderStatus();
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all");
+  const [selected, setSelected] = useState<OrderRow | null>(null);
 
   const filtered = useMemo(() => {
     let list = orders;
@@ -103,23 +107,24 @@ function AdminOrders() {
                 <TableHead className="font-bn text-right">মোট</TableHead>
                 <TableHead className="font-bn">স্ট্যাটাস</TableHead>
                 <TableHead className="font-bn text-right">তারিখ</TableHead>
+                <TableHead className="text-right"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {filtered.length === 0 ? (
                 <TableRow>
-                  <TableCell colSpan={6} className="font-bn h-32 text-center text-muted-foreground">
+                  <TableCell colSpan={7} className="font-bn h-32 text-center text-muted-foreground">
                     কোনো অর্ডার পাওয়া যায়নি।
                   </TableCell>
                 </TableRow>
               ) : (
                 filtered.map((o) => (
-                  <TableRow key={o.id}>
+                  <TableRow key={o.id} className="cursor-pointer" onClick={() => setSelected(o)}>
                     <TableCell className="font-semibold">{o.order_number}</TableCell>
                     <TableCell className="font-bn">{o.customer_name}</TableCell>
                     <TableCell className="font-bn text-muted-foreground">{o.shipping_city ?? "—"}</TableCell>
                     <TableCell className="font-bn text-right font-semibold">{formatBDT(o.total)}</TableCell>
-                    <TableCell>
+                    <TableCell onClick={(e) => e.stopPropagation()}>
                       <Select value={o.status} onValueChange={(v) => handleStatusChange(o.id, v as OrderStatus)}>
                         <SelectTrigger
                           className={`font-bn h-8 w-32 rounded-full border-0 px-3 text-xs font-medium ${statusBadgeClass[o.status]}`}
@@ -136,6 +141,11 @@ function AdminOrders() {
                     <TableCell className="font-bn text-right text-muted-foreground">
                       {new Date(o.created_at).toLocaleDateString("bn-BD", { day: "numeric", month: "short" })}
                     </TableCell>
+                    <TableCell className="text-right" onClick={(e) => e.stopPropagation()}>
+                      <Button variant="ghost" size="icon" onClick={() => setSelected(o)} aria-label="বিস্তারিত দেখুন">
+                        <Eye className="size-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 ))
               )}
@@ -143,6 +153,8 @@ function AdminOrders() {
           </Table>
         </Card>
       )}
+
+      <OrderDetailDialog order={selected} onOpenChange={(open) => !open && setSelected(null)} />
     </div>
   );
 }
