@@ -1,12 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { useEffect, useMemo, useState } from "react";
+import { Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { toBnDigits } from "@/lib/format";
 import { useCategories } from "@/hooks/useCatalog";
 import { useDeleteCategory } from "@/hooks/useAdmin";
 import { CategoryFormDialog } from "@/components/admin/CategoryFormDialog";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
+import { AdminPagination, usePagination } from "@/components/admin/AdminPagination";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -18,6 +19,7 @@ import {
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import type { Category } from "@/data/categories";
@@ -26,12 +28,26 @@ export const Route = createFileRoute("/admin/categories")({
   component: AdminCategories,
 });
 
+const PAGE_SIZE = 12;
+
 function AdminCategories() {
   const { data: categories = [] } = useCategories();
   const deleteCategory = useDeleteCategory();
   const [editing, setEditing] = useState<Category | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toDelete, setToDelete] = useState<Category | null>(null);
+  const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
+
+  const filtered = useMemo(() => {
+    if (!q.trim()) return categories;
+    const query = q.toLowerCase();
+    return categories.filter((c) => c.name.toLowerCase().includes(query) || c.nameBn.includes(q));
+  }, [categories, q]);
+
+  const { pageItems, page: currentPage, totalPages } = usePagination(filtered, PAGE_SIZE, page);
+
+  useEffect(() => { setPage(1); }, [q]);
 
   const handleDelete = async () => {
     if (!toDelete) return;
@@ -57,8 +73,25 @@ function AdminCategories() {
         }
       />
 
+      <Card>
+        <CardContent className="p-4">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="বিভাগ খুঁজুন…"
+              className="font-bn pl-9"
+            />
+          </div>
+        </CardContent>
+      </Card>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {categories.map((c) => (
+        {pageItems.length === 0 && (
+          <p className="font-bn col-span-full py-12 text-center text-muted-foreground">কোনো বিভাগ পাওয়া যায়নি।</p>
+        )}
+        {pageItems.map((c) => (
           <Card key={c.slug} className="overflow-hidden">
             <img src={c.image} alt="" className="h-32 w-full object-cover" />
             <CardContent className="p-4">
@@ -95,6 +128,17 @@ function AdminCategories() {
           </Card>
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <Card>
+          <AdminPagination
+            page={currentPage}
+            totalPages={totalPages}
+            totalItems={filtered.length}
+            onPageChange={setPage}
+          />
+        </Card>
+      )}
 
       <CategoryFormDialog open={dialogOpen} onOpenChange={setDialogOpen} category={editing} />
 

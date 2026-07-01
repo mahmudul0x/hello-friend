@@ -82,7 +82,7 @@ export function ProductFormDialog({
           <DialogTitle className="font-bn">{product ? "পণ্য এডিট করুন" : "নতুন পণ্য"}</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label className="font-bn">স্লাগ (URL)</Label>
               <Input value={form.slug} disabled={!!product} onChange={(e) => set("slug", e.target.value)} placeholder="amrapali-mango-grafted" />
@@ -102,7 +102,7 @@ export function ProductFormDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label className="font-bn">নাম (বাংলা)</Label>
               <Input className="font-bn" value={form.nameBn} onChange={(e) => { set("nameBn", e.target.value); set("name", e.target.value); }} />
@@ -113,7 +113,7 @@ export function ProductFormDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid gap-4 sm:grid-cols-2">
             <div>
               <Label className="font-bn">পুরনো মূল্য (ঐচ্ছিক)</Label>
               <Input type="number" value={form.oldPrice ?? ""} onChange={(e) => set("oldPrice", e.target.value ? Number(e.target.value) : undefined)} />
@@ -124,7 +124,7 @@ export function ProductFormDialog({
             </div>
           </div>
 
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid gap-4 sm:grid-cols-3">
             <div>
               <Label className="font-bn">বয়স</Label>
               <Input className="font-bn" value={form.age} onChange={(e) => set("age", e.target.value)} placeholder="১ বছর" />
