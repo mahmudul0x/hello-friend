@@ -1,16 +1,14 @@
 import { Link, useRouterState } from "@tanstack/react-router";
-import { useEffect, useState, type ReactNode } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import {
   LayoutDashboard,
   Leaf,
   LogOut,
-  Menu,
   ShoppingBag,
   Store,
   Tags,
   Users,
-  X,
 } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
@@ -32,11 +30,11 @@ import {
 import { cn } from "@/lib/utils";
 
 const nav = [
-  { to: "/admin", label: "ড্যাশবোর্ড", Icon: LayoutDashboard, exact: true },
-  { to: "/admin/products", label: "পণ্য", Icon: Leaf, exact: false },
-  { to: "/admin/categories", label: "বিভাগ", Icon: Tags, exact: false },
-  { to: "/admin/orders", label: "অর্ডার", Icon: ShoppingBag, exact: false },
-  { to: "/admin/customers", label: "গ্রাহক", Icon: Users, exact: false },
+  { to: "/admin", label: "ড্যাশবোর্ড", Icon: LayoutDashboard, exact: true, color: "#2E7D32" },
+  { to: "/admin/products", label: "পণ্য", Icon: Leaf, exact: false, color: "#E65100" },
+  { to: "/admin/categories", label: "বিভাগ", Icon: Tags, exact: false, color: "#C2185B" },
+  { to: "/admin/orders", label: "অর্ডার", Icon: ShoppingBag, exact: false, color: "#C8A415" },
+  { to: "/admin/customers", label: "গ্রাহক", Icon: Users, exact: false, color: "#1565C0" },
 ] as const;
 
 const crumbLabel: Record<string, string> = {
@@ -65,7 +63,7 @@ function BrandMark() {
   );
 }
 
-function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () => void }) {
+function NavLinks({ pathname }: { pathname: string }) {
   return (
     <>
       {nav.map(({ to, label, Icon, exact }) => {
@@ -74,7 +72,6 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
           <Link
             key={to}
             to={to}
-            onClick={onNavigate}
             className={cn(
               "font-bn flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition",
               active ? "bg-primary/10 text-primary" : "text-foreground hover:bg-accent",
@@ -89,6 +86,57 @@ function NavLinks({ pathname, onNavigate }: { pathname: string; onNavigate?: () 
   );
 }
 
+function AdminBottomNav({ pathname }: { pathname: string }) {
+  return (
+    <nav
+      aria-label="অ্যাডমিন মেনু"
+      className="fixed inset-x-0 bottom-0 z-40 lg:hidden"
+      style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
+    >
+      <div className="mx-3 mb-3 overflow-hidden rounded-3xl border border-border/60 bg-background/85 shadow-elegant backdrop-blur-xl">
+        <ul className="grid grid-cols-5">
+          {nav.map(({ to, label, Icon, exact, color }) => {
+            const active = exact ? pathname === to : pathname.startsWith(to);
+            return (
+              <li key={to} className="relative">
+                <Link
+                  to={to}
+                  aria-label={label}
+                  aria-current={active ? "page" : undefined}
+                  className="group flex flex-col items-center justify-center gap-1 px-1 py-2.5"
+                >
+                  <span className="relative grid size-10 place-items-center">
+                    {active ? (
+                      <motion.span
+                        layoutId="admin-nav-active"
+                        className="absolute inset-0 rounded-2xl shadow-soft"
+                        style={{ backgroundColor: color }}
+                        transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                      />
+                    ) : (
+                      <span className="absolute inset-0 rounded-2xl" style={{ backgroundColor: `${color}1a` }} />
+                    )}
+                    <Icon className="relative size-5" style={{ color: active ? "#fff" : color }} />
+                  </span>
+                  <span
+                    className={cn(
+                      "font-bn text-[10px] font-medium leading-none transition",
+                      !active && "text-foreground/70",
+                    )}
+                    style={active ? { color } : undefined}
+                  >
+                    {label}
+                  </span>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </nav>
+  );
+}
+
 export function AdminShell({
   session,
   onLogout,
@@ -100,9 +148,6 @@ export function AdminShell({
 }) {
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const currentLabel = crumbLabel[pathname] ?? "ড্যাশবোর্ড";
-  const [mobileNavOpen, setMobileNavOpen] = useState(false);
-
-  useEffect(() => { setMobileNavOpen(false); }, [pathname]);
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -131,72 +176,15 @@ export function AdminShell({
         </div>
       </aside>
 
-      {/* Mobile slide-out nav */}
-      <AnimatePresence>
-        {mobileNavOpen && (
-          <>
-            <motion.div
-              key="admin-nav-backdrop"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="fixed inset-0 z-40 bg-black/50 lg:hidden"
-              onClick={() => setMobileNavOpen(false)}
-            />
-            <motion.aside
-              key="admin-nav-drawer"
-              initial={{ x: "-100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.2 }}
-              className="fixed inset-y-0 left-0 z-50 flex w-72 max-w-[85vw] flex-col bg-sidebar shadow-elegant lg:hidden"
-            >
-              <div className="flex items-center justify-between border-b border-border px-4 py-4">
-                <Link to="/admin" className="flex items-center gap-2.5" onClick={() => setMobileNavOpen(false)}>
-                  <BrandMark />
-                  <div className="flex min-w-0 flex-col leading-tight">
-                    <span className="font-display truncate text-sm font-bold">All Tree BD</span>
-                    <span className="text-[11px] text-muted-foreground">Admin Console</span>
-                  </div>
-                </Link>
-                <button
-                  type="button"
-                  onClick={() => setMobileNavOpen(false)}
-                  aria-label="মেনু বন্ধ করুন"
-                  className="grid size-9 place-items-center rounded-xl text-foreground hover:bg-accent"
-                >
-                  <X className="size-5" />
-                </button>
-              </div>
-              <nav className="flex-1 space-y-0.5 overflow-y-auto p-3">
-                <p className="font-bn px-3 pb-2 text-xs font-medium text-muted-foreground">পরিচালনা</p>
-                <NavLinks pathname={pathname} onNavigate={() => setMobileNavOpen(false)} />
-              </nav>
-              <div className="border-t border-border p-3">
-                <Link
-                  to="/"
-                  onClick={() => setMobileNavOpen(false)}
-                  className="font-bn flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-foreground transition hover:bg-accent"
-                >
-                  <Store className="size-4" /> সাইট দেখুন
-                </Link>
-              </div>
-            </motion.aside>
-          </>
-        )}
-      </AnimatePresence>
+      {/* Mobile bottom nav */}
+      <AdminBottomNav pathname={pathname} />
 
       {/* Main column */}
       <div className="lg:pl-60">
         <header className="sticky top-0 z-20 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur">
-          <button
-            type="button"
-            onClick={() => setMobileNavOpen(true)}
-            aria-label="মেনু খুলুন"
-            className="grid size-9 shrink-0 place-items-center rounded-xl text-foreground hover:bg-accent lg:hidden"
-          >
-            <Menu className="size-5" />
-          </button>
+          <Link to="/admin" className="flex items-center gap-2 lg:hidden">
+            <BrandMark />
+          </Link>
 
           <Breadcrumb>
             <BreadcrumbList>
@@ -245,7 +233,7 @@ export function AdminShell({
           </div>
         </header>
 
-        <div className="flex-1 space-y-6 p-4 sm:p-6 lg:p-8">{children}</div>
+        <div className="flex-1 space-y-6 p-4 pb-24 sm:p-6 lg:p-8 lg:pb-8">{children}</div>
       </div>
     </div>
   );

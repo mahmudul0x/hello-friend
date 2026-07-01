@@ -7,11 +7,51 @@ import { cn } from "@/lib/utils";
 import { toBnDigits } from "@/lib/format";
 
 const items = [
-  { to: "/", label: "হোম", icon: Home, match: (p: string) => p === "/" },
-  { to: "/categories/mango", label: "ফল গাছ", icon: Apple, match: (p: string) => p.startsWith("/categories/mango") || p.startsWith("/categories/citrus") || p.startsWith("/categories/litchi") || p.startsWith("/categories/guava") || p.startsWith("/categories/tropical") },
-  { to: "/categories/flowering", label: "ফুল গাছ", icon: Flower2, match: (p: string) => p.startsWith("/categories/flowering") },
-  { to: "/shop", label: "অফার", icon: Tag, match: (p: string) => p.startsWith("/shop") },
-  { to: "/contact", label: "যোগাযোগ", icon: Phone, match: (p: string) => p.startsWith("/contact") },
+  {
+    to: "/",
+    label: "হোম",
+    icon: Home,
+    match: (p: string) => p === "/",
+    color: "#2E7D32",
+    tint: "bg-[#2E7D32]/10",
+  },
+  {
+    to: "/categories/mango",
+    label: "ফল গাছ",
+    icon: Apple,
+    match: (p: string) =>
+      p.startsWith("/categories/mango") ||
+      p.startsWith("/categories/citrus") ||
+      p.startsWith("/categories/litchi") ||
+      p.startsWith("/categories/guava") ||
+      p.startsWith("/categories/tropical"),
+    color: "#E65100",
+    tint: "bg-[#E65100]/10",
+  },
+  {
+    to: "/categories/flowering",
+    label: "ফুল গাছ",
+    icon: Flower2,
+    match: (p: string) => p.startsWith("/categories/flowering"),
+    color: "#C2185B",
+    tint: "bg-[#C2185B]/10",
+  },
+  {
+    to: "/shop",
+    label: "অফার",
+    icon: Tag,
+    match: (p: string) => p.startsWith("/shop"),
+    color: "#C8A415",
+    tint: "bg-[#C8A415]/10",
+  },
+  {
+    to: "/contact",
+    label: "যোগাযোগ",
+    icon: Phone,
+    match: (p: string) => p.startsWith("/contact"),
+    color: "#1565C0",
+    tint: "bg-[#1565C0]/10",
+  },
 ];
 
 
@@ -43,18 +83,19 @@ export function MobileBottomNav() {
                   className="group flex flex-col items-center justify-center gap-1 px-1 py-2.5"
                 >
                   <span className="relative grid size-10 place-items-center">
-                    {active && (
+                    {active ? (
                       <motion.span
                         layoutId="mob-nav-active"
-                        className="absolute inset-0 rounded-2xl gradient-primary shadow-soft"
+                        className="absolute inset-0 rounded-2xl shadow-soft"
+                        style={{ backgroundColor: it.color }}
                         transition={{ type: "spring", stiffness: 380, damping: 30 }}
                       />
+                    ) : (
+                      <span className={cn("absolute inset-0 rounded-2xl", it.tint)} />
                     )}
                     <Icon
-                      className={cn(
-                        "relative size-5 transition",
-                        active ? "text-primary-foreground" : "text-foreground/70 group-hover:text-primary",
-                      )}
+                      className="relative size-5 transition"
+                      style={{ color: active ? "#fff" : it.color }}
                     />
                     {count > 0 && (
                       <span className="absolute -right-1 -top-1 grid size-4 place-items-center rounded-full bg-gold text-[10px] font-bold text-gold-foreground">
@@ -65,8 +106,9 @@ export function MobileBottomNav() {
                   <span
                     className={cn(
                       "font-bn text-[10px] font-medium leading-none transition",
-                      active ? "text-primary" : "text-foreground/70",
+                      !active && "text-foreground/70",
                     )}
+                    style={active ? { color: it.color } : undefined}
                   >
                     {it.label}
                   </span>
