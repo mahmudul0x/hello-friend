@@ -1,9 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Search, Users } from "lucide-react";
 import { formatBDT, toBnDigits } from "@/lib/format";
 import { useCustomers } from "@/hooks/useAdmin";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
+import { AdminPagination, usePagination } from "@/components/admin/AdminPagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -21,6 +22,8 @@ export const Route = createFileRoute("/admin/customers")({
 function AdminCustomers() {
   const { data: customers = [], isLoading } = useCustomers();
   const [q, setQ] = useState("");
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 15;
 
   const filtered = useMemo(() => {
     if (!q.trim()) return customers;
@@ -29,6 +32,10 @@ function AdminCustomers() {
       (c) => c.name.toLowerCase().includes(query) || (c.phone ?? "").includes(q),
     );
   }, [customers, q]);
+
+  const { pageItems, page: currentPage, totalPages } = usePagination(filtered, PAGE_SIZE, page);
+
+  useEffect(() => { setPage(1); }, [q]);
 
   return (
     <div className="space-y-6">
@@ -69,14 +76,14 @@ function AdminCustomers() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {filtered.length === 0 ? (
+                {pageItems.length === 0 ? (
                   <TableRow>
                     <TableCell colSpan={5} className="font-bn h-32 text-center text-muted-foreground">
                       কোনো গ্রাহক পাওয়া যায়নি।
                     </TableCell>
                   </TableRow>
                 ) : (
-                  filtered.map((c) => (
+                  pageItems.map((c) => (
                     <TableRow key={c.customer_key}>
                       <TableCell>
                         <div className="flex items-center gap-3">
@@ -104,6 +111,12 @@ function AdminCustomers() {
                 )}
               </TableBody>
             </Table>
+            <AdminPagination
+              page={currentPage}
+              totalPages={totalPages}
+              totalItems={filtered.length}
+              onPageChange={setPage}
+            />
           </Card>
         </>
       )}

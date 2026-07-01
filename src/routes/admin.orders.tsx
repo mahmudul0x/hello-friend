@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Eye, PackageX, Search } from "lucide-react";
 import { toast } from "sonner";
 import { formatBDT, toBnDigits } from "@/lib/format";
@@ -8,6 +8,7 @@ import type { OrderStatus } from "@/lib/supabase/mutations";
 import type { OrderRow } from "@/lib/supabase/queries";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
 import { OrderDetailDialog } from "@/components/admin/OrderDetailDialog";
+import { AdminPagination, usePagination } from "@/components/admin/AdminPagination";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -38,6 +39,8 @@ function AdminOrders() {
   const [q, setQ] = useState("");
   const [statusFilter, setStatusFilter] = useState<OrderStatus | "all">("all");
   const [selected, setSelected] = useState<OrderRow | null>(null);
+  const [page, setPage] = useState(1);
+  const PAGE_SIZE = 15;
 
   const filtered = useMemo(() => {
     let list = orders;
@@ -50,6 +53,10 @@ function AdminOrders() {
     }
     return list;
   }, [orders, statusFilter, q]);
+
+  const { pageItems, page: currentPage, totalPages } = usePagination(filtered, PAGE_SIZE, page);
+
+  useEffect(() => { setPage(1); }, [q, statusFilter]);
 
   const handleStatusChange = async (orderId: string, status: OrderStatus) => {
     try {
@@ -111,14 +118,14 @@ function AdminOrders() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filtered.length === 0 ? (
+              {pageItems.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={7} className="font-bn h-32 text-center text-muted-foreground">
                     কোনো অর্ডার পাওয়া যায়নি।
                   </TableCell>
                 </TableRow>
               ) : (
-                filtered.map((o) => (
+                pageItems.map((o) => (
                   <TableRow key={o.id} className="cursor-pointer" onClick={() => setSelected(o)}>
                     <TableCell className="font-semibold">{o.order_number}</TableCell>
                     <TableCell className="font-bn">{o.customer_name}</TableCell>
@@ -151,6 +158,12 @@ function AdminOrders() {
               )}
             </TableBody>
           </Table>
+          <AdminPagination
+            page={currentPage}
+            totalPages={totalPages}
+            totalItems={filtered.length}
+            onPageChange={setPage}
+          />
         </Card>
       )}
 

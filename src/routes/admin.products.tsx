@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import { formatBDT, toBnDigits } from "@/lib/format";
@@ -7,6 +7,7 @@ import { useProducts, useCategories } from "@/hooks/useCatalog";
 import { useDeleteProduct } from "@/hooks/useAdmin";
 import { ProductFormDialog } from "@/components/admin/ProductFormDialog";
 import { AdminPageHeader } from "@/components/admin/AdminShell";
+import { AdminPagination, usePagination } from "@/components/admin/AdminPagination";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,9 +36,11 @@ function AdminProducts() {
   const deleteProduct = useDeleteProduct();
   const [q, setQ] = useState("");
   const [categoryFilter, setCategoryFilter] = useState("all");
+  const [page, setPage] = useState(1);
   const [editing, setEditing] = useState<Product | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toDelete, setToDelete] = useState<Product | null>(null);
+  const PAGE_SIZE = 15;
 
   const categoryNameBySlug = useMemo(
     () => new Map(categories.map((c) => [c.slug, c.name])),
@@ -53,6 +56,10 @@ function AdminProducts() {
     }
     return list;
   }, [products, categoryFilter, q]);
+
+  const { pageItems, page: currentPage, totalPages } = usePagination(filtered, PAGE_SIZE, page);
+
+  useEffect(() => { setPage(1); }, [q, categoryFilter]);
 
   const handleDelete = async () => {
     if (!toDelete) return;
@@ -115,14 +122,14 @@ function AdminProducts() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {filtered.length === 0 ? (
+            {pageItems.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={5} className="font-bn h-32 text-center text-muted-foreground">
                   কোনো পণ্য পাওয়া যায়নি।
                 </TableCell>
               </TableRow>
             ) : (
-              filtered.map((p) => (
+              pageItems.map((p) => (
                 <TableRow key={p.slug}>
                   <TableCell>
                     <div className="flex items-center gap-3">
@@ -165,6 +172,12 @@ function AdminProducts() {
             )}
           </TableBody>
         </Table>
+        <AdminPagination
+          page={currentPage}
+          totalPages={totalPages}
+          totalItems={filtered.length}
+          onPageChange={setPage}
+        />
       </Card>
 
       <ProductFormDialog open={dialogOpen} onOpenChange={setDialogOpen} product={editing} categories={categories} />
