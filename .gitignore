@@ -16,6 +16,12 @@ dist-ssr
 .nitro
 *.local
 
+# This project uses bun.lock; ignore lockfiles from other package managers
+# that may get generated locally by mistake.
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
 # Wrangler / Cloudflare
 .wrangler/
 .dev.vars
