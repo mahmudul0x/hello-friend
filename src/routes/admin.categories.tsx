@@ -6,6 +6,7 @@ import { toBnDigits } from "@/lib/format";
 import { useCategories } from "@/hooks/useCatalog";
 import { useDeleteCategory } from "@/hooks/useAdmin";
 import { CategoryFormDialog } from "@/components/admin/CategoryFormDialog";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +17,9 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
 import type { Category } from "@/data/categories";
 
 export const Route = createFileRoute("/admin/categories")({
@@ -42,34 +46,53 @@ function AdminCategories() {
   };
 
   return (
-    <div>
-      <div className="mb-5 flex items-center justify-between">
-        <h3 className="font-bn font-display text-lg font-semibold">বিভাগসমূহ</h3>
-        <button
-          onClick={() => { setEditing(null); setDialogOpen(true); }}
-          className="font-bn inline-flex items-center gap-2 rounded-full gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <Plus className="size-4" /> নতুন বিভাগ
-        </button>
-      </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="বিভাগসমূহ"
+        subtitle={`মোট ${toBnDigits(categories.length)}টি বিভাগ`}
+        actions={
+          <Button onClick={() => { setEditing(null); setDialogOpen(true); }} className="font-bn">
+            <Plus /> নতুন বিভাগ
+          </Button>
+        }
+      />
+
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {categories.map((c) => (
-          <div key={c.slug} className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
+          <Card key={c.slug} className="overflow-hidden">
             <img src={c.image} alt="" className="h-32 w-full object-cover" />
-            <div className="p-5">
+            <CardContent className="p-4">
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <h4 className="font-bn truncate font-semibold">{c.name}</h4>
                   <p className="font-bn truncate text-xs text-muted-foreground">{c.nameBn}</p>
                 </div>
-                <span className="font-bn rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">{toBnDigits(c.count)}</span>
+                <Badge variant="secondary" className="font-bn shrink-0 bg-primary/10 text-primary hover:bg-primary/10">
+                  {toBnDigits(c.count)}
+                </Badge>
               </div>
-              <div className="mt-4 flex gap-2">
-                <button onClick={() => { setEditing(c); setDialogOpen(true); }} aria-label="এডিট" className="flex-1 rounded-full border border-border py-2 text-xs hover:bg-accent"><Pencil className="mx-auto size-3.5" /></button>
-                <button onClick={() => setToDelete(c)} aria-label="মুছুন" className="flex-1 rounded-full border border-border py-2 text-xs text-destructive hover:bg-destructive/10"><Trash2 className="mx-auto size-3.5" /></button>
+              <div className="mt-3 flex gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1"
+                  onClick={() => { setEditing(c); setDialogOpen(true); }}
+                  aria-label="এডিট"
+                >
+                  <Pencil className="size-3.5" />
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex-1 text-destructive hover:bg-destructive/10 hover:text-destructive"
+                  onClick={() => setToDelete(c)}
+                  aria-label="মুছুন"
+                >
+                  <Trash2 className="size-3.5" />
+                </Button>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         ))}
       </div>
 

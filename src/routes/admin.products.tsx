@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Pencil, Plus, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
-import { formatBDT } from "@/lib/format";
+import { formatBDT, toBnDigits } from "@/lib/format";
 import { useProducts, useCategories } from "@/hooks/useCatalog";
 import { useDeleteProduct } from "@/hooks/useAdmin";
 import { ProductFormDialog } from "@/components/admin/ProductFormDialog";
+import { AdminPageHeader } from "@/components/admin/AdminShell";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,6 +17,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import type { Product } from "@/data/products";
 
 export const Route = createFileRoute("/admin/products")({
@@ -27,13 +34,25 @@ function AdminProducts() {
   const { data: categories = [] } = useCategories();
   const deleteProduct = useDeleteProduct();
   const [q, setQ] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
   const [editing, setEditing] = useState<Product | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [toDelete, setToDelete] = useState<Product | null>(null);
 
-  const filtered = q.trim()
-    ? products.filter((p) => p.name.toLowerCase().includes(q.toLowerCase()) || p.nameBn.includes(q))
-    : products;
+  const categoryNameBySlug = useMemo(
+    () => new Map(categories.map((c) => [c.slug, c.name])),
+    [categories],
+  );
+
+  const filtered = useMemo(() => {
+    let list = products;
+    if (categoryFilter !== "all") list = list.filter((p) => p.category === categoryFilter);
+    if (q.trim()) {
+      const query = q.toLowerCase();
+      list = list.filter((p) => p.name.toLowerCase().includes(query) || p.nameBn.includes(q));
+    }
+    return list;
+  }, [products, categoryFilter, q]);
 
   const handleDelete = async () => {
     if (!toDelete) return;
@@ -48,47 +67,105 @@ function AdminProducts() {
   };
 
   return (
-    <div>
-      <div className="mb-5 flex flex-wrap items-center gap-3">
-        <div className="flex flex-1 items-center gap-2 rounded-full border border-border bg-card px-4 py-2.5">
-          <Search className="size-4 text-muted-foreground" />
-          <input
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            placeholder="পণ্য খুঁজুন…"
-            className="font-bn flex-1 bg-transparent text-sm focus:outline-none"
-          />
-        </div>
-        <button
-          onClick={() => { setEditing(null); setDialogOpen(true); }}
-          className="font-bn inline-flex items-center gap-2 rounded-full gradient-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground"
-        >
-          <Plus className="size-4" /> নতুন পণ্য
-        </button>
-      </div>
-      <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
-        <table className="w-full text-sm">
-          <thead className="bg-muted/50 text-xs tracking-wide text-muted-foreground">
-            <tr><th className="font-bn px-4 py-3 text-left">পণ্য</th><th className="font-bn px-4 py-3 text-left">বিভাগ</th><th className="font-bn px-4 py-3 text-right">মূল্য</th><th className="font-bn px-4 py-3 text-center">স্টক</th><th className="px-4 py-3"></th></tr>
-          </thead>
-          <tbody className="divide-y">
-            {filtered.map((p) => (
-              <tr key={p.slug} className="hover:bg-muted/30">
-                <td className="px-4 py-3"><div className="flex items-center gap-3"><img src={p.image} alt="" className="size-10 shrink-0 rounded-lg object-cover" /><div className="min-w-0"><div className="font-bn truncate font-medium">{p.name}</div><div className="font-bn truncate text-xs text-muted-foreground">{p.nameBn}</div></div></div></td>
-                <td className="px-4 py-3 capitalize text-muted-foreground">{p.category}</td>
-                <td className="font-bn px-4 py-3 text-right font-semibold">{formatBDT(p.price)}</td>
-                <td className="px-4 py-3 text-center">{p.inStock ? <span className="font-bn rounded-full bg-primary/10 px-2 py-0.5 text-xs text-primary">স্টকে আছে</span> : <span className="font-bn rounded-full bg-destructive/10 px-2 py-0.5 text-xs text-destructive">শেষ</span>}</td>
-                <td className="px-4 py-3 text-right">
-                  <div className="inline-flex gap-1">
-                    <button onClick={() => { setEditing(p); setDialogOpen(true); }} aria-label="এডিট" className="grid size-8 place-items-center rounded-lg hover:bg-accent"><Pencil className="size-3.5" /></button>
-                    <button onClick={() => setToDelete(p)} aria-label="মুছুন" className="grid size-8 place-items-center rounded-lg text-destructive hover:bg-destructive/10"><Trash2 className="size-3.5" /></button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+    <div className="space-y-6">
+      <AdminPageHeader
+        title="পণ্য"
+        subtitle={`মোট ${toBnDigits(products.length)}টি পণ্য`}
+        actions={
+          <Button onClick={() => { setEditing(null); setDialogOpen(true); }} className="font-bn">
+            <Plus /> নতুন পণ্য
+          </Button>
+        }
+      />
+
+      <Card>
+        <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
+            <Input
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="পণ্য খুঁজুন…"
+              className="font-bn pl-9"
+            />
+          </div>
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="font-bn w-full sm:w-56">
+              <SelectValue placeholder="বিভাগ নির্বাচন" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all" className="font-bn">সব বিভাগ</SelectItem>
+              {categories.map((c) => (
+                <SelectItem key={c.slug} value={c.slug} className="font-bn">{c.name}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </CardContent>
+      </Card>
+
+      <Card>
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="font-bn">পণ্য</TableHead>
+              <TableHead className="font-bn">বিভাগ</TableHead>
+              <TableHead className="font-bn text-right">মূল্য</TableHead>
+              <TableHead className="font-bn text-center">স্টক</TableHead>
+              <TableHead className="text-right"></TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filtered.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={5} className="font-bn h-32 text-center text-muted-foreground">
+                  কোনো পণ্য পাওয়া যায়নি।
+                </TableCell>
+              </TableRow>
+            ) : (
+              filtered.map((p) => (
+                <TableRow key={p.slug}>
+                  <TableCell>
+                    <div className="flex items-center gap-3">
+                      <img src={p.image} alt="" className="size-10 shrink-0 rounded-lg object-cover" />
+                      <div className="min-w-0">
+                        <div className="font-bn truncate font-medium">{p.name}</div>
+                        <div className="font-bn truncate text-xs text-muted-foreground">{p.nameBn}</div>
+                      </div>
+                    </div>
+                  </TableCell>
+                  <TableCell className="font-bn text-muted-foreground">
+                    {categoryNameBySlug.get(p.category) ?? p.category}
+                  </TableCell>
+                  <TableCell className="font-bn text-right font-semibold">{formatBDT(p.price)}</TableCell>
+                  <TableCell className="text-center">
+                    {p.inStock ? (
+                      <Badge variant="secondary" className="font-bn bg-primary/10 text-primary hover:bg-primary/10">স্টকে আছে</Badge>
+                    ) : (
+                      <Badge variant="destructive" className="font-bn">শেষ</Badge>
+                    )}
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="inline-flex gap-1">
+                      <Button variant="ghost" size="icon" onClick={() => { setEditing(p); setDialogOpen(true); }} aria-label="এডিট">
+                        <Pencil className="size-3.5" />
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => setToDelete(p)}
+                        aria-label="মুছুন"
+                        className="text-destructive hover:bg-destructive/10 hover:text-destructive"
+                      >
+                        <Trash2 className="size-3.5" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))
+            )}
+          </TableBody>
+        </Table>
+      </Card>
 
       <ProductFormDialog open={dialogOpen} onOpenChange={setDialogOpen} product={editing} categories={categories} />
 
