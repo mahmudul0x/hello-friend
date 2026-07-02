@@ -265,11 +265,11 @@ function CatBanner({ to, title, img, bg }: { to: string; title: string; img: str
         bg,
       )}
     >
-      <Link to={to as any} aria-label={title} className="grid h-full w-full place-items-center">
+      <Link to={to as any} aria-label={title} className="block h-full w-full">
         <img
           src={img}
           alt={title}
-          className="h-full w-full object-contain transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+          className="h-full w-full object-cover transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
           loading="lazy"
           decoding="async"
           onError={onImgError}
