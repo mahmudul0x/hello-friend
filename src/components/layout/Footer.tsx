@@ -6,6 +6,7 @@ import {
 import { site } from "@/data/site";
 import { useCategories } from "@/hooks/useCatalog";
 import { Container } from "@/components/common/Container";
+import logoFull from "@/assets/logo-full.png";
 
 const socialLinks = [
   { Icon: Facebook, href: site.socials.facebook, label: "Facebook" },
@@ -132,11 +133,8 @@ export function Footer() {
       <div className="relative lg:hidden">
         {/* Brand block */}
         <div className="px-6 pb-6 pt-10 text-center">
-          <div className="mb-4 inline-flex size-16 items-center justify-center rounded-full border border-[#C8A415]/30 bg-[#2E7D32]/20">
-            <Leaf className="size-8 text-[#C8A415]" />
-          </div>
-          <h2 className="font-display text-2xl font-extrabold tracking-tight text-[#C8A415]">অল ট্রি বিডি শপ</h2>
-          <p className="font-bn mt-1 text-[11px] uppercase tracking-[0.18em] text-white/55">প্রকৃতির ছোঁয়ায় আপনার ঘর</p>
+          <img src={logoFull} alt="Abid Nursery and Plants" className="mx-auto h-20 w-auto object-contain" />
+          <p className="font-bn mt-2 text-[11px] uppercase tracking-[0.18em] text-white/55">প্রকৃতির ছোঁয়ায় আপনার ঘর</p>
 
           <div className="mt-6 flex justify-center gap-3">
             {socialLinks.map(({ Icon, href, label }) => (
@@ -228,14 +226,8 @@ export function Footer() {
         <div className="grid gap-12 lg:grid-cols-[1.4fr_2.6fr_1.5fr]">
           {/* Brand */}
           <div>
-            <Link to="/" className="flex items-center gap-3">
-              <span className="grid size-12 place-items-center rounded-2xl bg-[#2E7D32] shadow-elegant ring-1 ring-white/10">
-                <Leaf className="size-6" />
-              </span>
-              <div className="leading-tight">
-                <div className="font-display text-xl font-extrabold tracking-tight">All Tree BD Shop</div>
-                <div className="font-bn text-xs text-white/70">প্রিমিয়াম অনলাইন নার্সারি</div>
-              </div>
+            <Link to="/" className="flex items-center">
+              <img src={logoFull} alt="Abid Nursery and Plants" className="h-16 w-auto object-contain" />
             </Link>
             <p className="font-bn mt-5 text-sm leading-relaxed text-white/75">
               বাংলাদেশের প্রিমিয়াম অনলাইন নার্সারি — গ্রাফটিং ফল গাছ, ইনডোর গ্রিন ও দুর্লভ বিদেশি চারা, সারা দেশে নিরাপদে ডেলিভারি।

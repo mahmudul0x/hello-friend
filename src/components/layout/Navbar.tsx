@@ -14,6 +14,7 @@ import { signOut } from "@/lib/supabase/auth.server";
 import { SmartImage } from "@/components/common/SmartImage";
 import { toBnDigits } from "@/lib/format";
 import { toast } from "sonner";
+import logoFull from "@/assets/logo-full.png";
 
 const nav = [
   { to: "/", label: "হোম" },
@@ -103,13 +104,8 @@ export function Navbar() {
             {open ? <X className="size-6" /> : <Menu className="size-6" />}
           </button>
 
-          <Link to="/" className="flex flex-col items-center justify-center leading-tight">
-            <span className="flex items-center gap-1.5">
-              <Leaf className="size-4 text-primary" />
-              <span className="font-display text-[22px] font-extrabold tracking-tight text-primary">Abid</span>
-            </span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-primary/80">Nursery and Plants</span>
-            <span className="font-bn -mt-0.5 text-[10px] text-muted-foreground">ফল ও ফুলের গাছ বিক্রয় কেন্দ্র</span>
+          <Link to="/" className="flex items-center justify-center">
+            <img src={logoFull} alt="Abid Nursery and Plants" className="h-11 w-auto object-contain" />
           </Link>
 
           <div className="flex items-center justify-end gap-0.5">
@@ -135,14 +131,8 @@ export function Navbar() {
         {/* Desktop header */}
         <div className="mx-auto hidden max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-3 px-4 py-3 sm:gap-4 sm:px-6 lg:grid lg:px-8">
           {/* Logo */}
-          <Link to="/" className="flex min-w-0 items-center gap-2.5">
-            <span className="grid size-10 shrink-0 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-soft">
-              <Leaf className="size-5" />
-            </span>
-            <span className="flex min-w-0 flex-col leading-tight">
-              <span className="font-display truncate text-base font-bold text-foreground">All Tree BD</span>
-              <span className="font-bn -mt-0.5 truncate text-[11px] text-muted-foreground">গাছের চারা বিক্রয়</span>
-            </span>
+          <Link to="/" className="flex min-w-0 items-center">
+            <img src={logoFull} alt="Abid Nursery and Plants" className="h-12 w-auto object-contain" />
           </Link>
 
 

@@ -28,6 +28,7 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { cn } from "@/lib/utils";
+import logoIcon from "@/assets/logo-icon.png";
 
 const nav = [
   { to: "/admin", label: "ড্যাশবোর্ড", Icon: LayoutDashboard, exact: true, color: "#2E7D32" },
@@ -57,8 +58,8 @@ function initials(name?: string | null) {
 
 function BrandMark() {
   return (
-    <span className="grid size-8 shrink-0 place-items-center rounded-xl gradient-primary text-primary-foreground shadow-soft">
-      <Leaf className="size-4" />
+    <span className="grid size-8 shrink-0 place-items-center">
+      <img src={logoIcon} alt="Abid Nursery and Plants" className="size-8 object-contain" />
     </span>
   );
 }

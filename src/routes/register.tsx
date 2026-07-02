@@ -1,7 +1,7 @@
 import { createFileRoute, Link, useNavigate, useRouter } from "@tanstack/react-router";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Leaf, Lock, Mail, User } from "lucide-react";
+import { Lock, Mail, User } from "lucide-react";
 import { z } from "zod";
 import { PageLayout } from "@/components/layout/PageLayout";
 import { Container } from "@/components/common/Container";
@@ -9,6 +9,7 @@ import { toast } from "sonner";
 import { signIn, signUp } from "@/lib/supabase/auth.server";
 import { useInvalidateSession } from "@/hooks/useSession";
 import { friendlyError } from "@/lib/errorMessage";
+import logoIcon from "@/assets/logo-icon.png";
 
 export const Route = createFileRoute("/register")({
   validateSearch: z.object({ redirect: z.string().optional() }),
@@ -45,7 +46,7 @@ function RegisterPage() {
     <PageLayout>
       <Container className="grid place-items-center py-16">
         <div className="w-full max-w-md rounded-3xl border border-border bg-card p-8 shadow-soft sm:p-10">
-          <Link to="/" className="mx-auto mb-6 grid size-14 place-items-center rounded-2xl gradient-primary text-primary-foreground shadow-soft"><Leaf className="size-6" /></Link>
+          <Link to="/" className="mx-auto mb-6 grid size-16 place-items-center"><img src={logoIcon} alt="Abid Nursery and Plants" className="size-16 object-contain" /></Link>
           <h1 className="font-bn text-center font-display text-2xl font-bold">আমাদের সাথে যুক্ত হোন</h1>
           <p className="font-bn mt-1 text-center text-sm text-muted-foreground">পছন্দ সংরক্ষণ ও অর্ডার ট্র্যাক করতে একাউন্ট তৈরি করুন।</p>
 
