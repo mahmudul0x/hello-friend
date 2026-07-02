@@ -81,8 +81,8 @@ export function ProductCard({ product, index = 0 }: { product: Product; index?: 
       <div className="flex flex-1 flex-col gap-2 p-3">
         <div className="font-bn flex items-center gap-1 text-xs text-muted-foreground">
           <Star className="size-3.5 fill-gold text-gold" />
-          <span className="font-medium text-foreground">{toBnDigits(product.rating.toFixed(1))}</span>
-          <span>· {toBnDigits(product.reviews)} রিভিউ</span>
+          <span className="font-bold tabular-nums text-foreground">{toBnDigits(product.rating.toFixed(1))}</span>
+          <span className="font-semibold tabular-nums">· {toBnDigits(product.reviews)} রিভিউ</span>
         </div>
 
         <Link to="/products/$slug" params={{ slug: product.slug }} className="font-bn line-clamp-1 font-semibold text-foreground transition group-hover:text-primary">

@@ -96,12 +96,12 @@ function ProductPage() {
             ))}
           </div>
 
-          <div className="font-bn mt-3 flex items-center gap-2 text-sm">
+          <div className="font-bn mt-3 flex items-center gap-2 text-base">
             <div className="flex items-center gap-1 text-gold">
               {Array.from({ length: Math.round(product.rating) }).map((_, i) => <Star key={i} className="size-4 fill-current" />)}
             </div>
-            <span className="font-medium">{toBnDigits(product.rating.toFixed(1))}</span>
-            <span className="text-muted-foreground">· {toBnDigits(product.reviews)} রিভিউ</span>
+            <span className="font-bold tabular-nums text-foreground">{toBnDigits(product.rating.toFixed(1))}</span>
+            <span className="font-semibold tabular-nums text-muted-foreground">· {toBnDigits(product.reviews)} রিভিউ</span>
           </div>
 
           <div className="font-bn mt-6 flex items-end gap-3">
@@ -126,7 +126,7 @@ function ProductPage() {
                 <Icon className="mt-0.5 size-4 shrink-0 text-primary" />
                 <div className="min-w-0">
                   <dt className="font-bn text-[11px] tracking-wide text-muted-foreground">{label}</dt>
-                  <dd className="font-bn truncate font-medium text-foreground">{v}</dd>
+                  <dd className="font-bn truncate text-base font-bold tabular-nums text-foreground">{v}</dd>
                 </div>
               </div>
             ))}
@@ -159,14 +159,14 @@ function ProductPage() {
               <Truck className="size-5 text-primary" />
               <div>
                 <div className="font-bn font-semibold">ফ্রি ডেলিভারি</div>
-                <div className="font-bn text-xs text-muted-foreground">৳১,৫০০+ অর্ডারে</div>
+                <div className="font-bn text-xs font-bold tabular-nums text-muted-foreground">৳১,৫০০+ অর্ডারে</div>
               </div>
             </div>
             <div className="flex items-center gap-3 rounded-2xl bg-gold/10 p-4 text-sm">
               <ShieldCheck className="size-5 text-gold-foreground" />
               <div>
                 <div className="font-bn font-semibold">লিভিং গ্যারান্টি</div>
-                <div className="font-bn text-xs text-muted-foreground">গ্রাফটিং গাছে ৩০ দিনের</div>
+                <div className="font-bn text-xs font-bold tabular-nums text-muted-foreground">গ্রাফটিং গাছে ৩০ দিনের</div>
               </div>
             </div>
           </div>
