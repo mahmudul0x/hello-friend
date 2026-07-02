@@ -1,10 +1,13 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import {
-  BadgeCheck, Headphones, Leaf, ShieldCheck, Sparkles, Truck, Wallet,
+  ArrowRight, BadgeCheck, Headphones, Leaf, Quote, ShieldCheck, Sparkles, Star, Truck, Wallet,
 } from "lucide-react";
 import type { Product } from "@/data/products";
-import { useProducts } from "@/hooks/useCatalog";
+import type { Testimonial } from "@/data/site";
+import {
+  useProducts, useTestimonials, selectBestsellers, selectNewArrivals, selectByCategory,
+} from "@/hooks/useCatalog";
 import { formatBDT } from "@/lib/format";
 import { useCart } from "@/context/CartContext";
 import { toast } from "sonner";
@@ -35,6 +38,17 @@ const POPULAR_SLUGS = ["amrapali-mango-grafted", "thai-pink-guava", "bedana-litc
 
 export function MobileHome() {
   const { data: products = [] } = useProducts();
+  const { data: testimonials = [] } = useTestimonials();
+
+  const fresh = selectNewArrivals(products).slice(0, 8);
+  const bestsellers = selectBestsellers(products).slice(0, 8);
+  const fruitCollection = [
+    ...selectByCategory(products, "guava"),
+    ...selectByCategory(products, "litchi"),
+    ...selectByCategory(products, "citrus"),
+    ...selectByCategory(products, "tropical"),
+  ].slice(0, 8);
+
   return (
     <div className="lg:hidden">
       <MobileHero />
@@ -44,6 +58,30 @@ export function MobileHome() {
       <MobileSectionTitle title="জনপ্রিয় গাছ সমূহ" />
       <MobilePopular products={products} />
       <MobileCodBanner />
+      {fresh.length > 0 && (
+        <>
+          <MobileSectionTitle title="নতুন এসেছে" />
+          <MobileProductRail products={fresh} href="/shop?sort=new" ctaBn="সব নতুন গাছ" />
+        </>
+      )}
+      {bestsellers.length > 0 && (
+        <>
+          <MobileSectionTitle title="বেস্ট সেলার" />
+          <MobileProductRail products={bestsellers} href="/shop?sort=bestsellers" ctaBn="সব বেস্ট সেলার" />
+        </>
+      )}
+      {fruitCollection.length > 0 && (
+        <>
+          <MobileSectionTitle title="ফল গাছের সংগ্রহ" />
+          <MobileProductRail products={fruitCollection} href="/categories/mango" ctaBn="সব ফল গাছ" />
+        </>
+      )}
+      {testimonials.length > 0 && (
+        <>
+          <MobileSectionTitle title="কাস্টমার রিভিউ" />
+          <MobileReviews testimonials={testimonials} />
+        </>
+      )}
       <MobileSectionTitle title="কেন আমাদের বেছে নেবেন" />
       <MobileWhyUs />
       <div className="h-6" />
@@ -229,6 +267,97 @@ function MobileCodBanner() {
           loading="lazy"
           decoding="async"
         />
+      </div>
+    </section>
+  );
+}
+
+/* ── Generic product rail (new/bestseller/fruit) ── */
+function MobileProductRail({ products, href, ctaBn }: { products: Product[]; href: string; ctaBn: string }) {
+  return (
+    <section className="mt-4 px-3">
+      <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {products.map((p, idx) => (
+          <RailCard key={p.slug} product={p} index={idx} />
+        ))}
+      </div>
+      <div className="mt-3 text-center">
+        <Link
+          to={href as any}
+          className="font-bn inline-flex items-center gap-1.5 rounded-full border border-[#1B5E20]/30 bg-white px-5 py-2.5 text-[12px] font-bold text-[#1B5E20] shadow-soft active:scale-95"
+        >
+          {ctaBn} <ArrowRight className="size-3.5" />
+        </Link>
+      </div>
+    </section>
+  );
+}
+
+function RailCard({ product, index }: { product: Product; index: number }) {
+  const cart = useCart();
+
+  const handleAdd = () => {
+    cart.add(product);
+    toast.success(`${product.nameBn} কার্টে যোগ হয়েছে`);
+  };
+
+  return (
+    <motion.article
+      initial={{ opacity: 0, y: 14 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true, margin: "-30px" }}
+      transition={{ duration: 0.35, delay: Math.min(index * 0.05, 0.2) }}
+      className="flex w-[44%] shrink-0 snap-start flex-col items-center rounded-2xl border border-border/60 bg-card p-3 text-center shadow-soft"
+    >
+      <Link to="/products/$slug" params={{ slug: product.slug }} className="grid h-24 w-full place-items-center">
+        <img
+          src={product.image}
+          alt={product.nameBn}
+          className="h-24 w-full object-contain"
+          loading="lazy"
+          decoding="async"
+          onError={onImgError}
+        />
+      </Link>
+      <p className="font-bn mt-2 line-clamp-1 text-[13px] font-bold text-foreground">{product.nameBn}</p>
+      <p className="font-bn mt-0.5 text-[15px] font-extrabold text-[#1B5E20]">{formatBDT(product.price)}</p>
+      <button
+        type="button"
+        onClick={handleAdd}
+        className="font-bn mt-2 w-full rounded-full border border-[#1B5E20]/30 bg-white py-1.5 text-[11px] font-bold text-[#1B5E20] active:scale-95"
+      >
+        অর্ডার করুন
+      </button>
+    </motion.article>
+  );
+}
+
+/* ── Reviews ───────────────────────────────────── */
+function MobileReviews({ testimonials }: { testimonials: Testimonial[] }) {
+  return (
+    <section className="mt-4 px-3">
+      <div className="-mx-3 flex snap-x snap-mandatory gap-3 overflow-x-auto px-3 pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {testimonials.map((t) => (
+          <div
+            key={t.name}
+            className="relative w-[80%] shrink-0 snap-start rounded-2xl border border-border/60 bg-card p-4 shadow-soft"
+          >
+            <Quote className="absolute right-4 top-4 size-7 text-[#EAF8E7]" />
+            <div className="flex items-center gap-1 text-gold">
+              {Array.from({ length: t.rating }).map((_, n) => (
+                <Star key={n} className="size-3.5 fill-gold" />
+              ))}
+            </div>
+            <p className="font-bn mt-2.5 line-clamp-3 text-[12.5px] leading-relaxed text-foreground/85">{t.text}</p>
+            <div className="mt-3 flex items-center gap-2.5 border-t border-border/50 pt-3">
+              <img src={t.avatar} alt={`${t.name} avatar`} width={36} height={36} className="size-9 rounded-full object-cover" loading="lazy" decoding="async" />
+              <div>
+                <p className="text-[12px] font-semibold text-foreground">{t.name}</p>
+                <p className="text-[10px] text-muted-foreground">{t.city} · {t.role}</p>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </section>
   );
