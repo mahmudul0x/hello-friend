@@ -245,28 +245,31 @@ function CategoryBanners() {
     <section className="py-14">
       <Container>
         <div className="grid gap-6 lg:grid-cols-2">
-          <CatBanner to="/categories/mango" title="ফল গাছ" img={catFruitBanner} />
-          <CatBanner to="/categories/flowering" title="ফুল গাছ" img={catFlowerBanner} />
+          <CatBanner to="/categories/mango" title="ফল গাছ" img={catFruitBanner} bg="bg-[#EAF8E7]" />
+          <CatBanner to="/categories/flowering" title="ফুল গাছ" img={catFlowerBanner} bg="bg-[#FCE4EC]" />
         </div>
       </Container>
     </section>
   );
 }
 
-function CatBanner({ to, title, img }: { to: string; title: string; img: string }) {
+function CatBanner({ to, title, img, bg }: { to: string; title: string; img: string; bg: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-80px" }}
       transition={{ duration: 0.7 }}
-      className="group overflow-hidden rounded-[28px] shadow-soft ring-1 ring-black/5 transition-all duration-500 hover:shadow-elegant hover:-translate-y-1"
+      className={cn(
+        "group aspect-[16/9] overflow-hidden rounded-[28px] shadow-soft ring-1 ring-black/5 transition-all duration-500 hover:shadow-elegant hover:-translate-y-1",
+        bg,
+      )}
     >
-      <Link to={to as any} aria-label={title}>
+      <Link to={to as any} aria-label={title} className="grid h-full w-full place-items-center">
         <img
           src={img}
           alt={title}
-          className="h-auto w-full object-contain transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
+          className="h-full w-full object-contain transition-transform duration-[1200ms] ease-out group-hover:scale-[1.03]"
           loading="lazy"
           decoding="async"
           onError={onImgError}
