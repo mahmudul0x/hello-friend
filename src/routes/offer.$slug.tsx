@@ -24,6 +24,7 @@ import { formatBDT, toBnDigits } from "@/lib/format";
 import { createOrder } from "@/lib/supabase/orders.server";
 import { friendlyError } from "@/lib/errorMessage";
 import { divisionNames, getDistricts, getUpazilas } from "@/data/bangladesh-geo";
+import type { LandingTestimonial } from "@/lib/supabase/queries";
 import landingLogo from "@/assets/landing-logo.png";
 
 const whatsappNumber = "8801839208687";
@@ -36,7 +37,7 @@ const defaultBenefits = [
   "পোস্ট সেল সহায়তা ও পরামর্শ",
 ];
 
-const defaultTestimonials = [
+const defaultTestimonials: LandingTestimonial[] = [
   { name: "রহিম ইসলাম", city: "ঢাকা", text: "গাছগুলো খুবই ভালো মানের এবং ডেলিভারি ছিল দ্রুত।" },
   { name: "মো. সাকিব", city: "চট্টগ্রাম", text: "সুন্দর করে প্যাকেজিং করা ছিল, গাছ একদম তাজা।" },
   { name: "নাদিয়া আক্তার", city: "সিলেট", text: "প্রফেশনাল সার্ভিস, খুবই খুশি হয়েছি।" },
