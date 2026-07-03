@@ -1,6 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getSupabaseServerClient } from "./server";
+import { getSupabaseServiceRoleClient } from "./serviceRole.server";
 
 const orderItemSchema = z.object({
   slug: z.string(),
@@ -33,7 +34,14 @@ export const createOrder = createServerFn({ method: "POST" })
       data: { user },
     } = await supabase.auth.getUser();
 
-    const { data: order, error } = await supabase
+    // Use the service-role client for the actual write: guest orders (user_id
+    // null) can't satisfy the owner-only SELECT RLS policy, so the anon-key
+    // client's insert+select-back would fail even though the insert itself
+    // is permitted. The payload is already Zod-validated and user_id is
+    // determined by trusted server code above, so bypassing RLS here is safe.
+    const serviceClient = getSupabaseServiceRoleClient();
+
+    const { data: order, error } = await serviceClient
       .from("orders")
       .insert({
         user_id: user?.id ?? null,
@@ -54,7 +62,7 @@ export const createOrder = createServerFn({ method: "POST" })
 
     if (error) throw new Error(error.message);
 
-    const { error: itemsError } = await supabase.from("order_items").insert(
+    const { error: itemsError } = await serviceClient.from("order_items").insert(
       data.items.map((item) => ({
         order_id: order.id,
         product_slug: item.slug,
