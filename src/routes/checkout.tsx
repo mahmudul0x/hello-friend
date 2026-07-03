@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { CheckCircle2, Truck } from "lucide-react";
 import { PageLayout } from "@/components/layout/PageLayout";
@@ -12,6 +12,7 @@ import { site } from "@/data/site";
 import { toast } from "sonner";
 import { createOrder } from "@/lib/supabase/orders.server";
 import { friendlyError } from "@/lib/errorMessage";
+import { divisionNames, getDistricts, getUpazilas } from "@/data/bangladesh-geo";
 
 export const Route = createFileRoute("/checkout")({
   head: () => ({
@@ -29,10 +30,18 @@ function CheckoutPage() {
   const total = subtotal + shipping;
 
   const [form, setForm] = useState({
-    name: "", phone: "", email: "", address: "", city: "", district: "", note: "",
+    name: "", phone: "", email: "", address: "", division: "", district: "", upazila: "", note: "",
   });
   const set = (key: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) =>
     setForm((f) => ({ ...f, [key]: e.target.value }));
+
+  const districts = useMemo(() => getDistricts(form.division), [form.division]);
+  const upazilas = useMemo(() => getUpazilas(form.division, form.district), [form.division, form.district]);
+
+  const setDivision = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setForm((f) => ({ ...f, division: e.target.value, district: "", upazila: "" }));
+  const setDistrict = (e: React.ChangeEvent<HTMLSelectElement>) =>
+    setForm((f) => ({ ...f, district: e.target.value, upazila: "" }));
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -42,8 +51,9 @@ function CheckoutPage() {
           customerPhone: form.phone,
           customerEmail: form.email,
           shippingAddress: form.address,
-          shippingCity: form.city,
+          shippingDivision: form.division,
           shippingDistrict: form.district,
+          shippingUpazila: form.upazila,
           shippingNote: form.note,
           items: items.map(({ product, qty }) => ({
             slug: product.slug, name: product.name, image: product.image, price: product.price, qty,
@@ -93,16 +103,27 @@ function CheckoutPage() {
             </Card>
 
             <Card title="ডেলিভারি ঠিকানা">
-              <Field label="বিস্তারিত ঠিকানা" required><input required className={fieldCls} placeholder="বাড়ি ১২, রোড ৪, ধানমন্ডি" value={form.address} onChange={set("address")} /></Field>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="শহর/উপজেলা" required><input required className={fieldCls} placeholder="ঢাকা" value={form.city} onChange={set("city")} /></Field>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Field label="বিভাগ" required>
+                  <select required className={fieldCls} value={form.division} onChange={setDivision}>
+                    <option value="" disabled>বিভাগ নির্বাচন করুন</option>
+                    {divisionNames.map((d) => <option key={d}>{d}</option>)}
+                  </select>
+                </Field>
                 <Field label="জেলা" required>
-                  <select required className={fieldCls} value={form.district} onChange={set("district")}>
+                  <select required disabled={!form.division} className={fieldCls} value={form.district} onChange={setDistrict}>
                     <option value="" disabled>জেলা নির্বাচন করুন</option>
-                    {["ঢাকা", "চট্টগ্রাম", "রাজশাহী", "খুলনা", "সিলেট", "বরিশাল", "রংপুর", "ময়মনসিংহ"].map((d) => <option key={d}>{d}</option>)}
+                    {districts.map((d) => <option key={d.name}>{d.name}</option>)}
+                  </select>
+                </Field>
+                <Field label="উপজেলা" required>
+                  <select required disabled={!form.district} className={fieldCls} value={form.upazila} onChange={set("upazila")}>
+                    <option value="" disabled>উপজেলা নির্বাচন করুন</option>
+                    {upazilas.map((u) => <option key={u}>{u}</option>)}
                   </select>
                 </Field>
               </div>
+              <Field label="বিস্তারিত ঠিকানা" required><input required className={fieldCls} placeholder="বাড়ি ১২, রোড ৪, ধানমন্ডি" value={form.address} onChange={set("address")} /></Field>
               <Field label="অতিরিক্ত নোট (ঐচ্ছিক)"><textarea rows={3} className={fieldCls} placeholder="ল্যান্ডমার্ক, পছন্দের সময়…" value={form.note} onChange={set("note")} /></Field>
             </Card>
 

@@ -82,8 +82,9 @@ export function OrderDetailDialog({
                     <MapPin className="mt-0.5 size-3.5 shrink-0 text-muted-foreground" />
                     <span>
                       {order.shipping_address}
-                      {order.shipping_city && `, ${order.shipping_city}`}
+                      {order.shipping_upazila && `, ${order.shipping_upazila}`}
                       {order.shipping_district && `, ${order.shipping_district}`}
+                      {order.shipping_division && `, ${order.shipping_division}`}
                     </span>
                   </div>
                   {order.shipping_note && (

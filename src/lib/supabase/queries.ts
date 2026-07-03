@@ -191,8 +191,9 @@ export type OrderRow = {
   customer_phone: string;
   customer_email: string | null;
   shipping_address: string;
-  shipping_city: string | null;
+  shipping_division: string | null;
   shipping_district: string | null;
+  shipping_upazila: string | null;
   shipping_note: string | null;
   subtotal: number;
   shipping_fee: number;

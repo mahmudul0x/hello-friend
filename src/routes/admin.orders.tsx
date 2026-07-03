@@ -111,7 +111,7 @@ function AdminOrders() {
               <TableRow>
                 <TableHead className="font-bn">অর্ডার</TableHead>
                 <TableHead className="font-bn">গ্রাহক</TableHead>
-                <TableHead className="font-bn">শহর</TableHead>
+                <TableHead className="font-bn">জেলা</TableHead>
                 <TableHead className="font-bn text-right">মোট</TableHead>
                 <TableHead className="font-bn">স্ট্যাটাস</TableHead>
                 <TableHead className="font-bn text-right">তারিখ</TableHead>
@@ -130,7 +130,7 @@ function AdminOrders() {
                   <TableRow key={o.id} className="cursor-pointer" onClick={() => setSelected(o)}>
                     <TableCell className="font-semibold">{o.order_number}</TableCell>
                     <TableCell className="font-bn">{o.customer_name}</TableCell>
-                    <TableCell className="font-bn text-muted-foreground">{o.shipping_city ?? "—"}</TableCell>
+                    <TableCell className="font-bn text-muted-foreground">{o.shipping_district ?? "—"}</TableCell>
                     <TableCell className="font-bn text-right font-semibold">{formatBDT(o.total)}</TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
                       <Select value={o.status} onValueChange={(v) => handleStatusChange(o.id, v as OrderStatus)}>
