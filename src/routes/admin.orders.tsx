@@ -59,9 +59,9 @@ function AdminOrders() {
 
   useEffect(() => { setPage(1); }, [q, statusFilter]);
 
-  const handleStatusChange = async (orderId: string, status: OrderStatus) => {
+  const handleStatusChange = async (orderId: string, status: OrderStatus, orderNumber: string) => {
     try {
-      await updateStatus.mutateAsync({ orderId, status });
+      await updateStatus.mutateAsync({ orderId, status, orderNumber });
       toast.success("অর্ডার স্ট্যাটাস আপডেট হয়েছে");
     } catch (err) {
       toast.error(friendlyError(err, "আপডেট ব্যর্থ হয়েছে। আবার চেষ্টা করুন।"));
@@ -133,7 +133,7 @@ function AdminOrders() {
                     <TableCell className="font-bn text-muted-foreground">{o.shipping_district ?? "—"}</TableCell>
                     <TableCell className="font-bn text-right font-semibold">{formatBDT(o.total)}</TableCell>
                     <TableCell onClick={(e) => e.stopPropagation()}>
-                      <Select value={o.status} onValueChange={(v) => handleStatusChange(o.id, v as OrderStatus)}>
+                      <Select value={o.status} onValueChange={(v) => handleStatusChange(o.id, v as OrderStatus, o.order_number)}>
                         <SelectTrigger
                           className={`font-bn h-8 w-32 rounded-full border-0 px-3 text-xs font-medium ${statusBadgeClass[o.status]}`}
                         >

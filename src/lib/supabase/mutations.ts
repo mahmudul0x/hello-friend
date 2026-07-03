@@ -1,4 +1,5 @@
 import { getSupabaseBrowserClient } from "./browser";
+import { pushStatusToSheet } from "./sheetStatusPush.server";
 import type { Product } from "@/data/products";
 import type { Category } from "@/data/categories";
 
@@ -67,8 +68,9 @@ export async function deleteCategory(slug: string) {
 
 export type OrderStatus = "processing" | "shipped" | "delivered" | "cancelled";
 
-export async function updateOrderStatus(orderId: string, status: OrderStatus) {
+export async function updateOrderStatus(orderId: string, status: OrderStatus, orderNumber: string) {
   const { error } = await getSupabaseBrowserClient().from("orders").update({ status }).eq("id", orderId);
   if (error) throw error;
+  pushStatusToSheet({ data: { orderNumber, status } }).catch(() => {});
 }
 

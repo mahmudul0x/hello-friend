@@ -64,7 +64,8 @@ export function useDeleteCategory() {
 export function useUpdateOrderStatus() {
   const qc = useQueryClient();
   return useMutation({
-    mutationFn: ({ orderId, status }: { orderId: string; status: OrderStatus }) => updateOrderStatus(orderId, status),
+    mutationFn: ({ orderId, status, orderNumber }: { orderId: string; status: OrderStatus; orderNumber: string }) =>
+      updateOrderStatus(orderId, status, orderNumber),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.orders() }),
   });
 }
