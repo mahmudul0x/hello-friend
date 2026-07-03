@@ -204,6 +204,27 @@ create table if not exists public.wishlists (
 );
 
 -- ─────────────────────────────────────────────────────────────────────────
+-- landing_pages: standalone campaign pages, independent of the product catalog
+-- ─────────────────────────────────────────────────────────────────────────
+create table if not exists public.landing_pages (
+  id uuid primary key default gen_random_uuid(),
+  slug text unique not null,
+  is_active boolean not null default true,
+  headline text not null,
+  hero_image text,
+  product_name text not null,
+  price numeric(10, 2) not null default 0,
+  old_price numeric(10, 2),
+  description text,
+  gallery text[] default '{}',
+  testimonials jsonb not null default '[]',
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+create index if not exists landing_pages_slug_idx on public.landing_pages(slug);
+
+-- ─────────────────────────────────────────────────────────────────────────
 -- orders / order_items
 -- ─────────────────────────────────────────────────────────────────────────
 create sequence if not exists public.order_number_seq start 10001;
@@ -220,6 +241,7 @@ create table if not exists public.orders (
   shipping_district text,
   shipping_upazila text,
   shipping_note text,
+  source text,
   subtotal numeric(10, 2) not null default 0,
   shipping_fee numeric(10, 2) not null default 0,
   total numeric(10, 2) not null default 0,
@@ -273,7 +295,7 @@ do $$
 declare
   t text;
 begin
-  foreach t in array array['profiles','categories','products','blog_posts','addresses','orders']
+  foreach t in array array['profiles','categories','products','blog_posts','addresses','orders','landing_pages']
   loop
     execute format('drop trigger if exists set_updated_at on public.%I', t);
     execute format('create trigger set_updated_at before update on public.%I for each row execute function public.set_updated_at()', t);
@@ -293,6 +315,7 @@ alter table public.addresses enable row level security;
 alter table public.wishlists enable row level security;
 alter table public.orders enable row level security;
 alter table public.order_items enable row level security;
+alter table public.landing_pages enable row level security;
 
 -- profiles
 drop policy if exists "profiles_select_own_or_admin" on public.profiles;
@@ -380,4 +403,13 @@ create policy "order_items_insert_via_order" on public.order_items for insert
 
 drop policy if exists "order_items_admin_write" on public.order_items;
 create policy "order_items_admin_write" on public.order_items for all
+  using (public.is_admin()) with check (public.is_admin());
+
+-- landing_pages: public can read only active pages; admin has full access
+drop policy if exists "landing_pages_public_read_active" on public.landing_pages;
+create policy "landing_pages_public_read_active" on public.landing_pages for select
+  using (is_active or public.is_admin());
+
+drop policy if exists "landing_pages_admin_write" on public.landing_pages;
+create policy "landing_pages_admin_write" on public.landing_pages for all
   using (public.is_admin()) with check (public.is_admin());

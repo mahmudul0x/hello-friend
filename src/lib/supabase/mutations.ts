@@ -74,3 +74,48 @@ export async function updateOrderStatus(orderId: string, status: OrderStatus, or
   pushStatusToSheet({ data: { orderNumber, status } }).catch(() => {});
 }
 
+export type LandingPageInput = {
+  id?: string;
+  slug: string;
+  isActive: boolean;
+  headline: string;
+  heroImage: string | null;
+  productName: string;
+  price: number;
+  oldPrice: number | null;
+  description: string | null;
+  gallery: string[];
+  testimonials: { name: string; text: string }[];
+};
+
+function toLandingPageRow(p: LandingPageInput) {
+  return {
+    slug: p.slug,
+    is_active: p.isActive,
+    headline: p.headline,
+    hero_image: p.heroImage,
+    product_name: p.productName,
+    price: p.price,
+    old_price: p.oldPrice,
+    description: p.description,
+    gallery: p.gallery,
+    testimonials: p.testimonials,
+  };
+}
+
+export async function upsertLandingPage(p: LandingPageInput) {
+  const client = getSupabaseBrowserClient();
+  if (p.id) {
+    const { error } = await client.from("landing_pages").update(toLandingPageRow(p)).eq("id", p.id);
+    if (error) throw error;
+  } else {
+    const { error } = await client.from("landing_pages").insert(toLandingPageRow(p));
+    if (error) throw error;
+  }
+}
+
+export async function deleteLandingPage(id: string) {
+  const { error } = await getSupabaseBrowserClient().from("landing_pages").delete().eq("id", id);
+  if (error) throw error;
+}
+

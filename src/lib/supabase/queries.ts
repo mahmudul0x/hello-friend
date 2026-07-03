@@ -250,6 +250,75 @@ export async function fetchCustomers(): Promise<CustomerSummaryRow[]> {
   return data as CustomerSummaryRow[];
 }
 
+export type LandingTestimonial = { name: string; text: string };
+
+export type LandingPage = {
+  id: string;
+  slug: string;
+  isActive: boolean;
+  headline: string;
+  heroImage: string | null;
+  productName: string;
+  price: number;
+  oldPrice: number | null;
+  description: string | null;
+  gallery: string[];
+  testimonials: LandingTestimonial[];
+  createdAt: string;
+};
+
+type LandingPageRow = {
+  id: string;
+  slug: string;
+  is_active: boolean;
+  headline: string;
+  hero_image: string | null;
+  product_name: string;
+  price: number;
+  old_price: number | null;
+  description: string | null;
+  gallery: string[];
+  testimonials: LandingTestimonial[];
+  created_at: string;
+};
+
+function mapLandingPage(row: LandingPageRow): LandingPage {
+  return {
+    id: row.id,
+    slug: row.slug,
+    isActive: row.is_active,
+    headline: row.headline,
+    heroImage: row.hero_image,
+    productName: row.product_name,
+    price: Number(row.price),
+    oldPrice: row.old_price != null ? Number(row.old_price) : null,
+    description: row.description,
+    gallery: row.gallery ?? [],
+    testimonials: row.testimonials ?? [],
+    createdAt: row.created_at,
+  };
+}
+
+export async function fetchLandingPages(): Promise<LandingPage[]> {
+  const { data, error } = await getSupabaseBrowserClient()
+    .from("landing_pages")
+    .select("*")
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return (data as LandingPageRow[]).map(mapLandingPage);
+}
+
+export async function fetchLandingPageBySlug(slug: string): Promise<LandingPage | null> {
+  const { data, error } = await getSupabaseBrowserClient()
+    .from("landing_pages")
+    .select("*")
+    .eq("slug", slug)
+    .eq("is_active", true)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? mapLandingPage(data as LandingPageRow) : null;
+}
+
 export async function fetchFaqs() {
   const { data, error } = await getSupabaseBrowserClient()
     .from("faqs")

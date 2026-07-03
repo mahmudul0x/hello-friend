@@ -24,6 +24,7 @@ const createOrderSchema = z.object({
   subtotal: z.number(),
   shippingFee: z.number(),
   total: z.number(),
+  source: z.string().optional(),
 });
 
 export const createOrder = createServerFn({ method: "POST" })
@@ -53,6 +54,7 @@ export const createOrder = createServerFn({ method: "POST" })
         shipping_district: data.shippingDistrict,
         shipping_upazila: data.shippingUpazila,
         shipping_note: data.shippingNote || null,
+        source: data.source || null,
         subtotal: data.subtotal,
         shipping_fee: data.shippingFee,
         total: data.total,
@@ -104,6 +106,7 @@ function syncOrderToGoogleSheet(data: z.infer<typeof createOrderSchema>, orderNu
       total: data.total,
       paymentMethod: "cod",
       status: "processing",
+      source: data.source || "",
     }),
   }).catch((err) => console.error("Google Sheet sync failed:", err));
 }

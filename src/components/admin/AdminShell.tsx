@@ -5,6 +5,7 @@ import {
   LayoutDashboard,
   Leaf,
   LogOut,
+  Megaphone,
   ShoppingBag,
   Store,
   Tags,
@@ -36,6 +37,7 @@ const nav = [
   { to: "/admin/categories", label: "বিভাগ", Icon: Tags, exact: false, color: "#C2185B" },
   { to: "/admin/orders", label: "অর্ডার", Icon: ShoppingBag, exact: false, color: "#C8A415" },
   { to: "/admin/customers", label: "গ্রাহক", Icon: Users, exact: false, color: "#1565C0" },
+  { to: "/admin/landing-pages", label: "ল্যান্ডিং পেজ", Icon: Megaphone, exact: false, color: "#6A1B9A" },
 ] as const;
 
 const crumbLabel: Record<string, string> = {
@@ -44,6 +46,7 @@ const crumbLabel: Record<string, string> = {
   "/admin/categories": "বিভাগ",
   "/admin/orders": "অর্ডার",
   "/admin/customers": "গ্রাহক",
+  "/admin/landing-pages": "ল্যান্ডিং পেজ",
 };
 
 function initials(name?: string | null) {
@@ -95,7 +98,7 @@ function AdminBottomNav({ pathname }: { pathname: string }) {
       style={{ paddingBottom: "max(0px, env(safe-area-inset-bottom))" }}
     >
       <div className="mx-3 mb-3 overflow-hidden rounded-3xl border border-border/60 bg-background/85 shadow-elegant backdrop-blur-xl">
-        <ul className="grid grid-cols-5">
+        <ul className="grid" style={{ gridTemplateColumns: `repeat(${nav.length}, minmax(0, 1fr))` }}>
           {nav.map(({ to, label, Icon, exact, color }) => {
             const active = exact ? pathname === to : pathname.startsWith(to);
             return (

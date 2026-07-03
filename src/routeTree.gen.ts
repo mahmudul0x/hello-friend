@@ -34,6 +34,7 @@ import { Route as CategoriesIndexRouteImport } from './routes/categories.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
+import { Route as LSlugRouteImport } from './routes/l.$slug'
 import { Route as CategoriesFruitsRouteImport } from './routes/categories.fruits'
 import { Route as CategoriesFlowersRouteImport } from './routes/categories.flowers'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
@@ -41,6 +42,7 @@ import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiSheetStatusUpdateRouteImport } from './routes/api.sheet-status-update'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
+import { Route as AdminLandingPagesRouteImport } from './routes/admin.landing-pages'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
 
@@ -169,6 +171,11 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LSlugRoute = LSlugRouteImport.update({
+  id: '/l/$slug',
+  path: '/l/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoriesFruitsRoute = CategoriesFruitsRouteImport.update({
   id: '/categories/fruits',
   path: '/categories/fruits',
@@ -202,6 +209,11 @@ const AdminProductsRoute = AdminProductsRouteImport.update({
 const AdminOrdersRoute = AdminOrdersRouteImport.update({
   id: '/orders',
   path: '/orders',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminLandingPagesRoute = AdminLandingPagesRouteImport.update({
+  id: '/landing-pages',
+  path: '/landing-pages',
   getParentRoute: () => AdminRoute,
 } as any)
 const AdminCustomersRoute = AdminCustomersRouteImport.update({
@@ -239,6 +251,7 @@ export interface FileRoutesByFullPath {
   '/wishlist': typeof WishlistRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
@@ -246,6 +259,7 @@ export interface FileRoutesByFullPath {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
+  '/l/$slug': typeof LSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -274,6 +288,7 @@ export interface FileRoutesByTo {
   '/wishlist': typeof WishlistRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
@@ -281,6 +296,7 @@ export interface FileRoutesByTo {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
+  '/l/$slug': typeof LSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -311,6 +327,7 @@ export interface FileRoutesById {
   '/wishlist': typeof WishlistRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
+  '/admin/landing-pages': typeof AdminLandingPagesRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
   '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
@@ -318,6 +335,7 @@ export interface FileRoutesById {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
+  '/l/$slug': typeof LSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -349,6 +367,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/categories'
     | '/admin/customers'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
     | '/api/sheet-status-update'
@@ -356,6 +375,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
+    | '/l/$slug'
     | '/products/$slug'
     | '/admin/'
     | '/blog/'
@@ -384,6 +404,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/categories'
     | '/admin/customers'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
     | '/api/sheet-status-update'
@@ -391,6 +412,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
+    | '/l/$slug'
     | '/products/$slug'
     | '/admin'
     | '/blog'
@@ -420,6 +442,7 @@ export interface FileRouteTypes {
     | '/wishlist'
     | '/admin/categories'
     | '/admin/customers'
+    | '/admin/landing-pages'
     | '/admin/orders'
     | '/admin/products'
     | '/api/sheet-status-update'
@@ -427,6 +450,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
+    | '/l/$slug'
     | '/products/$slug'
     | '/admin/'
     | '/blog/'
@@ -460,6 +484,7 @@ export interface RootRouteChildren {
   CategoriesSlugRoute: typeof CategoriesSlugRoute
   CategoriesFlowersRoute: typeof CategoriesFlowersRoute
   CategoriesFruitsRoute: typeof CategoriesFruitsRoute
+  LSlugRoute: typeof LSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoriesIndexRoute: typeof CategoriesIndexRoute
@@ -642,6 +667,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/l/$slug': {
+      id: '/l/$slug'
+      path: '/l/$slug'
+      fullPath: '/l/$slug'
+      preLoaderRoute: typeof LSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categories/fruits': {
       id: '/categories/fruits'
       path: '/categories/fruits'
@@ -691,6 +723,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminOrdersRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/landing-pages': {
+      id: '/admin/landing-pages'
+      path: '/landing-pages'
+      fullPath: '/admin/landing-pages'
+      preLoaderRoute: typeof AdminLandingPagesRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/admin/customers': {
       id: '/admin/customers'
       path: '/customers'
@@ -711,6 +750,7 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
+  AdminLandingPagesRoute: typeof AdminLandingPagesRoute
   AdminOrdersRoute: typeof AdminOrdersRoute
   AdminProductsRoute: typeof AdminProductsRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -719,6 +759,7 @@ interface AdminRouteChildren {
 const AdminRouteChildren: AdminRouteChildren = {
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminCustomersRoute: AdminCustomersRoute,
+  AdminLandingPagesRoute: AdminLandingPagesRoute,
   AdminOrdersRoute: AdminOrdersRoute,
   AdminProductsRoute: AdminProductsRoute,
   AdminIndexRoute: AdminIndexRoute,
@@ -753,6 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesSlugRoute: CategoriesSlugRoute,
   CategoriesFlowersRoute: CategoriesFlowersRoute,
   CategoriesFruitsRoute: CategoriesFruitsRoute,
+  LSlugRoute: LSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoriesIndexRoute: CategoriesIndexRoute,

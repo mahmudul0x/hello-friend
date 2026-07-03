@@ -9,6 +9,7 @@ import {
   fetchBlogPosts,
   fetchBlogPostBySlug,
   fetchFaqs,
+  fetchLandingPageBySlug,
 } from "@/lib/supabase/queries";
 
 export const catalogKeys = {
@@ -21,6 +22,7 @@ export const catalogKeys = {
   blogPosts: () => ["blog-posts"] as const,
   blogPost: (slug: string) => ["blog-posts", slug] as const,
   faqs: () => ["faqs"] as const,
+  landingPage: (slug: string) => ["landing-page", slug] as const,
 };
 
 export const useProducts = () =>
@@ -73,6 +75,9 @@ export const ensureProducts = (qc: QueryClient) =>
 
 export const ensureCategory = (qc: QueryClient, slug: string) =>
   qc.ensureQueryData({ queryKey: catalogKeys.category(slug), queryFn: () => fetchCategoryBySlug(slug) });
+
+export const ensureLandingPage = (qc: QueryClient, slug: string) =>
+  qc.ensureQueryData({ queryKey: catalogKeys.landingPage(slug), queryFn: () => fetchLandingPageBySlug(slug) });
 
 export const ensureCategories = (qc: QueryClient) =>
   qc.ensureQueryData({ queryKey: catalogKeys.categories(), queryFn: fetchCategories });
