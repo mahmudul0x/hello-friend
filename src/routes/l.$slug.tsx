@@ -1,9 +1,10 @@
 import { createFileRoute, notFound } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import {
   BadgeCheck,
   CheckCircle2,
+  Flame,
   MinusCircle,
   PhoneCall,
   PlusCircle,
@@ -13,6 +14,7 @@ import {
   Truck,
 } from "lucide-react";
 import { toast } from "sonner";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { SmartImage } from "@/components/common/SmartImage";
 import { ensureLandingPage } from "@/hooks/useCatalog";
 import { formatBDT, toBnDigits } from "@/lib/format";
@@ -53,13 +55,20 @@ export const Route = createFileRoute("/l/$slug")({
 
 function LandingPage() {
   const { page } = Route.useLoaderData();
+  const formRef = useRef<HTMLFormElement>(null);
 
   const [qty, setQty] = useState(1);
   const [done, setDone] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
+  const [popupOpen, setPopupOpen] = useState(false);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", address: "", division: "", district: "", upazila: "", note: "",
   });
+
+  useEffect(() => {
+    const t = setTimeout(() => setPopupOpen(true), 800);
+    return () => clearTimeout(t);
+  }, []);
 
   const districts = useMemo(() => getDistricts(form.division), [form.division]);
   const upazilas = useMemo(() => getUpazilas(form.division, form.district), [form.division, form.district]);
@@ -74,6 +83,11 @@ function LandingPage() {
   const shipping = 0;
   const total = page.price * qty + shipping;
   const discount = page.oldPrice ? Math.round(((page.oldPrice - page.price) / page.oldPrice) * 100) : 0;
+
+  const scrollToOrder = () => {
+    setPopupOpen(false);
+    formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
 
   const mutation = useMutation({
     mutationFn: () =>
@@ -130,76 +144,90 @@ function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background pb-24 sm:pb-0">
-      {/* Top utility bar */}
-      <div className="gradient-primary py-2 text-center">
-        <p className="font-bn text-xs font-semibold text-primary-foreground sm:text-sm">
-          ৳{toBnDigits(site.shipping.freeAbove)}+ অর্ডারে ফ্রি ডেলিভারি · সারা বাংলাদেশে ক্যাশ অন ডেলিভারি
-        </p>
-      </div>
-
-      <header className="border-b border-border bg-card/95 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-3xl items-center justify-between px-4">
+      {/* Navbar */}
+      <header className="sticky top-0 z-30 border-b border-border bg-card/95 py-3 backdrop-blur">
+        <div className="mx-auto flex max-w-4xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <img src={logoIcon} alt="Abid Nursery and Plants" className="size-9 object-contain" />
-            <span className="font-display text-base font-bold">Abid Nursery</span>
+            <span className="font-display hidden text-base font-bold sm:inline">Abid Nursery</span>
           </div>
-          <a href={`tel:${site.phone}`} className="font-bn flex items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-sm font-semibold text-primary">
-            <PhoneCall className="size-3.5" /> {site.phone}
-          </a>
+          <div className="flex items-center gap-2">
+            <a href={`tel:${site.phone}`} className="font-bn hidden items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-sm font-semibold text-primary sm:flex">
+              <PhoneCall className="size-3.5" /> {site.phone}
+            </a>
+            <button
+              type="button"
+              onClick={scrollToOrder}
+              className="font-bn rounded-full gradient-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-soft transition hover:shadow-elegant"
+            >
+              এখনই অর্ডার করুন
+            </button>
+          </div>
         </div>
       </header>
 
-      {/* Hero */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-primary/10 via-primary/5 to-background">
-        <div className="gradient-radial-leaf pointer-events-none absolute inset-0 opacity-40" />
-        <div className="relative mx-auto max-w-3xl px-4 py-12 text-center sm:py-16">
+      {/* Hero: full-bleed image with centered overlay headline */}
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden sm:min-h-[80vh]">
+        {page.heroImage ? (
+          <SmartImage src={page.heroImage} alt={page.headline} className="absolute inset-0 size-full object-cover" rounded={false} priority />
+        ) : (
+          <div className="absolute inset-0 gradient-primary" />
+        )}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/40" />
+
+        <div className="relative mx-auto max-w-2xl px-4 py-16 text-center">
           {discount > 0 && (
             <span className="font-bn inline-flex items-center gap-1.5 rounded-full bg-destructive px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-destructive-foreground shadow-soft">
-              সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়
+              <Flame className="size-3.5" /> সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়
             </span>
           )}
-          <h1 className="font-bn font-display mt-4 text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+          <h1 className="font-bn font-display mt-5 text-3xl font-bold leading-tight text-white drop-shadow-lg sm:text-5xl">
             {page.headline}
           </h1>
-          {page.heroImage && (
-            <div className="mx-auto mt-8 max-w-xl overflow-hidden rounded-3xl shadow-elegant">
-              <SmartImage src={page.heroImage} alt={page.headline} aspect="video" className="w-full" priority />
-            </div>
-          )}
+          <button
+            type="button"
+            onClick={scrollToOrder}
+            className="font-bn mt-8 inline-flex rounded-full gradient-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-elegant transition hover:scale-105"
+          >
+            এখনই অর্ডার করুন — {formatBDT(page.price)}
+          </button>
         </div>
       </section>
 
-      <section className="mx-auto max-w-3xl px-4 py-10">
-        {/* Product showcase card */}
-        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
-          <div className="p-6 sm:p-8">
-            <div className="flex flex-wrap items-start justify-between gap-4">
-              <div>
-                <h2 className="font-bn font-display text-2xl font-bold text-foreground">{page.productName}</h2>
-                <div className="mt-1.5 flex items-center gap-1 text-gold">
-                  {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-gold" />)}
-                  <span className="font-bn ml-1 text-xs font-semibold text-muted-foreground">(৫.০)</span>
-                </div>
-              </div>
-              <div className="font-bn text-right">
-                {page.oldPrice && (
-                  <div className="text-sm text-muted-foreground line-through">{formatBDT(page.oldPrice)}</div>
-                )}
-                <div className="font-display text-3xl font-bold text-primary">{formatBDT(page.price)}</div>
-              </div>
-            </div>
-
-            {page.description && (
-              <p className="font-bn mt-5 whitespace-pre-line leading-relaxed text-muted-foreground">{page.description}</p>
-            )}
-          </div>
-
-          {page.gallery.length > 0 && (
-            <div className={`grid gap-1 ${page.gallery.length === 1 ? "grid-cols-1" : page.gallery.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
+      {/* Gallery thumbnail strip */}
+      {page.gallery.length > 0 && (
+        <section className="mx-auto max-w-4xl px-4 py-8">
+          <div className="rounded-3xl border border-border bg-card p-4 shadow-soft">
+            <div className={`grid gap-2 ${page.gallery.length === 1 ? "grid-cols-1" : page.gallery.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
               {page.gallery.map((url) => (
-                <SmartImage key={url} src={url} alt="" aspect="square" rounded={false} className="w-full" />
+                <SmartImage key={url} src={url} alt="" aspect="square" className="rounded-2xl" />
               ))}
             </div>
+          </div>
+        </section>
+      )}
+
+      <section className="mx-auto max-w-2xl px-4 py-4">
+        {/* Price + product info card */}
+        <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
+          <div className="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 className="font-bn font-display text-2xl font-bold text-foreground">{page.productName}</h2>
+              <div className="mt-1.5 flex items-center gap-1 text-gold">
+                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-gold" />)}
+                <span className="font-bn ml-1 text-xs font-semibold text-muted-foreground">(৫.০)</span>
+              </div>
+            </div>
+            <div className="font-bn text-right">
+              {page.oldPrice && (
+                <div className="text-sm text-muted-foreground line-through">{formatBDT(page.oldPrice)}</div>
+              )}
+              <div className="font-display text-3xl font-bold text-primary">{formatBDT(page.price)}</div>
+            </div>
+          </div>
+
+          {page.description && (
+            <p className="font-bn mt-5 whitespace-pre-line leading-relaxed text-muted-foreground">{page.description}</p>
           )}
         </div>
 
@@ -227,7 +255,7 @@ function LandingPage() {
         )}
 
         {/* Order form */}
-        <form id="order-form" onSubmit={submit} className="mt-10 space-y-5 rounded-3xl border-2 border-primary/25 bg-card p-6 shadow-elegant sm:p-8">
+        <form ref={formRef} id="order-form" onSubmit={submit} className="mt-10 space-y-5 rounded-3xl border-2 border-primary/25 bg-card p-6 shadow-elegant sm:p-8">
           <div className="text-center">
             <h3 className="font-bn font-display text-xl font-bold text-foreground">এখনই অর্ডার করুন</h3>
             <p className="font-bn mt-1 text-sm text-muted-foreground">ফর্মটি পূরণ করুন, আমরা কল দিয়ে নিশ্চিত করব</p>
@@ -285,6 +313,30 @@ function LandingPage() {
           অর্ডার করুন — {formatBDT(total)}
         </a>
       </div>
+
+      {/* Auto-show offer popup */}
+      <Dialog open={popupOpen} onOpenChange={setPopupOpen}>
+        <DialogContent className="max-w-sm text-center">
+          <div className="mx-auto grid size-14 place-items-center rounded-full bg-destructive/10 text-destructive">
+            <Flame className="size-7" />
+          </div>
+          {discount > 0 && (
+            <p className="font-bn font-display text-2xl font-bold text-destructive">সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়</p>
+          )}
+          <p className="font-bn text-lg font-bold">{page.productName}</p>
+          <div className="font-bn flex items-center justify-center gap-2">
+            {page.oldPrice && <span className="text-sm text-muted-foreground line-through">{formatBDT(page.oldPrice)}</span>}
+            <span className="text-2xl font-bold text-primary">{formatBDT(page.price)}</span>
+          </div>
+          <button
+            type="button"
+            onClick={scrollToOrder}
+            className="font-bn mt-2 w-full rounded-full gradient-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-soft transition hover:shadow-elegant"
+          >
+            অফার দেখুন
+          </button>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }
