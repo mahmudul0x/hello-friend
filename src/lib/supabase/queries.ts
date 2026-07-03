@@ -229,16 +229,6 @@ export async function fetchOrderItems(orderId: string): Promise<OrderItemRow[]> 
   return data as OrderItemRow[];
 }
 
-export async function fetchMyOrders(userId: string): Promise<OrderRow[]> {
-  const { data, error } = await getSupabaseBrowserClient()
-    .from("orders")
-    .select("*")
-    .eq("user_id", userId)
-    .order("created_at", { ascending: false });
-  if (error) throw error;
-  return data as OrderRow[];
-}
-
 export type CustomerSummaryRow = {
   customer_key: string;
   name: string;
@@ -257,26 +247,6 @@ export async function fetchCustomers(): Promise<CustomerSummaryRow[]> {
     .order("total_spent", { ascending: false });
   if (error) throw error;
   return data as CustomerSummaryRow[];
-}
-
-export type AddressRow = {
-  id: string;
-  label: string | null;
-  line: string;
-  city: string | null;
-  district: string | null;
-  phone: string | null;
-  is_default: boolean;
-};
-
-export async function fetchAddresses(userId: string): Promise<AddressRow[]> {
-  const { data, error } = await getSupabaseBrowserClient()
-    .from("addresses")
-    .select("*")
-    .eq("user_id", userId)
-    .order("is_default", { ascending: false });
-  if (error) throw error;
-  return data as AddressRow[];
 }
 
 export async function fetchFaqs() {

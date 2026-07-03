@@ -8,7 +8,7 @@ export const Route = createFileRoute("/admin")({
   beforeLoad: async () => {
     const session = await getSession();
     if (!session) throw redirect({ to: "/login" });
-    if (session.role !== "admin") throw redirect({ to: "/account" });
+    if (session.role !== "admin") throw redirect({ to: "/" });
     return { session };
   },
   head: () => ({

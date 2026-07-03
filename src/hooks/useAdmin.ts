@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { fetchOrders, fetchMyOrders, fetchOrderItems, fetchCustomers, fetchAddresses } from "@/lib/supabase/queries";
+import { fetchOrders, fetchOrderItems, fetchCustomers } from "@/lib/supabase/queries";
 import { catalogKeys } from "./useCatalog";
 import {
   upsertProduct,
@@ -7,27 +7,18 @@ import {
   upsertCategory,
   deleteCategory,
   updateOrderStatus,
-  upsertAddress,
-  deleteAddress,
-  setDefaultAddress,
   type ProductInput,
   type CategoryInput,
   type OrderStatus,
-  type AddressInput,
 } from "@/lib/supabase/mutations";
 
 export const adminKeys = {
   orders: () => ["orders"] as const,
-  myOrders: (userId: string) => ["orders", "mine", userId] as const,
   orderItems: (orderId: string) => ["orders", orderId, "items"] as const,
   customers: () => ["customers"] as const,
-  addresses: (userId: string) => ["addresses", userId] as const,
 };
 
 export const useOrders = () => useQuery({ queryKey: adminKeys.orders(), queryFn: fetchOrders });
-
-export const useMyOrders = (userId: string) =>
-  useQuery({ queryKey: adminKeys.myOrders(userId), queryFn: () => fetchMyOrders(userId), enabled: !!userId });
 
 export const useOrderItems = (orderId: string | null) =>
   useQuery({
@@ -75,32 +66,5 @@ export function useUpdateOrderStatus() {
   return useMutation({
     mutationFn: ({ orderId, status }: { orderId: string; status: OrderStatus }) => updateOrderStatus(orderId, status),
     onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.orders() }),
-  });
-}
-
-export const useAddresses = (userId: string) =>
-  useQuery({ queryKey: adminKeys.addresses(userId), queryFn: () => fetchAddresses(userId), enabled: !!userId });
-
-export function useUpsertAddress(userId: string) {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (a: AddressInput) => upsertAddress(a),
-    onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.addresses(userId) }),
-  });
-}
-
-export function useDeleteAddress(userId: string) {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => deleteAddress(id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.addresses(userId) }),
-  });
-}
-
-export function useSetDefaultAddress(userId: string) {
-  const qc = useQueryClient();
-  return useMutation({
-    mutationFn: (id: string) => setDefaultAddress(userId, id),
-    onSuccess: () => qc.invalidateQueries({ queryKey: adminKeys.addresses(userId) }),
   });
 }
