@@ -5,6 +5,7 @@ import {
   BadgeCheck,
   CheckCircle2,
   Flame,
+  MessageCircle,
   MinusCircle,
   PhoneCall,
   PlusCircle,
@@ -21,8 +22,11 @@ import { formatBDT, toBnDigits } from "@/lib/format";
 import { createOrder } from "@/lib/supabase/orders.server";
 import { friendlyError } from "@/lib/errorMessage";
 import { divisionNames, getDistricts, getUpazilas } from "@/data/bangladesh-geo";
-import logoIcon from "@/assets/logo-icon.png";
+import landingLogo from "@/assets/landing-logo.png";
 import { site } from "@/data/site";
+
+const whatsappNumber = "8801839208687";
+const whatsappHref = `https://wa.me/${whatsappNumber}`;
 
 export const Route = createFileRoute("/l/$slug")({
   loader: async ({ params, context }) => {
@@ -61,6 +65,7 @@ function LandingPage() {
   const [done, setDone] = useState(false);
   const [orderNumber, setOrderNumber] = useState("");
   const [popupOpen, setPopupOpen] = useState(false);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [form, setForm] = useState({
     name: "", phone: "", email: "", address: "", division: "", district: "", upazila: "", note: "",
   });
@@ -148,7 +153,7 @@ function LandingPage() {
       <header className="sticky top-0 z-30 border-b border-border bg-card/95 py-3 backdrop-blur">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
-            <img src={logoIcon} alt="Abid Nursery and Plants" className="size-9 object-contain" />
+            <img src={landingLogo} alt="Abid Nursery and Plants" className="size-9 rounded-full object-contain" />
             <span className="font-display hidden text-base font-bold sm:inline">Abid Nursery</span>
           </div>
           <div className="flex items-center gap-2">
@@ -181,9 +186,12 @@ function LandingPage() {
               <Flame className="size-3.5" /> সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়
             </span>
           )}
-          <h1 className="font-bn font-display mt-5 text-3xl font-bold leading-tight text-white drop-shadow-lg sm:text-5xl">
-            {page.headline}
-          </h1>
+          <div className="relative mt-5 inline-block">
+            <span className="absolute inset-0 -z-10 scale-110 rounded-3xl bg-black/40 blur-2xl" aria-hidden="true" />
+            <h1 className="font-bn font-display text-3xl font-bold leading-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-5xl">
+              {page.headline}
+            </h1>
+          </div>
           <button
             type="button"
             onClick={scrollToOrder}
@@ -196,13 +204,19 @@ function LandingPage() {
 
       {/* Gallery thumbnail strip */}
       {page.gallery.length > 0 && (
-        <section className="mx-auto max-w-4xl px-4 py-8">
-          <div className="rounded-3xl border border-border bg-card p-4 shadow-soft">
-            <div className={`grid gap-2 ${page.gallery.length === 1 ? "grid-cols-1" : page.gallery.length === 2 ? "grid-cols-2" : "grid-cols-3"}`}>
-              {page.gallery.map((url) => (
-                <SmartImage key={url} src={url} alt="" aspect="square" className="rounded-2xl" />
-              ))}
-            </div>
+        <section className="mx-auto max-w-2xl px-4 py-5">
+          <div className="flex justify-center gap-2.5">
+            {page.gallery.map((url) => (
+              <button
+                key={url}
+                type="button"
+                onClick={() => setPreviewImage(url)}
+                className="size-16 shrink-0 overflow-hidden rounded-2xl border border-border shadow-soft transition hover:scale-105 sm:size-20"
+                aria-label="ছবি বড় করে দেখুন"
+              >
+                <SmartImage src={url} alt="" aspect="square" rounded={false} className="size-full" />
+              </button>
+            ))}
           </div>
         </section>
       )}
@@ -237,22 +251,6 @@ function LandingPage() {
           <TrustItem Icon={ShieldCheck} label="ক্যাশ অন ডেলিভারি" />
           <TrustItem Icon={BadgeCheck} label="মানের নিশ্চয়তা" />
         </div>
-
-        {/* Testimonials */}
-        {page.testimonials.length > 0 && (
-          <div className="mt-10">
-            <h3 className="font-bn font-display text-center text-lg font-bold">গ্রাহকদের মতামত</h3>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {page.testimonials.map((t, i) => (
-                <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-                  <Quote className="size-5 text-primary/40" />
-                  <p className="font-bn mt-2 text-sm leading-relaxed text-foreground">{t.text}</p>
-                  <p className="font-bn mt-3 text-xs font-bold text-primary">— {t.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
 
         {/* Order form */}
         <form ref={formRef} id="order-form" onSubmit={submit} className="mt-10 space-y-5 rounded-3xl border-2 border-primary/25 bg-card p-6 shadow-elegant sm:p-8">
