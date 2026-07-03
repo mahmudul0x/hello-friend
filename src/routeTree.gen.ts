@@ -38,6 +38,7 @@ import { Route as CategoriesFruitsRouteImport } from './routes/categories.fruits
 import { Route as CategoriesFlowersRouteImport } from './routes/categories.flowers'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as ApiSheetStatusUpdateRouteImport } from './routes/api.sheet-status-update'
 import { Route as AdminProductsRouteImport } from './routes/admin.products'
 import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
@@ -188,6 +189,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/blog/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiSheetStatusUpdateRoute = ApiSheetStatusUpdateRouteImport.update({
+  id: '/api/sheet-status-update',
+  path: '/api/sheet-status-update',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminProductsRoute = AdminProductsRouteImport.update({
   id: '/products',
   path: '/products',
@@ -235,6 +241,7 @@ export interface FileRoutesByFullPath {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
@@ -269,6 +276,7 @@ export interface FileRoutesByTo {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
@@ -305,6 +313,7 @@ export interface FileRoutesById {
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/orders': typeof AdminOrdersRoute
   '/admin/products': typeof AdminProductsRoute
+  '/api/sheet-status-update': typeof ApiSheetStatusUpdateRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
@@ -342,6 +351,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/orders'
     | '/admin/products'
+    | '/api/sheet-status-update'
     | '/blog/$slug'
     | '/categories/$slug'
     | '/categories/flowers'
@@ -376,6 +386,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/orders'
     | '/admin/products'
+    | '/api/sheet-status-update'
     | '/blog/$slug'
     | '/categories/$slug'
     | '/categories/flowers'
@@ -411,6 +422,7 @@ export interface FileRouteTypes {
     | '/admin/customers'
     | '/admin/orders'
     | '/admin/products'
+    | '/api/sheet-status-update'
     | '/blog/$slug'
     | '/categories/$slug'
     | '/categories/flowers'
@@ -443,6 +455,7 @@ export interface RootRouteChildren {
   TrackOrderRoute: typeof TrackOrderRoute
   VideoGalleryRoute: typeof VideoGalleryRoute
   WishlistRoute: typeof WishlistRoute
+  ApiSheetStatusUpdateRoute: typeof ApiSheetStatusUpdateRoute
   BlogSlugRoute: typeof BlogSlugRoute
   CategoriesSlugRoute: typeof CategoriesSlugRoute
   CategoriesFlowersRoute: typeof CategoriesFlowersRoute
@@ -657,6 +670,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/sheet-status-update': {
+      id: '/api/sheet-status-update'
+      path: '/api/sheet-status-update'
+      fullPath: '/api/sheet-status-update'
+      preLoaderRoute: typeof ApiSheetStatusUpdateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/products': {
       id: '/admin/products'
       path: '/products'
@@ -728,6 +748,7 @@ const rootRouteChildren: RootRouteChildren = {
   TrackOrderRoute: TrackOrderRoute,
   VideoGalleryRoute: VideoGalleryRoute,
   WishlistRoute: WishlistRoute,
+  ApiSheetStatusUpdateRoute: ApiSheetStatusUpdateRoute,
   BlogSlugRoute: BlogSlugRoute,
   CategoriesSlugRoute: CategoriesSlugRoute,
   CategoriesFlowersRoute: CategoriesFlowersRoute,
