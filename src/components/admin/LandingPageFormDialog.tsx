@@ -69,7 +69,7 @@ export function LandingPageFormDialog({
   const set = <K extends keyof LandingPageInput>(key: K, value: LandingPageInput[K]) =>
     setForm((f) => ({ ...f, [key]: value }));
 
-  const addTestimonial = () => set("testimonials", [...form.testimonials, { name: "", text: "" }]);
+  const addTestimonial = () => set("testimonials", [...form.testimonials, { name: "", text: "", city: "", avatar: "" }]);
   const updateTestimonial = (i: number, patch: Partial<LandingTestimonial>) =>
     set("testimonials", form.testimonials.map((t, idx) => (idx === i ? { ...t, ...patch } : t)));
   const removeTestimonial = (i: number) =>
@@ -104,7 +104,7 @@ export function LandingPageFormDialog({
           <div>
             <Label className="font-bn">URL (slug)</Label>
             <div className="flex items-center gap-1">
-              <span className="text-sm text-muted-foreground">/l/</span>
+              <span className="text-sm text-muted-foreground">/offer/</span>
               <Input value={form.slug} onChange={(e) => set("slug", e.target.value.toLowerCase())} placeholder="mango-offer" />
             </div>
           </div>
@@ -153,9 +153,13 @@ export function LandingPageFormDialog({
             </div>
             <div className="mt-2 space-y-2">
               {form.testimonials.map((t, i) => (
-                <div key={i} className="flex items-start gap-2 rounded-xl border border-border p-3">
+                <div key={i} className="flex items-start gap-3 rounded-xl border border-border p-3">
+                  <ImageUploader value={t.avatar || null} onChange={(url) => updateTestimonial(i, { avatar: url ?? "" })} className="shrink-0" />
                   <div className="flex-1 space-y-2">
-                    <Input className="font-bn" placeholder="নাম" value={t.name} onChange={(e) => updateTestimonial(i, { name: e.target.value })} />
+                    <div className="grid gap-2 sm:grid-cols-2">
+                      <Input className="font-bn" placeholder="নাম" value={t.name} onChange={(e) => updateTestimonial(i, { name: e.target.value })} />
+                      <Input className="font-bn" placeholder="শহর (ঐচ্ছিক)" value={t.city ?? ""} onChange={(e) => updateTestimonial(i, { city: e.target.value })} />
+                    </div>
                     <Textarea className="font-bn" rows={2} placeholder="মন্তব্য" value={t.text} onChange={(e) => updateTestimonial(i, { text: e.target.value })} />
                   </div>
                   <button type="button" onClick={() => removeTestimonial(i)} className="grid size-8 shrink-0 place-items-center rounded-full text-destructive hover:bg-destructive/10" aria-label="মুছুন">

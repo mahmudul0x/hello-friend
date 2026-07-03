@@ -34,7 +34,7 @@ import { Route as CategoriesIndexRouteImport } from './routes/categories.index'
 import { Route as BlogIndexRouteImport } from './routes/blog.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductsSlugRouteImport } from './routes/products.$slug'
-import { Route as LSlugRouteImport } from './routes/l.$slug'
+import { Route as OfferSlugRouteImport } from './routes/offer.$slug'
 import { Route as CategoriesFruitsRouteImport } from './routes/categories.fruits'
 import { Route as CategoriesFlowersRouteImport } from './routes/categories.flowers'
 import { Route as CategoriesSlugRouteImport } from './routes/categories.$slug'
@@ -171,9 +171,9 @@ const ProductsSlugRoute = ProductsSlugRouteImport.update({
   path: '/products/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
-const LSlugRoute = LSlugRouteImport.update({
-  id: '/l/$slug',
-  path: '/l/$slug',
+const OfferSlugRoute = OfferSlugRouteImport.update({
+  id: '/offer/$slug',
+  path: '/offer/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
 const CategoriesFruitsRoute = CategoriesFruitsRouteImport.update({
@@ -259,7 +259,7 @@ export interface FileRoutesByFullPath {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
-  '/l/$slug': typeof LSlugRoute
+  '/offer/$slug': typeof OfferSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -296,7 +296,7 @@ export interface FileRoutesByTo {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
-  '/l/$slug': typeof LSlugRoute
+  '/offer/$slug': typeof OfferSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin': typeof AdminIndexRoute
   '/blog': typeof BlogIndexRoute
@@ -335,7 +335,7 @@ export interface FileRoutesById {
   '/categories/$slug': typeof CategoriesSlugRoute
   '/categories/flowers': typeof CategoriesFlowersRoute
   '/categories/fruits': typeof CategoriesFruitsRoute
-  '/l/$slug': typeof LSlugRoute
+  '/offer/$slug': typeof OfferSlugRoute
   '/products/$slug': typeof ProductsSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/blog/': typeof BlogIndexRoute
@@ -375,7 +375,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
-    | '/l/$slug'
+    | '/offer/$slug'
     | '/products/$slug'
     | '/admin/'
     | '/blog/'
@@ -412,7 +412,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
-    | '/l/$slug'
+    | '/offer/$slug'
     | '/products/$slug'
     | '/admin'
     | '/blog'
@@ -450,7 +450,7 @@ export interface FileRouteTypes {
     | '/categories/$slug'
     | '/categories/flowers'
     | '/categories/fruits'
-    | '/l/$slug'
+    | '/offer/$slug'
     | '/products/$slug'
     | '/admin/'
     | '/blog/'
@@ -484,7 +484,7 @@ export interface RootRouteChildren {
   CategoriesSlugRoute: typeof CategoriesSlugRoute
   CategoriesFlowersRoute: typeof CategoriesFlowersRoute
   CategoriesFruitsRoute: typeof CategoriesFruitsRoute
-  LSlugRoute: typeof LSlugRoute
+  OfferSlugRoute: typeof OfferSlugRoute
   ProductsSlugRoute: typeof ProductsSlugRoute
   BlogIndexRoute: typeof BlogIndexRoute
   CategoriesIndexRoute: typeof CategoriesIndexRoute
@@ -667,11 +667,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProductsSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/l/$slug': {
-      id: '/l/$slug'
-      path: '/l/$slug'
-      fullPath: '/l/$slug'
-      preLoaderRoute: typeof LSlugRouteImport
+    '/offer/$slug': {
+      id: '/offer/$slug'
+      path: '/offer/$slug'
+      fullPath: '/offer/$slug'
+      preLoaderRoute: typeof OfferSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/categories/fruits': {
@@ -794,7 +794,7 @@ const rootRouteChildren: RootRouteChildren = {
   CategoriesSlugRoute: CategoriesSlugRoute,
   CategoriesFlowersRoute: CategoriesFlowersRoute,
   CategoriesFruitsRoute: CategoriesFruitsRoute,
-  LSlugRoute: LSlugRoute,
+  OfferSlugRoute: OfferSlugRoute,
   ProductsSlugRoute: ProductsSlugRoute,
   BlogIndexRoute: BlogIndexRoute,
   CategoriesIndexRoute: CategoriesIndexRoute,

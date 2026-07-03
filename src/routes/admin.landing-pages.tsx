@@ -96,8 +96,8 @@ function AdminLandingPages() {
                     </div>
                   </TableCell>
                   <TableCell>
-                    <a href={`/l/${p.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
-                      /l/{p.slug} <ExternalLink className="size-3" />
+                    <a href={`/offer/${p.slug}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-1 text-xs text-primary hover:underline">
+                      /offer/{p.slug} <ExternalLink className="size-3" />
                     </a>
                   </TableCell>
                   <TableCell className="font-bn text-right font-semibold">{formatBDT(p.price)}</TableCell>

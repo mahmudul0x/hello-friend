@@ -5,12 +5,14 @@ import {
   BadgeCheck,
   CheckCircle2,
   Flame,
+  Headset,
+  Leaf,
   MessageCircle,
   MinusCircle,
-  PhoneCall,
   PlusCircle,
   Quote,
   ShieldCheck,
+  Sprout,
   Star,
   Truck,
 } from "lucide-react";
@@ -23,12 +25,24 @@ import { createOrder } from "@/lib/supabase/orders.server";
 import { friendlyError } from "@/lib/errorMessage";
 import { divisionNames, getDistricts, getUpazilas } from "@/data/bangladesh-geo";
 import landingLogo from "@/assets/landing-logo.png";
-import { site } from "@/data/site";
 
 const whatsappNumber = "8801839208687";
 const whatsappHref = `https://wa.me/${whatsappNumber}`;
 
-export const Route = createFileRoute("/l/$slug")({
+const defaultBenefits = [
+  "উন্নত মানের ও রোগমুক্ত চারা",
+  "অভিজ্ঞ নার্সারি বিশেষজ্ঞ দ্বারা পরিচর্যা",
+  "সঠিক প্যাকেজিং এবং নিরাপদ ডেলিভারি",
+  "পোস্ট সেল সহায়তা ও পরামর্শ",
+];
+
+const defaultTestimonials = [
+  { name: "রহিম ইসলাম", city: "ঢাকা", text: "গাছগুলো খুবই ভালো মানের এবং ডেলিভারি ছিল দ্রুত।" },
+  { name: "মো. সাকিব", city: "চট্টগ্রাম", text: "সুন্দর করে প্যাকেজিং করা ছিল, গাছ একদম তাজা।" },
+  { name: "নাদিয়া আক্তার", city: "সিলেট", text: "প্রফেশনাল সার্ভিস, খুবই খুশি হয়েছি।" },
+];
+
+export const Route = createFileRoute("/offer/$slug")({
   loader: async ({ params, context }) => {
     const page = await ensureLandingPage(context.queryClient, params.slug);
     if (!page) throw notFound();
@@ -60,6 +74,7 @@ export const Route = createFileRoute("/l/$slug")({
 function LandingPage() {
   const { page } = Route.useLoaderData();
   const formRef = useRef<HTMLFormElement>(null);
+  const galleryLimit = 4;
 
   const [qty, setQty] = useState(1);
   const [done, setDone] = useState(false);
@@ -88,6 +103,9 @@ function LandingPage() {
   const shipping = 0;
   const total = page.price * qty + shipping;
   const discount = page.oldPrice ? Math.round(((page.oldPrice - page.price) / page.oldPrice) * 100) : 0;
+  const testimonials = page.testimonials.length > 0 ? page.testimonials : defaultTestimonials;
+  const visibleGallery = page.gallery.slice(0, galleryLimit);
+  const extraGalleryCount = page.gallery.length - galleryLimit;
 
   const scrollToOrder = () => {
     setPopupOpen(false);
@@ -151,118 +169,154 @@ function LandingPage() {
     <div className="min-h-screen bg-background pb-24 sm:pb-0">
       {/* Navbar */}
       <header className="sticky top-0 z-30 border-b border-border bg-card/95 py-3 backdrop-blur">
-        <div className="mx-auto flex max-w-4xl items-center justify-between px-4">
+        <div className="mx-auto flex max-w-5xl items-center justify-between px-4">
           <div className="flex items-center gap-2">
             <img src={landingLogo} alt="Abid Nursery and Plants" className="size-9 rounded-full object-contain" />
             <span className="font-display hidden text-base font-bold sm:inline">Abid Nursery</span>
           </div>
           <div className="flex items-center gap-2">
-            <a href={`tel:${site.phone}`} className="font-bn hidden items-center gap-1.5 rounded-full border border-primary/30 bg-primary/5 px-3 py-1.5 text-sm font-semibold text-primary sm:flex">
-              <PhoneCall className="size-3.5" /> {site.phone}
-            </a>
             <a
               href={whatsappHref}
               target="_blank"
               rel="noreferrer"
-              className="grid size-9 shrink-0 place-items-center rounded-full bg-[#25D366] text-white shadow-soft"
-              aria-label="হোয়াটসঅ্যাপে যোগাযোগ করুন"
+              className="font-bn hidden items-center gap-1.5 rounded-full bg-[#25D366] px-4 py-2 text-sm font-bold text-white shadow-soft sm:flex"
             >
-              <MessageCircle className="size-4" />
+              <MessageCircle className="size-4" /> WhatsApp
             </a>
             <button
               type="button"
               onClick={scrollToOrder}
               className="font-bn rounded-full gradient-primary px-4 py-2 text-sm font-bold text-primary-foreground shadow-soft transition hover:shadow-elegant"
             >
-              এখনই অর্ডার করুন
+              অর্ডার করুন
             </button>
           </div>
         </div>
       </header>
 
-      {/* Hero: full-bleed image with centered overlay headline */}
-      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden sm:min-h-[80vh]">
-        {page.heroImage ? (
-          <SmartImage src={page.heroImage} alt={page.headline} className="absolute inset-0 size-full object-cover" rounded={false} priority />
-        ) : (
-          <div className="absolute inset-0 gradient-primary" />
-        )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/30 to-black/40" />
-
-        <div className="relative mx-auto max-w-2xl px-4 py-16 text-center">
-          {discount > 0 && (
-            <span className="font-bn inline-flex items-center gap-1.5 rounded-full bg-destructive px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-destructive-foreground shadow-soft">
-              <Flame className="size-3.5" /> সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়
-            </span>
-          )}
-          <div className="relative mt-5 inline-block">
-            <span className="absolute inset-0 -z-10 scale-110 rounded-3xl bg-black/40 blur-2xl" aria-hidden="true" />
-            <h1 className="font-bn font-display text-3xl font-bold leading-tight text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.6)] sm:text-5xl">
+      {/* Hero: split layout — headline left, image right */}
+      <section className="overflow-hidden bg-gradient-to-b from-primary/10 via-primary/5 to-background">
+        <div className="gradient-radial-leaf pointer-events-none absolute inset-x-0 top-0 h-[600px] opacity-30" />
+        <div className="relative mx-auto grid max-w-5xl items-center gap-8 px-4 py-12 sm:py-16 lg:grid-cols-2 lg:gap-12">
+          <div className="text-center lg:text-left">
+            {discount > 0 && (
+              <span className="font-bn inline-flex items-center gap-1.5 rounded-full bg-destructive px-4 py-1.5 text-xs font-bold uppercase tracking-wide text-destructive-foreground shadow-soft">
+                <Flame className="size-3.5" /> সীমিত সময়ের অফার — {toBnDigits(discount)}% ছাড়
+              </span>
+            )}
+            <h1 className="font-bn font-display mt-4 text-3xl font-bold leading-tight text-foreground sm:text-4xl lg:text-5xl">
               {page.headline}
             </h1>
+            <p className="font-bn mt-3 text-base text-muted-foreground">আপনার বাগান হোক সবুজ ও ফলবতী</p>
+
+            <div className="mt-6 grid grid-cols-1 gap-2 sm:grid-cols-3">
+              <TrustItem Icon={Truck} label="সারা বাংলাদেশে ডেলিভারি" compact />
+              <TrustItem Icon={ShieldCheck} label="ক্যাশ অন ডেলিভারি" compact />
+              <TrustItem Icon={BadgeCheck} label="মানের নিশ্চয়তা" compact />
+            </div>
+
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:justify-center lg:justify-start">
+              <a
+                href={whatsappHref}
+                target="_blank"
+                rel="noreferrer"
+                className="font-bn inline-flex items-center justify-center gap-2 rounded-full bg-[#25D366] px-6 py-3.5 text-sm font-bold text-white shadow-soft transition hover:shadow-elegant"
+              >
+                <MessageCircle className="size-4" /> WhatsApp এ অর্ডার করুন
+              </a>
+              <button
+                type="button"
+                onClick={scrollToOrder}
+                className="font-bn inline-flex items-center justify-center gap-2 rounded-full border-2 border-primary bg-card px-6 py-3.5 text-sm font-bold text-primary shadow-soft transition hover:bg-primary/5"
+              >
+                অর্ডার ফর্ম পূরণ করুন
+              </button>
+            </div>
           </div>
-          <button
-            type="button"
-            onClick={scrollToOrder}
-            className="font-bn mt-8 inline-flex rounded-full gradient-primary px-8 py-4 text-base font-bold text-primary-foreground shadow-elegant transition hover:scale-105"
-          >
-            এখনই অর্ডার করুন — {formatBDT(page.price)}
-          </button>
+
+          <div className="relative mx-auto w-full max-w-md lg:max-w-none">
+            {page.heroImage ? (
+              <SmartImage src={page.heroImage} alt={page.headline} aspect="square" className="w-full shadow-elegant" priority />
+            ) : (
+              <div className="grid aspect-square place-items-center rounded-3xl gradient-primary shadow-elegant">
+                <Leaf className="size-24 text-primary-foreground/70" />
+              </div>
+            )}
+          </div>
         </div>
       </section>
 
-      {/* Gallery thumbnail strip */}
-      {page.gallery.length > 0 && (
-        <section className="mx-auto max-w-2xl px-4 py-5">
-          <div className="flex justify-center gap-2.5">
-            {page.gallery.map((url) => (
-              <button
-                key={url}
-                type="button"
-                onClick={() => setPreviewImage(url)}
-                className="size-16 shrink-0 overflow-hidden rounded-2xl border border-border shadow-soft transition hover:scale-105 sm:size-20"
-                aria-label="ছবি বড় করে দেখুন"
-              >
-                <SmartImage src={url} alt="" aspect="square" rounded={false} className="size-full" />
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      <section className="mx-auto max-w-2xl px-4 py-4">
-        {/* Price + product info card */}
-        <div className="rounded-3xl border border-border bg-card p-6 shadow-soft sm:p-8">
-          <div className="flex flex-wrap items-start justify-between gap-4">
-            <div>
-              <h2 className="font-bn font-display text-2xl font-bold text-foreground">{page.productName}</h2>
-              <div className="mt-1.5 flex items-center gap-1 text-gold">
-                {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-gold" />)}
-                <span className="font-bn ml-1 text-xs font-semibold text-muted-foreground">(৫.০)</span>
-              </div>
+      <section className="mx-auto max-w-3xl px-4 py-8">
+        {/* Product info card */}
+        <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-soft">
+          <div className="p-6 sm:p-8">
+            <span className="font-bn inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-bold text-primary">
+              ফল গাছ
+            </span>
+            <h2 className="font-bn font-display mt-3 text-2xl font-bold text-foreground">{page.productName}</h2>
+            <div className="mt-1.5 flex items-center gap-1 text-gold">
+              {Array.from({ length: 5 }).map((_, i) => <Star key={i} className="size-4 fill-gold" />)}
+              <span className="font-bn ml-1 text-xs font-semibold text-muted-foreground">(৫.০)</span>
             </div>
-            <div className="font-bn text-right">
-              {page.oldPrice && (
-                <div className="text-sm text-muted-foreground line-through">{formatBDT(page.oldPrice)}</div>
+
+            <div className="font-bn mt-4 flex items-baseline gap-2">
+              <span className="font-display text-3xl font-bold text-primary">{formatBDT(page.price)}</span>
+              {page.oldPrice && <span className="text-sm text-muted-foreground line-through">{formatBDT(page.oldPrice)}</span>}
+              {discount > 0 && (
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-bold text-primary">
+                  {toBnDigits(discount)}% ছাড়
+                </span>
               )}
-              <div className="font-display text-3xl font-bold text-primary">{formatBDT(page.price)}</div>
             </div>
+
+            {page.description && (
+              <p className="font-bn mt-5 whitespace-pre-line leading-relaxed text-muted-foreground">{page.description}</p>
+            )}
           </div>
 
-          {page.description && (
-            <p className="font-bn mt-5 whitespace-pre-line leading-relaxed text-muted-foreground">{page.description}</p>
+          {/* Gallery thumbnails with +N overlay */}
+          {visibleGallery.length > 0 && (
+            <div className="grid grid-cols-4 gap-1 px-4 pb-4">
+              {visibleGallery.map((url, i) => {
+                const isLast = i === visibleGallery.length - 1 && extraGalleryCount > 0;
+                return (
+                  <button
+                    key={url}
+                    type="button"
+                    onClick={() => setPreviewImage(url)}
+                    className="relative aspect-square overflow-hidden rounded-xl border border-border transition hover:scale-105"
+                    aria-label="ছবি বড় করে দেখুন"
+                  >
+                    <SmartImage src={url} alt="" aspect="square" rounded={false} className="size-full" />
+                    {isLast && (
+                      <span className="absolute inset-0 grid place-items-center bg-black/60 text-sm font-bold text-white">
+                        +{toBnDigits(extraGalleryCount)}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
           )}
         </div>
 
-        {/* Trust bar */}
-        <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <TrustItem Icon={Truck} label="সারা বাংলাদেশে ডেলিভারি" />
-          <TrustItem Icon={ShieldCheck} label="ক্যাশ অন ডেলিভারি" />
-          <TrustItem Icon={BadgeCheck} label="মানের নিশ্চয়তা" />
+        {/* Benefits section */}
+        <div className="mt-6 rounded-3xl border border-border bg-primary/5 p-6 sm:p-8">
+          <h3 className="font-bn font-display flex items-center gap-2 text-lg font-bold text-foreground">
+            <Sprout className="size-5 text-primary" /> কেন আমাদের গাছ নিবেন?
+          </h3>
+          <ul className="mt-4 space-y-2.5">
+            {defaultBenefits.map((b) => (
+              <li key={b} className="font-bn flex items-start gap-2.5 text-sm text-foreground">
+                <BadgeCheck className="mt-0.5 size-4 shrink-0 text-primary" />
+                {b}
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Order form */}
-        <form ref={formRef} id="order-form" onSubmit={submit} className="mt-10 space-y-5 rounded-3xl border-2 border-primary/25 bg-card p-6 shadow-elegant sm:p-8">
+        <form ref={formRef} id="order-form" onSubmit={submit} className="mt-8 space-y-5 rounded-3xl border-2 border-primary/25 bg-card p-6 shadow-elegant sm:p-8">
           <div className="text-center">
             <h3 className="font-bn font-display text-xl font-bold text-foreground">এখনই অর্ডার করুন</h3>
             <p className="font-bn mt-1 text-sm text-muted-foreground">ফর্মটি পূরণ করুন, আমরা কল দিয়ে নিশ্চিত করব</p>
@@ -313,21 +367,39 @@ function LandingPage() {
           </button>
         </form>
 
+        {/* Trust bar — 4 items */}
+        <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <TrustItem Icon={Truck} label="সারা বাংলাদেশে ডেলিভারি" />
+          <TrustItem Icon={ShieldCheck} label="ক্যাশ অন ডেলিভারি" />
+          <TrustItem Icon={BadgeCheck} label="মানের নিশ্চয়তা" />
+          <TrustItem Icon={Headset} label="২৪/৭ সাপোর্ট" />
+        </div>
+
         {/* Testimonials — last section */}
-        {page.testimonials.length > 0 && (
-          <div className="mt-10">
-            <h3 className="font-bn font-display text-center text-lg font-bold">গ্রাহকদের মতামত</h3>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              {page.testimonials.map((t, i) => (
-                <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
-                  <Quote className="size-5 text-primary/40" />
-                  <p className="font-bn mt-2 text-sm leading-relaxed text-foreground">{t.text}</p>
-                  <p className="font-bn mt-3 text-xs font-bold text-primary">— {t.name}</p>
+        <div className="mt-10">
+          <h3 className="font-bn font-display text-center text-lg font-bold">গ্রাহকদের মতামত</h3>
+          <div className="mt-4 grid gap-3 sm:grid-cols-2">
+            {testimonials.map((t, i) => (
+              <div key={i} className="rounded-2xl border border-border bg-card p-5 shadow-soft">
+                <Quote className="size-5 text-primary/40" />
+                <p className="font-bn mt-2 text-sm leading-relaxed text-foreground">{t.text}</p>
+                <div className="mt-3 flex items-center gap-2.5">
+                  {t.avatar ? (
+                    <SmartImage src={t.avatar} alt="" aspect="square" className="size-9 shrink-0 rounded-full" />
+                  ) : (
+                    <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-xs font-bold text-primary">
+                      {t.name.trim().charAt(0)}
+                    </span>
+                  )}
+                  <div>
+                    <p className="font-bn text-xs font-bold text-foreground">{t.name}</p>
+                    {t.city && <p className="font-bn text-[11px] text-muted-foreground">{t.city}</p>}
+                  </div>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
-        )}
+        </div>
       </section>
 
       {/* Sticky mobile CTA */}
@@ -380,7 +452,15 @@ function LandingPage() {
   );
 }
 
-function TrustItem({ Icon, label }: { Icon: typeof Truck; label: string }) {
+function TrustItem({ Icon, label, compact }: { Icon: typeof Truck; label: string; compact?: boolean }) {
+  if (compact) {
+    return (
+      <div className="flex items-center gap-2 rounded-2xl border border-border bg-card px-3 py-2.5 shadow-soft">
+        <Icon className="size-4 shrink-0 text-primary" />
+        <span className="font-bn text-xs font-medium">{label}</span>
+      </div>
+    );
+  }
   return (
     <div className="flex items-center gap-2.5 rounded-2xl border border-border bg-card px-4 py-3.5 shadow-soft">
       <span className="grid size-9 shrink-0 place-items-center rounded-full bg-primary/10 text-primary">

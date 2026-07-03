@@ -250,7 +250,7 @@ export async function fetchCustomers(): Promise<CustomerSummaryRow[]> {
   return data as CustomerSummaryRow[];
 }
 
-export type LandingTestimonial = { name: string; text: string };
+export type LandingTestimonial = { name: string; text: string; city?: string; avatar?: string };
 
 export type LandingPage = {
   id: string;

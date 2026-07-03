@@ -85,7 +85,7 @@ export type LandingPageInput = {
   oldPrice: number | null;
   description: string | null;
   gallery: string[];
-  testimonials: { name: string; text: string }[];
+  testimonials: { name: string; text: string; city?: string; avatar?: string }[];
 };
 
 function toLandingPageRow(p: LandingPageInput) {
