@@ -46,13 +46,8 @@ export function Navbar() {
     <>
       {/* Top promo bar */}
       <div className="hidden bg-primary-dark text-primary-foreground sm:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2 text-xs sm:px-6 lg:px-8">
-          <p className="font-bn opacity-90">৳{toBnDigits(site.shipping.freeAbove)}+ অর্ডারে ফ্রি ডেলিভারি · ৬৪ জেলায় ক্যাশ অন ডেলিভারি</p>
-          <div className="font-bn flex items-center gap-4 opacity-90">
-            <a href={`tel:${site.phone}`} className="hover:text-gold">{site.phone}</a>
-            <span className="opacity-40">|</span>
-            <Link to="/track-order" className="hover:text-gold">অর্ডার ট্র্যাক করুন</Link>
-          </div>
+        <div className="mx-auto flex max-w-7xl items-center justify-center px-4 py-2 text-xs sm:px-6 lg:px-8">
+          <p className="font-bn font-medium tracking-wide opacity-90">৳{toBnDigits(site.shipping.freeAbove)}+ অর্ডারে ফ্রি ডেলিভারি · ৬৪ জেলায় ক্যাশ অন ডেলিভারি</p>
         </div>
       </div>
 
