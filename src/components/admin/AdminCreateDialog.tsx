@@ -34,12 +34,16 @@ export function AdminCreateDialog({
       return;
     }
     try {
-      await createAdmin.mutateAsync({
+      const result = await createAdmin.mutateAsync({
         email: form.email,
         password: form.password,
         fullName: form.fullName || undefined,
       });
-      toast.success("নতুন অ্যাডমিন তৈরি হয়েছে");
+      toast.success(
+        result.promoted
+          ? "এই ইমেইলে আগে থেকে একাউন্ট ছিল — সেটিকে অ্যাডমিন করা হয়েছে ও পাসওয়ার্ড আপডেট হয়েছে।"
+          : "নতুন অ্যাডমিন তৈরি হয়েছে",
+      );
       setForm(empty);
       onOpenChange(false);
     } catch (err) {

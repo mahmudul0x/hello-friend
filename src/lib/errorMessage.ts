@@ -10,8 +10,11 @@ export function friendlyError(err: unknown, fallback: string): string {
   if (text.includes("invalid login credentials")) {
     return "ইমেইল বা পাসওয়ার্ড সঠিক নয়।";
   }
-  if (text.includes("user already registered")) {
+  if (text.includes("user already registered") || text.includes("already been registered")) {
     return "এই ইমেইল দিয়ে ইতিমধ্যে একাউন্ট আছে।";
+  }
+  if (text.includes("user not found")) {
+    return "এই ইউজার খুঁজে পাওয়া যায়নি।";
   }
   if (text.includes("email not confirmed")) {
     return "ইমেইল কনফার্ম করা হয়নি। ইনবক্স চেক করুন।";
@@ -19,10 +22,18 @@ export function friendlyError(err: unknown, fallback: string): string {
   if (text.includes("password") && text.includes("6 char")) {
     return "পাসওয়ার্ড অন্তত ৬ অক্ষরের হতে হবে।";
   }
-  if (text.includes("row-level security") || text.includes("permission denied") || text.includes("rls")) {
+  if (
+    text.includes("row-level security") ||
+    text.includes("permission denied") ||
+    text.includes("rls")
+  ) {
     return "এই কাজটি করার অনুমতি আপনার নেই।";
   }
-  if (text.includes("network") || text.includes("fetch failed") || text.includes("failed to fetch")) {
+  if (
+    text.includes("network") ||
+    text.includes("fetch failed") ||
+    text.includes("failed to fetch")
+  ) {
     return "নেটওয়ার্ক সমস্যা হয়েছে। আবার চেষ্টা করুন।";
   }
   if (text.includes("foreign key")) {

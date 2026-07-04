@@ -160,8 +160,9 @@ function AdminAdmins() {
           <AlertDialogHeader>
             <AlertDialogTitle className="font-bn">অ্যাডমিন অ্যাক্সেস বাতিল করবেন?</AlertDialogTitle>
             <AlertDialogDescription className="font-bn">
-              "{toRemove?.email}" আর অ্যাডমিন প্যানেলে ঢুকতে পারবে না। একাউন্ট মুছে যাবে না, পরে
-              আবার অ্যাডমিন করা যাবে।
+              "{toRemove?.email}" আর অ্যাডমিন প্যানেলে ঢুকতে পারবে না। একাউন্ট মুছে যাবে না — পরে
+              আবার অ্যাডমিন বানাতে চাইলে "নতুন অ্যাডমিন" থেকে এই একই ইমেইল দিয়ে আবার তৈরি করুন, এটি
+              স্বয়ংক্রিয়ভাবে আগের একাউন্টটিকেই অ্যাডমিন করে দেবে।
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>

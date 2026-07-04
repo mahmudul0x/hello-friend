@@ -47,6 +47,27 @@ export const createAdmin = createServerFn({ method: "POST" })
     await requireAdmin();
     const supabase = getSupabaseServiceRoleClient();
 
+    // If this email already belongs to an account (e.g. an existing customer,
+    // or a previously-removed admin), promote it in place instead of failing —
+    // the Auth admin API can't create a second user with the same email.
+    const { data: existing } = await supabase
+      .from("profiles")
+      .select("id, role")
+      .eq("email", data.email)
+      .maybeSingle();
+
+    if (existing) {
+      if (existing.role === "admin") throw new Error("এই ইমেইল দিয়ে ইতিমধ্যে একজন অ্যাডমিন আছে।");
+
+      await supabase.auth.admin.updateUserById(existing.id, { password: data.password });
+      const { error: roleError } = await supabase
+        .from("profiles")
+        .update({ role: "admin", full_name: data.fullName || undefined })
+        .eq("id", existing.id);
+      if (roleError) throw new Error(roleError.message);
+      return { ok: true, promoted: true };
+    }
+
     const { data: created, error } = await supabase.auth.admin.createUser({
       email: data.email,
       password: data.password,
@@ -61,7 +82,7 @@ export const createAdmin = createServerFn({ method: "POST" })
       .eq("id", created.user.id);
     if (roleError) throw new Error(roleError.message);
 
-    return { ok: true };
+    return { ok: true, promoted: false };
   });
 
 const updatePasswordSchema = z.object({
