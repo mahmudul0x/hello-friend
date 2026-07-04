@@ -147,7 +147,7 @@ function CheckoutPage() {
                   <SmartImage src={product.image} alt={product.name} aspect="square" className="size-14 shrink-0 rounded-xl" />
                   <div className="flex-1 min-w-0">
                     <p className="font-bn truncate text-sm font-medium">{product.name}</p>
-                    <p className="font-bn text-xs font-semibold tabular-nums text-muted-foreground">× {toBnDigits(qty)}</p>
+                    <p className="font-bn text-sm font-semibold leading-normal text-muted-foreground">× {toBnDigits(qty)}</p>
                   </div>
                   <span className="font-bn text-sm font-semibold">{formatBDT(product.price * qty)}</span>
                 </li>

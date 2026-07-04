@@ -48,7 +48,7 @@ function CartPage() {
                   <div className="flex items-center justify-between gap-3 sm:flex-col sm:items-end">
                     <div className="inline-flex items-center gap-2 rounded-full border border-border p-1">
                       <button onClick={() => setQty(product.slug, qty - 1)} aria-label="কমান" className="grid size-8 place-items-center rounded-full hover:bg-accent"><Minus className="size-3.5" /></button>
-                      <span className="font-bn min-w-7 text-center text-base font-bold tabular-nums text-foreground">{toBnDigits(qty)}</span>
+                      <span className="font-bn min-w-7 text-center text-lg font-bold leading-normal text-foreground">{toBnDigits(qty)}</span>
                       <button onClick={() => setQty(product.slug, qty + 1)} aria-label="বাড়ান" className="grid size-8 place-items-center rounded-full hover:bg-accent"><Plus className="size-3.5" /></button>
                     </div>
                     <div className="flex items-center gap-3">

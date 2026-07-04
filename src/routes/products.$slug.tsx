@@ -135,7 +135,7 @@ function ProductPage() {
           <div className="mt-8 flex flex-wrap items-center gap-3">
             <div className="inline-flex items-center gap-1 rounded-full border border-border bg-card p-1.5">
               <button onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="কমান" className="grid size-9 place-items-center rounded-full hover:bg-accent"><MinusCircle className="size-4" /></button>
-              <span className="font-bn min-w-9 text-center text-xl font-bold tabular-nums text-foreground">{toBnDigits(qty)}</span>
+              <span className="font-bn min-w-9 text-center text-2xl font-bold leading-normal text-foreground">{toBnDigits(qty)}</span>
               <button onClick={() => setQty((q) => q + 1)} aria-label="বাড়ান" className="grid size-9 place-items-center rounded-full hover:bg-accent"><PlusCircle className="size-4" /></button>
             </div>
             <button

@@ -327,7 +327,7 @@ function LandingPage() {
             <span className="font-bn text-sm font-semibold">পরিমাণ</span>
             <div className="inline-flex items-center gap-2 rounded-full border border-border bg-background p-1">
               <button type="button" onClick={() => setQty((q) => Math.max(1, q - 1))} className="grid size-9 place-items-center rounded-full transition hover:bg-accent"><MinusCircle className="size-4" /></button>
-              <span className="font-bn min-w-9 text-center text-lg font-bold tabular-nums">{toBnDigits(qty)}</span>
+              <span className="font-bn min-w-9 text-center text-xl font-bold leading-normal">{toBnDigits(qty)}</span>
               <button type="button" onClick={() => setQty((q) => q + 1)} className="grid size-9 place-items-center rounded-full transition hover:bg-accent"><PlusCircle className="size-4" /></button>
             </div>
           </div>

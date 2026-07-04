@@ -6,6 +6,7 @@ import {
   Leaf,
   LogOut,
   Megaphone,
+  ShieldUser,
   ShoppingBag,
   Store,
   Tags,
@@ -38,6 +39,7 @@ const nav = [
   { to: "/admin/orders", label: "অর্ডার", Icon: ShoppingBag, exact: false, color: "#C8A415" },
   { to: "/admin/customers", label: "গ্রাহক", Icon: Users, exact: false, color: "#1565C0" },
   { to: "/admin/landing-pages", label: "ল্যান্ডিং পেজ", Icon: Megaphone, exact: false, color: "#6A1B9A" },
+  { to: "/admin/admins", label: "অ্যাডমিন", Icon: ShieldUser, exact: false, color: "#455A64" },
 ] as const;
 
 const crumbLabel: Record<string, string> = {
@@ -47,6 +49,7 @@ const crumbLabel: Record<string, string> = {
   "/admin/orders": "অর্ডার",
   "/admin/customers": "গ্রাহক",
   "/admin/landing-pages": "ল্যান্ডিং পেজ",
+  "/admin/admins": "অ্যাডমিন",
 };
 
 function initials(name?: string | null) {

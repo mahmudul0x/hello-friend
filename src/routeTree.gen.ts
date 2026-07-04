@@ -46,6 +46,7 @@ import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 import { Route as AdminLandingPagesRouteImport } from './routes/admin.landing-pages'
 import { Route as AdminCustomersRouteImport } from './routes/admin.customers'
 import { Route as AdminCategoriesRouteImport } from './routes/admin.categories'
+import { Route as AdminAdminsRouteImport } from './routes/admin.admins'
 
 const WishlistRoute = WishlistRouteImport.update({
   id: '/wishlist',
@@ -232,6 +233,11 @@ const AdminCategoriesRoute = AdminCategoriesRouteImport.update({
   path: '/categories',
   getParentRoute: () => AdminRoute,
 } as any)
+const AdminAdminsRoute = AdminAdminsRouteImport.update({
+  id: '/admins',
+  path: '/admins',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -255,6 +261,7 @@ export interface FileRoutesByFullPath {
   '/track-order': typeof TrackOrderRoute
   '/video-gallery': typeof VideoGalleryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/admins': typeof AdminAdminsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/landing-pages': typeof AdminLandingPagesRoute
@@ -293,6 +300,7 @@ export interface FileRoutesByTo {
   '/track-order': typeof TrackOrderRoute
   '/video-gallery': typeof VideoGalleryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/admins': typeof AdminAdminsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/landing-pages': typeof AdminLandingPagesRoute
@@ -333,6 +341,7 @@ export interface FileRoutesById {
   '/track-order': typeof TrackOrderRoute
   '/video-gallery': typeof VideoGalleryRoute
   '/wishlist': typeof WishlistRoute
+  '/admin/admins': typeof AdminAdminsRoute
   '/admin/categories': typeof AdminCategoriesRoute
   '/admin/customers': typeof AdminCustomersRoute
   '/admin/landing-pages': typeof AdminLandingPagesRoute
@@ -374,6 +383,7 @@ export interface FileRouteTypes {
     | '/track-order'
     | '/video-gallery'
     | '/wishlist'
+    | '/admin/admins'
     | '/admin/categories'
     | '/admin/customers'
     | '/admin/landing-pages'
@@ -412,6 +422,7 @@ export interface FileRouteTypes {
     | '/track-order'
     | '/video-gallery'
     | '/wishlist'
+    | '/admin/admins'
     | '/admin/categories'
     | '/admin/customers'
     | '/admin/landing-pages'
@@ -451,6 +462,7 @@ export interface FileRouteTypes {
     | '/track-order'
     | '/video-gallery'
     | '/wishlist'
+    | '/admin/admins'
     | '/admin/categories'
     | '/admin/customers'
     | '/admin/landing-pages'
@@ -764,10 +776,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminCategoriesRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/admin/admins': {
+      id: '/admin/admins'
+      path: '/admins'
+      fullPath: '/admin/admins'
+      preLoaderRoute: typeof AdminAdminsRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
 
 interface AdminRouteChildren {
+  AdminAdminsRoute: typeof AdminAdminsRoute
   AdminCategoriesRoute: typeof AdminCategoriesRoute
   AdminCustomersRoute: typeof AdminCustomersRoute
   AdminLandingPagesRoute: typeof AdminLandingPagesRoute
@@ -777,6 +797,7 @@ interface AdminRouteChildren {
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
+  AdminAdminsRoute: AdminAdminsRoute,
   AdminCategoriesRoute: AdminCategoriesRoute,
   AdminCustomersRoute: AdminCustomersRoute,
   AdminLandingPagesRoute: AdminLandingPagesRoute,
